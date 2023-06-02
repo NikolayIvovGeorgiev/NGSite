@@ -1,0 +1,52 @@
+
+// Theme base colors
+
+$dark: #333652;
+$light: #E9EAEC;
+$light-blue: #90ADC6;
+$accent: #FAD02C;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+};
+
+.fixed-size {
+  height: 240px;
+  width: 180px;
+}
+
+
+$theme-colors: (
+  'primary':$light,
+  'secondary':$light-blue,
+  'background': $dark, 
+  'accent': $accent,
+);
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+
+.gradient-border {
+  background: linear-gradient(#E9EAEC, #E9EAEC) 50% 50%/calc(100% - 7px) calc(100% - 7px) no-repeat,
+  linear-gradient(109deg, $accent 10%, rgba(80, 160, 203, 0) 80%);
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.border-gradient-title {
+  
+  border: 3px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(165deg, $accent 10%, rgba(0,0,0,0) 20%);
+  border-bottom: 0;
+}
+.border-gradient-body {
+
+  border: 3px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(165deg, $accent 55%, rgba(0,0,0,0) 65%);
+}
+
