@@ -114,6 +114,7 @@ const CVList: CVInterface[] = [
                   "TODO", "TODO", "TODO"
                 ],
                 description: undefined,
+                
               },
             {
                 startDate: "2019-09",

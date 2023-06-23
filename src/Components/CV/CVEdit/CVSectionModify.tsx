@@ -19,6 +19,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { ImCross } from "react-icons/im";
 import { TEXT_SECTION_OPTIONAL_FIELDS as optionalFields } from "../constants";
+import { get } from "lodash";
 
 interface Props {
   data: Section;
@@ -99,9 +100,32 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
   //   setSectionData;
   // };
 
-  const handleRemoveSubcomponent = (index: number) => {
+  const dobriSFunction = (
+    chapterIndex: number,
+    path?: string,
+    removeIndex?: number
+  ) => {
     const newContent = sectionData.data.content;
-    newContent.splice(index, 1);
+
+    if (path && removeIndex !== undefined) {
+      newContent[chapterIndex][path].splice(removeIndex, 1);
+    } else {
+      newContent.splice(chapterIndex, 1);
+    }
+  };
+
+  const handleRemove = (index: number, path?: string, listIndex?: number) => {
+    const newContent = sectionData.data.content;
+    console.log(path, listIndex);
+
+    if (path && listIndex !== undefined) {
+      console.log("1");
+
+      //: handleRemoveSubcomponent(0, 'shoppingCart.list', 2) LODASH handling depth
+      get(newContent[index], path).splice(listIndex, 1);
+    } else {
+      newContent.splice(index, 1);
+    }
     setSectionData({
       ...sectionData,
       data: {
@@ -170,20 +194,20 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
   const handleChangeButton = (val: any) => {
     setTogglesValue(val);
 
-    // const newlist = [""];
+    const newlist = [""];
 
-    // setSectionData({
-    //   ...sectionData,
-    //   data: {
-    //     ...sectionData.data,
-    //     content: sectionData.data.content.map(
-    //       (dataObject: iTextFieldComponentData) => ({
-    //         ...dataObject,
-    //         list: newlist,
-    //       })
-    //     ),
-    //   },
-    // });
+    setSectionData({
+      ...sectionData,
+      data: {
+        ...sectionData.data,
+        content: sectionData.data.content.map(
+          (dataObject: iTextFieldComponentData) => ({
+            ...dataObject,
+            list: newlist,
+          })
+        ),
+      },
+    });
   };
   const sanitzeSection = () => {
     console.log(togglesValue);
@@ -437,8 +461,9 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                                     </Row>
                                     <Col xs={1}>
                                       <ImCross
+                                        style={{ cursor: "pointer" }}
                                         onClick={() =>
-                                          handleRemoveSubcomponent(listIndex)
+                                          handleRemove(index, "list", listIndex)
                                         }
                                       />
                                     </Col>
@@ -513,7 +538,7 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                     {/* Remove Text Field */}
                     <Button
                       variant="primary"
-                      onClick={() => handleRemoveSubcomponent(index)}
+                      onClick={() => handleRemove(index)}
                     >
                       Remove Text Field
                     </Button>
@@ -589,7 +614,8 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                       </Form.Group>
                       <Col xs={1}>
                         <ImCross
-                          onClick={() => handleRemoveSubcomponent(index)}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleRemove(index)}
                         />
                       </Col>
                     </Row>
@@ -654,7 +680,8 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                       </Form.Group>
                       <Col xs={1}>
                         <ImCross
-                          onClick={() => handleRemoveSubcomponent(index)}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleRemove(index)}
                         />
                       </Col>
                     </Row>
