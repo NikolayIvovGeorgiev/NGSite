@@ -16,9 +16,10 @@ const CVBody = ({ data }: Props) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingCol, setEditingCol] = useState<string | null>(null);
   const [cvData, setCVData] = useState<CVInterface>(data);
+
   const createNewSection = () => {
     const newSection = {
-      id: "",
+      id: `${Math.random() * 10}`,
       type: "",
       title: "",
       state: "new",
@@ -37,6 +38,10 @@ const CVBody = ({ data }: Props) => {
   };
 
   const addSection = (col: any) => {
+    console.log(editingIndex, editingCol);
+    setEditingIndex(0);
+    setEditingCol(col);
+
     setCVData({
       ...cvData,
       data: {
@@ -47,10 +52,15 @@ const CVBody = ({ data }: Props) => {
         },
       },
     });
+    console.log(cvData.data.sections);
   };
 
   const saveSection = (section: Section) => {
-    if (editingCol && editingIndex !== null && editingIndex !== undefined) {
+    if (
+      editingCol !== null &&
+      editingIndex !== null &&
+      editingIndex !== undefined
+    ) {
       let updatedCol = cvData.data.sections[editingCol];
       updatedCol[editingIndex] = section;
       setCVData({
@@ -144,7 +154,7 @@ const CVBody = ({ data }: Props) => {
                     index={index}
                     heading={section.title}
                     key={index}
-                    onSave={(saveSection) => {}}
+                    onSave={saveSection}
                   />
                 );
               } else {

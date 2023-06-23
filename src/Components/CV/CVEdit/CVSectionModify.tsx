@@ -5,14 +5,7 @@ import {
   iProgressBarComponentData,
   iTextFieldComponentData,
 } from "../../../entities/cvInterfaces";
-import {
-  Button,
-  ListGroup,
-  ListGroupItem,
-  Row,
-  Col,
-  Placeholder,
-} from "react-bootstrap";
+import { Button, Row, Col, Placeholder } from "react-bootstrap";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import Form from "react-bootstrap/Form";
@@ -95,24 +88,6 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
       },
     });
   };
-  // const handleAddListItem = () => {
-  //   const newList;
-  //   setSectionData;
-  // };
-
-  const dobriSFunction = (
-    chapterIndex: number,
-    path?: string,
-    removeIndex?: number
-  ) => {
-    const newContent = sectionData.data.content;
-
-    if (path && removeIndex !== undefined) {
-      newContent[chapterIndex][path].splice(removeIndex, 1);
-    } else {
-      newContent.splice(chapterIndex, 1);
-    }
-  };
 
   const handleRemove = (index: number, path?: string, listIndex?: number) => {
     const newContent = sectionData.data.content;
@@ -166,6 +141,14 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setChosenSectionType(e.target.value);
+    setSectionData({
+      ...sectionData,
+      type: e.target.value,
+      data: {
+        ...sectionData,
+        content: [],
+      },
+    });
   };
 
   const handleSubmit = (event: any) => {
