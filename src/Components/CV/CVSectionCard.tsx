@@ -1,18 +1,32 @@
 import { ReactNode } from "react";
 
+import { Section } from "../../entities/cvInterfaces";
+import { Button } from "react-bootstrap";
+
 interface Props {
+  data: Section;
+  index: number;
   heading: string;
   children?: ReactNode;
+  onClick: (index: number) => void;
 }
 
-const CVSectionCard = ({ heading, children }: Props) => {
+const CVSectionCard = ({ data, index, heading, children, onClick }: Props) => {
   return (
-    <div>
-      <h1 className="border-gradient-title m-0 p-2" id={heading}>
+    <>
+      <h2 className="border-gradient-title m-0 p-2" id={heading}>
         {heading}
-      </h1>
+        <Button
+          className="btn btn-secondary float-end"
+          onClick={() => {
+            onClick(index);
+          }}
+        >
+          Edit
+        </Button>
+      </h2>
       <div className="border-gradient-body p-2">{children}</div>
-    </div>
+    </>
   );
 };
 

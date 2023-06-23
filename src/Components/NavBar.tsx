@@ -16,6 +16,15 @@ const NavBar = () => {
                 CV
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                as={Link}
+                to="/test-page"
+                className="nav-link text-primary"
+              >
+                Test Page
+              </Nav.Link>
+            </Nav.Item>
             {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

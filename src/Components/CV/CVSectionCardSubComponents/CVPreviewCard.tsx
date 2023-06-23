@@ -1,5 +1,4 @@
-import React from "react";
-import { Card, Button, Placeholder, Nav } from "react-bootstrap";
+import { Card, Button, Nav } from "react-bootstrap";
 import { CVInterface } from "../../../entities/cvInterfaces";
 import { Link } from "react-router-dom";
 interface Props {

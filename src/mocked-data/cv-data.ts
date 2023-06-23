@@ -1,6 +1,6 @@
 import { CVInterface } from "../entities/cvInterfaces";
-
-const CVList: CVInterface[] = [{
+const CVList: CVInterface[] = [
+  {
   id: 1,
   note: 'my first CV',
   settings: { },
@@ -11,10 +11,13 @@ const CVList: CVInterface[] = [{
       email: "nikolay.ivov.georgiev@gmail.com",
       phone: "35988515898"
     },
-    sections: [
-      {
+    sections: {
+      leftCol : [
+        {
+        id: '2345',
         type: 'Text-field',
         title: 'Education',
+        state: 'old',
         data: {
           config: {},
           content: [
@@ -30,63 +33,73 @@ const CVList: CVInterface[] = [{
         }
       },
       {
-        type: 'Progress-bar',
-        title: 'Languages',
-        data: {
-          config: { },
-          content: [
-            {
-              title: 'English',
-              level: 4
-            },
-            {
-              title: 'Russian',
-              level: 3
-            }
-          ]
-        }
-      },
-      {
+        id: 'ergtuh3',
         type: 'Text-field',
         title: 'Internship',
+        state: 'old',
         data: {
           config: {},
           content: undefined
         }
       },
       {
+        id: 'wejrfiewr',
         type: 'Progress-bar',
         title: 'Skills',
+        state: 'old',
         data: {
-          config: {},
+          config: {
+            color: 'blue'
+          },
           content: [
             {
+              id : 0,
               title: 'Development literacy (Jira, Java, JavaScript, CSS, HTML)',
               level: 3
             },
             {
+              id : 1,
               title: 'Software testing',
               level: 2
             },
             {
+              id : 2,
               title: 'Work with regulations and complex documentation',
               level: 3
             },
             {
+              id : 3,
               title: 'Ability to work in a team',
               level: 5
             },
             {
+              id: 4,
               title: 'Strategic Planning and Project Management',
               level: 3
             }
           ]
         }
 
+      },{
+        id: '',
+        type: 'Progress-bar',
+        title: 'Test skills',
+        state: '',
+        data: {
+          config: {},
+          content: [
+            { title: '', level: undefined},
+            { title: '', level: undefined},
+            { title: '', level: undefined}
+          ]
+        }
+
       },
       {
+        id: '345j',
         type: 'Text-field',
         title: 'Experience',
+        state: 'old',
         data: {
           config: {
             dateColumn: true
@@ -100,7 +113,7 @@ const CVList: CVInterface[] = [{
                 list: [
                   "TODO", "TODO", "TODO"
                 ],
-                description: undefined
+                description: undefined,
               },
             {
                 startDate: "2019-09",
@@ -110,7 +123,7 @@ const CVList: CVInterface[] = [{
                 list: [
                   "Management of waste collection processes.", "Negotiating environmental service contacts.", "Management of work teams for the implementation of waste management contacts.",
                   "Preparation of annual reports, completion of accounting books and creating environmental reports.", "Working with regulations and related waste management programs."
-                ]
+                ],
               },
             {
               startDate: "2019-01",
@@ -121,51 +134,53 @@ const CVList: CVInterface[] = [{
                 "Organize, monitor and control the waste separation and storage process.", "Provide training for LTSF and cleaning personnel to properly dispose, collect, separate and store waste.", "Organization of temporary storage sites. Filling and maintaining up-to-date accounting records for the available separated waste."
               ]
             },
-            {
-                startDate: "2018-04",
-                endDate: "2018-11",
-                title: 'Administrative Assistant',
-                subtitle: 'Software University LTD',
-                list: [
-                    "Implementation of CRM strategy to create a long-term mutually beneficial customer relationships.",
-                    " Answering to customer questions, received through the communication channels.",
-                    "Administration of communication platforms.",
-                    " Creation of statement and analytical documents"
-                ]
-              },
-              {
-                startDate: "2017-04",
-                endDate: "2017-11",
-                title: 'Executor advertising projects',
-                subtitle: 'Ad Spot LTD',
-                list: [
-                  " Implementation of internal and external advertising projects", "Working with clients and organizing promotions", "Solving problems and cases of a technical or other nature"
-                ]
-              },
-              {
-                startDate: "2016-02",
-                endDate: "2017-04",
-                title: 'Dispatcher',
-                subtitle: 'Carrier Commercial Refrigeration Bulgaria',
-                list: [
-                  "Monitoring of air conditioning systems and  coordination of service teams", "Signal creation and related activities in ERP-SAP(MM+LE)", "Supporting transport organizing activities"
-                ]
-              },
-              {
-                startDate: "2011-06",
-                endDate: "2012-01",
-                title: 'Seller consultant “Stock loans”',
-                subtitle: 'Unicredit Consumer Financing',
-                list: [
-                  "Presentation of credit products and concluding contracts with customers for commodity loans", "Presentation of credit related insurance products and insurance policies."
-                ]
-              },
+            // {
+            //     startDate: "2018-04",
+            //     endDate: "2018-11",
+            //     title: 'Administrative Assistant',
+            //     subtitle: 'Software University LTD',
+            //     list: [
+            //         "Implementation of CRM strategy to create a long-term mutually beneficial customer relationships.",
+            //         " Answering to customer questions, received through the communication channels.",
+            //         "Administration of communication platforms.",
+            //         " Creation of statement and analytical documents"
+            //     ]
+            //   },
+            //   {
+            //     startDate: "2017-04",
+            //     endDate: "2017-11",
+            //     title: 'Executor advertising projects',
+            //     subtitle: 'Ad Spot LTD',
+            //     list: [
+            //       " Implementation of internal and external advertising projects", "Working with clients and organizing promotions", "Solving problems and cases of a technical or other nature"
+            //     ]
+            //   },
+            //   {
+            //     startDate: "2016-02",
+            //     endDate: "2017-04",
+            //     title: 'Dispatcher',
+            //     subtitle: 'Carrier Commercial Refrigeration Bulgaria',
+            //     list: [
+            //       "Monitoring of air conditioning systems and  coordination of service teams", "Signal creation and related activities in ERP-SAP(MM+LE)", "Supporting transport organizing activities"
+            //     ]
+            //   },
+            //   {
+            //     startDate: "2011-06",
+            //     endDate: "2012-01",
+            //     title: 'Seller consultant “Stock loans”',
+            //     subtitle: 'Unicredit Consumer Financing',
+            //     list: [
+            //       "Presentation of credit products and concluding contracts with customers for commodity loans", "Presentation of credit related insurance products and insurance policies."
+            //     ]
+            //   },
           ]
         }
       },
       {
+        id: 'wegh345o',
         type: 'Text-field',
         title: 'Projects',
+        state: 'old',
         data: {
           config: {},
           content: [
@@ -205,8 +220,10 @@ const CVList: CVInterface[] = [{
         }
       },
       {
+        id: 'ewirugt3',
         type: 'Text-field',
         title: 'Certificates',
+        state: 'old',
         data: {
           config: {},
           content: [
@@ -234,12 +251,13 @@ const CVList: CVInterface[] = [{
         }
       },
       {
+        id: 'tgi435g',
         type: 'Pie-Chart',
         title: 'Free Time',
+        state: 'old',
         data: {
           config: {},
           content: [
-            // TODO: When concrete pie chart component is picked, the data should be shaped around it
             {
               title: "Sport",
               percent: 30
@@ -262,10 +280,31 @@ const CVList: CVInterface[] = [{
             },
           ]
         }
-      }         
-    ]
+      }],
+      rightCol: [
+      {
+        id: '234hu',
+        type: 'Progress-bar',
+        title: 'Languages',
+        state: 'old',
+        data: {
+          config: { },
+          content: [
+            {
+              title: 'English',
+              level: 4
+            },
+            {
+              title: 'Russian',
+              level: 3
+            }
+          ]
+        }
+      },],
+    }              
   }
-  }];
+  },
+];
   
   export default CVList;
-
+  
