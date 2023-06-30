@@ -78,7 +78,7 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
       newData = { title: "", subtitle: "" };
     if (chosenSectionType === "Progress-bar")
       newData = { title: "", level: undefined };
-    if (chosenSectionType === "Pie-Chart") newData = {};
+    if (chosenSectionType === "Pie-Chart") newData = { title: "", percent: "" };
 
     setSectionData({
       ...sectionData,
@@ -91,7 +91,6 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
 
   const handleRemove = (index: number, path?: string, listIndex?: number) => {
     const newContent = sectionData.data.content;
-    console.log(path, listIndex);
 
     if (path && listIndex !== undefined) {
       console.log("1");
@@ -193,8 +192,6 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
     });
   };
   const sanitzeSection = () => {
-    console.log(togglesValue);
-
     if (!togglesValue.includes(optionalFields.description)) {
       let updatedContent = sectionData.data.content;
       updatedContent.map((chapter: any) => {
@@ -625,7 +622,7 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                       <Form.Group
                         as={Col}
                         xs={7}
-                        id={`${sectionData.id} + ${pieChartSection.title} + ${index} `}
+                        id={`${sectionData.id} + ${sectionData.title} + ${index} `}
                       >
                         <Form.Control
                           aria-label="Skill"
@@ -650,7 +647,7 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                           value={pieChartSection.percent}
                           type="number"
                           min={0}
-                          name="Skill"
+                          name="percent"
                           required
                           onChange={(e) => {
                             inputFieldOnChange(

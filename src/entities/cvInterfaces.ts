@@ -20,7 +20,8 @@ export interface iTextFieldComponentData {
 
 export interface iPieChartComponentData {
   title?: string;
-  percent?: number;
+  percent?: string;
+  color?: string;
 }
 export interface Section {
   id: string,

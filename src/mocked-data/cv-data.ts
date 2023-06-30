@@ -261,23 +261,23 @@ const CVList: CVInterface[] = [
           content: [
             {
               title: "Sport",
-              percent: 30
+              percent: "30",
             },
             {
               title: "Woodcarving",
-              percent: 10
+              percent: "10"
             },
             {
               title: "Gaming",
-              percent: 20
+              percent: "20"
             },
             {
               title: "Reading",
-              percent: 20
+              percent: "20"
             },
             {
               title: "Hiking",
-              percent: 20
+              percent: "20"
             },
           ]
         }
@@ -307,5 +307,12 @@ const CVList: CVInterface[] = [
   },
 ];
   
-  export default CVList;
+ export default CVList;
+
+ export function fetchData() {
+    return new Promise((resolve) => {
+      resolve(CVList)
+    })
+  }
+  
   
