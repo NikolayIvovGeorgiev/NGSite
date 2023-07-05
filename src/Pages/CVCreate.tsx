@@ -1,7 +1,7 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import CVSideBar from "../Components/CV/CVSideBar";
 import { FaBackward } from "react-icons/fa";
-import CVView from "../Components/CV/CVSectionCardSubComponents/CVView";
+import CVView from "../Components/CV/CVEdit/CVView";
 import CVList from "../mocked-data/cv-data";
 const CVCreate = () => {
   return (

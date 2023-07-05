@@ -1,8 +1,12 @@
 export interface PersonalDataInfo {
-  linkedin: string;
-  city: string;
-  email: string;
-  phone: string;
+  name: string;
+  birthDate: string;
+  fields: iPersonalInfoData[]
+}
+export interface iPersonalInfoData{
+  icon?: string;
+  type?: string;
+  value?: string;
 }
 export interface iProgressBarComponentData {
   id?: number;

@@ -110,16 +110,16 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
   };
   const inputFieldOnChange = (
     index: number,
-    field: string,
+    property: string,
     value: any,
     listIndex?: number
   ) => {
     const updatedContent = [...sectionData.data.content];
 
-    if (field === "list" && listIndex !== undefined) {
-      updatedContent[index][field][listIndex] = value;
+    if (property === "list" && listIndex !== undefined) {
+      updatedContent[index][property][listIndex] = value;
     } else {
-      updatedContent[index][field] = value;
+      updatedContent[index][property] = value;
     }
 
     setSectionData({

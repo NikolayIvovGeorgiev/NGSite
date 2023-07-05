@@ -5,7 +5,7 @@ import ErrorPage from "./Pages/ErrorPage";
 import HomePage from "./Pages/HomePage";
 import CVCreate from "./Pages/CVCreate";
 import CVPage from "./Pages/CVPage";
-import CVView from "./Components/CV/CVSectionCardSubComponents/CVView";
+import CVView from "./Components/CV/CVEdit/CVView";
 // import TestPage from "./Components/TestPage/TestPage";
 
 const router = createBrowserRouter([

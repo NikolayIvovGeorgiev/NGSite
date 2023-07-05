@@ -6,10 +6,14 @@ const CVList: CVInterface[] = [
   settings: { },
   data: {
     personalInfo: {
-      linkedin: "https://www.linkedin.com/in/nikolay-georgiev-348aa8130/",
-      city: "Sofia",
-      email: "nikolay.ivov.georgiev@gmail.com",
-      phone: "35988515898"
+      name:"Nikolay Ivov Georgiev",
+      birthDate: '',
+      fields: [
+        {icon: "", type: 'linkedIn', value: "https://www.linkedin.com/in/nikolay-georgiev-348aa8130/"},
+        {icon: "",type:"City", value: "Sofia"},
+        {icon: "",type:'email', value: "nikolay.ivov.georgiev@gmail.com"},
+        {icon: "",type:'phone', value:"35988515898"}
+      ]
     },
     sections: {
       leftCol : [

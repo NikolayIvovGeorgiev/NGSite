@@ -47,7 +47,6 @@ const PieChartField = ({ data }: Props) => {
     if (data && !isEmpty(data)) {
       data.forEach((item) => {
         if (item.title && item.percent) {
-          console.log(item);
           updatedLabels.push(item.title);
           updatedData.push(+item.percent);
         }

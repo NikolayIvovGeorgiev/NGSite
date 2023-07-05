@@ -3,6 +3,7 @@ import { CVInterface, PersonalDataInfo } from "../../../entities/cvInterfaces";
 import CVList from "../../../mocked-data/cv-data";
 import CVBody from "../CVBody";
 import CVPersonalInfo from "../CVPersonalInfo";
+import CVPersonalIfnoMOdify from "./CVPersonalIfnoModify";
 
 interface Props {
   cv?: CVInterface;
@@ -17,6 +18,7 @@ const CVView = ({ cv }: Props) => {
   }
   return (
     <>
+      <CVPersonalIfnoMOdify data={cv.data.personalInfo} />
       <CVPersonalInfo data={cv.data.personalInfo as PersonalDataInfo} />
       <CVBody data={cv as CVInterface}></CVBody>
     </>
