@@ -9,8 +9,8 @@ const CVList: CVInterface[] = [
       name:"Nikolay Ivov Georgiev",
       birthDate: '',
       fields: [
-        {icon: "", type: 'linkedIn', value: "https://www.linkedin.com/in/nikolay-georgiev-348aa8130/"},
-        {icon: "",type:"City", value: "Sofia"},
+        {icon: "AiFillLinkedin", type: 'link', value: "https://www.linkedin.com/in/nikolay-georgiev-348aa8130/"},
+        {icon: "",type:"text", value: "Sofia"},
         {icon: "",type:'email', value: "nikolay.ivov.georgiev@gmail.com"},
         {icon: "",type:'phone', value:"35988515898"}
       ]

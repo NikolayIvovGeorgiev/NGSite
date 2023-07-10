@@ -20,8 +20,8 @@ const CVPersonalInfo = ({ data }: Props) => {
         ></Image>
       </Col>
 
-      {/* <Col xs={5}>
-        <Row className=" justify-content">
+      <Col xs={5}>
+        {/* <Row className=" justify-content">
           <Col className=" pt-5 justify-content-md-center">
             <div className=" mb-5">
               {createElement(AntIcon[`${"AiFillAlert"}`], {
@@ -30,7 +30,7 @@ const CVPersonalInfo = ({ data }: Props) => {
               })}
               <AiFillLinkedin size={30} color="blue" />
               <i className="fa-solid fa-dinosaur"></i>
-              {data.linkedin}
+              {}
             </div>
             <div>
               <FaCity size={30} color="blue" />
@@ -47,8 +47,8 @@ const CVPersonalInfo = ({ data }: Props) => {
               {data.phone}
             </div>
           </Col>
-        </Row>
-      </Col> */}
+        </Row> */}
+      </Col>
       <Col xs={1}>
         <Button
           className="btn btn-secondary float-end"

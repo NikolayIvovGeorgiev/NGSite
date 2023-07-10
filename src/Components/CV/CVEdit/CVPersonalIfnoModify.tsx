@@ -11,8 +11,9 @@ import {
   PersonalDataInfo,
   iPersonalInfoData,
 } from "../../../entities/cvInterfaces";
-import { useState } from "react";
+import { createElement, useState } from "react";
 import { ImCross } from "react-icons/im";
+import IconModal from "./IconModal";
 
 interface Props {
   data: PersonalDataInfo;
@@ -53,6 +54,11 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
     const newType = e.target.value;
     let updatedFields = [...personalInfoData.fields];
     updatedFields[index].type = newType;
+    console.log(newType);
+
+    if (newType === "date") {
+      updatedFields[index].value = "";
+    }
 
     setPersonalInfoData({
       ...personalInfoData,
@@ -60,7 +66,31 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
     });
     console.log(personalInfoData);
   };
+  const handleAddNewField = () => {
+    const newField = { icon: "", type: "", value: "" };
 
+    setPersonalInfoData({
+      ...personalInfoData,
+      fields: [...personalInfoData.fields, newField],
+    });
+  };
+  const handleRemoveField = (index: number) => {
+    const editedContent = [...personalInfoData.fields];
+    editedContent.splice(index, 1);
+    setPersonalInfoData({
+      ...personalInfoData,
+      fields: editedContent,
+    });
+  };
+  const handleIconChoice = (icon: string | undefined, index: number) => {
+    const updatedFields = [...data.fields];
+    updatedFields[index].icon = icon;
+    setPersonalInfoData({
+      ...personalInfoData,
+      fields: updatedFields,
+    });
+    console.log(updatedFields[index]);
+  };
   return (
     <>
       <Row>
@@ -84,7 +114,7 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
             </Button>
           </div>
         </Col>
-        <Col xs={9}>
+        <Col xs={10}>
           <Row className="d-flex justify-content-center align-items-center pt-2 pe-5">
             {/*NAME*/}
             <Form.Text className=" text-accent"> Name</Form.Text>
@@ -112,9 +142,8 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
                         personalInfoData.fields.length
                       } + ${index + 1} `}
                       as={Row}
-                      className="w-100"
+                      className="w-100 justify-content-center"
                     >
-                      {/*Description*/}
                       <Col xs={2}>
                         <select
                           className="custom-select text-md-center mb-1"
@@ -130,47 +159,62 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
                           <option value="date">Date</option>
                           <option value="text">Text</option>
                         </select>
-                        {/* <Form.Text className="text-accent">
-                          Description
-                        </Form.Text>
-                        <Form.Control
-                          aria-label="personalInfoField-description"
-                          value={personalInfoField.description}
-                          type="string"
-                          as="input"
-                          name="description"
-                          onChange={(e) => {
-                            updateInputField(
-                              index,
-                              "description",
-                              e.target.value
-                            );
-                          }}
-                        /> */}
+                      </Col>
+                      <Col>
+                        <IconModal
+                          defaultIcon={personalInfoField.icon}
+                          OnSave={(icon) => handleIconChoice(icon, index)}
+                        />
                       </Col>
                       {/*Value*/}
                       <Col xs={5}>
-                        <Form.Text className="text-accent">Value</Form.Text>
-                        <Form.Control
-                          aria-label="personalInfoField-value"
-                          value={personalInfoField.value}
-                          type="string"
-                          as="input"
-                          name="value"
-                          onChange={(e) => {
-                            updateInputField(index, "value", e.target.value);
-                          }}
-                        />
+                        {personalInfoField.type === "date" && (
+                          <Form.Group
+                            id={`${data.name} + ${personalInfoField.type} + ${index} `}
+                          >
+                            <Form.Control
+                              aria-label="Description"
+                              value={personalInfoField.value}
+                              type="month"
+                              name="startDate"
+                              required
+                              onChange={(e) => {
+                                updateInputField(
+                                  index,
+                                  "value",
+                                  e.target.value
+                                );
+                              }}
+                            ></Form.Control>
+                          </Form.Group>
+                        )}
+
+                        {personalInfoField.type !== "date" && (
+                          <>
+                            <Form.Text className="text-accent">Value</Form.Text>
+                            <Form.Control
+                              aria-label="personalInfoField-value"
+                              value={personalInfoField.value}
+                              type="string"
+                              as="input"
+                              name="value"
+                              onChange={(e) => {
+                                updateInputField(
+                                  index,
+                                  "value",
+                                  e.target.value
+                                );
+                              }}
+                            />
+                          </>
+                        )}
                       </Col>
                       {/*Remove Field*/}
                       <Col xs={1}>
                         <ImCross
                           className="justify"
                           style={{ cursor: "pointer" }}
-
-                          // onClick={() =>
-                          //   handleRemove(index, "list", listIndex)
-                          // }
+                          onClick={() => handleRemoveField(index)}
                         />
                       </Col>
                     </Form.Group>
@@ -178,7 +222,12 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
                 );
               }
             )}
-          <Button variant="primary" onClick={() => console.log(1)}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleAddNewField(), console.log(personalInfoData);
+            }}
+          >
             Add Field
           </Button>
         </Col>
