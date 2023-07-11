@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import { createElement } from "react";
 import * as AntIcon from "react-icons/ai";
@@ -14,7 +14,6 @@ const IconModal = ({ defaultIcon, OnSave }: Props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  console.log(typeof AntIcon);
   const availableIcons: string[] = [
     "AiFillLinkedin",
     "AiOutlineMail",
@@ -28,14 +27,20 @@ const IconModal = ({ defaultIcon, OnSave }: Props) => {
     "AiFillEnvironment",
   ];
 
+  // useState generates async functions!!
   const [iconChoice, seticonChoice] = useState(defaultIcon);
 
   const handleIconClick = (chosenIcon: string) => {
-    seticonChoice("");
     seticonChoice(chosenIcon);
+    // OnSave(chosenIcon);
+    // handleClose();
+  };
+
+  // Use effect can be used to handle asynchronicity
+  useEffect(() => {
     OnSave(iconChoice);
     handleClose();
-  };
+  }, [iconChoice]);
 
   return (
     <>
@@ -57,105 +62,40 @@ const IconModal = ({ defaultIcon, OnSave }: Props) => {
         <Modal.Header closeButton>
           <Modal.Title>Choose Icon</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Row>
-            <Col>
-              <Button className="mb-2" onClick={() => handleIconClick("")}>
-                {createElement(AntIcon[`${"AiOutlineCloseCircle"}`], {
-                  size: 30,
-                  color: "red",
-                })}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={() => handleIconClick("AiFillLinkedin")}>
-                {createElement(AntIcon[`${"AiFillLinkedin"}`], {
-                  size: 30,
-                  color: "blue",
-                })}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={() => handleIconClick("AiFillGithub")}>
-                {createElement(AntIcon[`${"AiFillGithub"}`], {
-                  size: 30,
-                  color: "blue",
-                })}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={() => handleIconClick("AiFillInstagram")}>
-                {createElement(AntIcon[`${"AiFillInstagram"}`], {
-                  size: 30,
-                  color: "blue",
-                })}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={() => handleIconClick("AiFillTwitterSquare")}>
-                {createElement(AntIcon[`${"AiFillTwitterSquare"}`], {
-                  size: 30,
-                  color: "blue",
-                })}
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Button onClick={() => handleIconClick("AiOutlineLink")}>
-                {createElement(AntIcon[`${"AiOutlineLink"}`], {
-                  size: 30,
-                  color: "blue",
-                })}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={() => handleIconClick("AiOutlineMail")}>
-                {createElement(AntIcon[`${"AiOutlineMail"}`], {
-                  size: 30,
-                  color: "blue",
-                })}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={() => handleIconClick("AiFillPhone")}>
-                {createElement(AntIcon[`${"AiFillPhone"}`], {
-                  size: 30,
-                  color: "blue",
-                })}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={() => handleIconClick("AiFillEnvironment")}>
-                {createElement(AntIcon[`${"AiFillEnvironment"}`], {
-                  size: 30,
-                  color: "blue",
-                })}
-              </Button>
-            </Col>
-
-            <Col>
-              <Button onClick={() => handleIconClick("AiOutlineShareAlt")}>
-                {createElement(AntIcon[`${"AiOutlineShareAlt"}`], {
-                  size: 30,
-                  color: "blue",
-                })}
-              </Button>
-            </Col>
-          </Row>
+        <Modal.Body className="flex-wrap">
+          {availableIcons.map((icon, index) => {
+            return (
+              <span key={icon + index}>
+                {icon === "AiOutlineCloseCircle" && (
+                  <Button
+                    className="mb-2 p-2  flex"
+                    onClick={() => handleIconClick("")}
+                  >
+                    {createElement(AntIcon[icon], {
+                      size: 30,
+                      color: "red",
+                    })}
+                  </Button>
+                )}
+                {icon !== "AiOutlineCloseCircle" && (
+                  <Button
+                    className="mb-2 p-2 m-2 flex"
+                    onClick={() => handleIconClick(icon)}
+                  >
+                    {createElement(AntIcon[icon], {
+                      size: 30,
+                      color: "blue",
+                    })}
+                  </Button>
+                )}
+              </span>
+            );
+          })}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          {/* <Button
-            variant="primary"
-            onClick={() => {
-              OnSave(iconChoice), handleClose();
-            }}
-          >
-            Save Changes
-          </Button> */}
         </Modal.Footer>
       </Modal>
     </>

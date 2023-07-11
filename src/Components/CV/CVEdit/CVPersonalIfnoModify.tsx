@@ -11,7 +11,7 @@ import {
   PersonalDataInfo,
   iPersonalInfoData,
 } from "../../../entities/cvInterfaces";
-import { createElement, useState } from "react";
+import { createElement, useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import IconModal from "./IconModal";
 
@@ -38,10 +38,11 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
   };
 
   const updateInputField = (index: number, key: string, value: string) => {
-    const updatedFields = [...data.fields];
+    const updatedFields = [...personalInfoData.fields];
 
     if (key === "icon" || key === "type" || key === "value")
       updatedFields[index][key] = value;
+
     setPersonalInfoData({
       ...personalInfoData,
       fields: updatedFields,
@@ -54,7 +55,6 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
     const newType = e.target.value;
     let updatedFields = [...personalInfoData.fields];
     updatedFields[index].type = newType;
-    console.log(newType);
 
     if (newType === "date") {
       updatedFields[index].value = "";
@@ -64,7 +64,6 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
       ...personalInfoData,
       fields: updatedFields,
     });
-    console.log(personalInfoData);
   };
   const handleAddNewField = () => {
     const newField = { icon: "", type: "", value: "" };
@@ -83,14 +82,15 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
     });
   };
   const handleIconChoice = (icon: string | undefined, index: number) => {
-    const updatedFields = [...data.fields];
+    const updatedFields = [...personalInfoData.fields];
+
     updatedFields[index].icon = icon;
     setPersonalInfoData({
       ...personalInfoData,
       fields: updatedFields,
     });
-    console.log(updatedFields[index]);
   };
+
   return (
     <>
       <Row>
@@ -225,7 +225,7 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
           <Button
             variant="primary"
             onClick={() => {
-              handleAddNewField(), console.log(personalInfoData);
+              handleAddNewField();
             }}
           >
             Add Field
