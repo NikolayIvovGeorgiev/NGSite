@@ -17,9 +17,10 @@ import IconModal from "./IconModal";
 
 interface Props {
   data: PersonalDataInfo;
+  onSave: (data: PersonalDataInfo) => void;
 }
 
-const CVPersonalIfnoMOdify = ({ data }: Props) => {
+const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
   const [personalInfoData, setPersonalInfoData] = useState(data);
   const [selectedfile, setSelectedFile] = useState(null);
 
@@ -233,7 +234,12 @@ const CVPersonalIfnoMOdify = ({ data }: Props) => {
         </Col>
       </Row>
 
-      <Button className="btn btn-accent float-end" onClick={() => {}}>
+      <Button
+        className="btn btn-accent float-end"
+        onClick={() => {
+          onSave(personalInfoData);
+        }}
+      >
         {" "}
         Save Section
       </Button>

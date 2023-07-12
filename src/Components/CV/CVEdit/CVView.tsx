@@ -4,24 +4,48 @@ import CVList from "../../../mocked-data/cv-data";
 import CVBody from "../CVBody";
 import CVPersonalInfo from "../CVPersonalInfo";
 import CVPersonalIfnoMOdify from "./CVPersonalIfnoModify";
+import { useEffect, useState } from "react";
 
-interface Props {
-  cv?: CVInterface;
-}
-
-const CVView = ({ cv }: Props) => {
+const CVView = () => {
+  const [cvData, setCvData] = useState<CVInterface | undefined>();
   const { id } = useParams();
-  if (!cv) {
-    cv = CVList.find((currentCv) => Number(id) === currentCv.id);
 
-    if (!cv) return <>No CV found</>;
-  }
-  return (
+  useEffect(() => {
+    if (!cvData) {
+      const currentCv = CVList.find((currentCv) => Number(id) === currentCv.id);
+      if (currentCv) setCvData({ ...currentCv });
+    }
+  });
+
+  const savePersonalInfoData = (data: PersonalDataInfo) => {
+    const updatedPersonalInfo = data;
+
+    if (cvData) {
+      setCvData({
+        ...cvData,
+        data: {
+          ...cvData.data,
+          personalInfo: updatedPersonalInfo,
+        },
+      });
+    } else {
+      console.error("Error: could not update data");
+    }
+  };
+  useEffect(() => {
+    console.log(cvData);
+  }, [cvData]);
+  return cvData ? (
     <>
-      <CVPersonalIfnoMOdify data={cv.data.personalInfo} />
-      <CVPersonalInfo data={cv.data.personalInfo as PersonalDataInfo} />
-      <CVBody data={cv as CVInterface}></CVBody>
+      <CVPersonalIfnoMOdify
+        data={cvData.data.personalInfo}
+        onSave={savePersonalInfoData}
+      />
+      <CVPersonalInfo data={cvData.data.personalInfo as PersonalDataInfo} />
+      <CVBody data={cvData}></CVBody>
     </>
+  ) : (
+    <>No CV found</>
   );
 };
 
