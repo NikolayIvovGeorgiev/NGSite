@@ -12,16 +12,52 @@ interface Props {
 const CVPersonalInfo = ({ data }: Props) => {
   return (
     <Row>
-      <Col xs="6">
+      <Col xs={2}>
+        <Image
+          className="shadow m-2 fixed-size"
+          src="/src/assets/az.jpg"
+        ></Image>
+      </Col>
+      <Col xs={10} className="d-flex flex-column">
+        <Row className="align-items-center justify-content-center">
+          <h1 className="text-center">{data.name}</h1>
+        </Row>
+        <Row>
+          {data.fields.map((field, index) => (
+            <>
+              {field.icon && (
+                <div className="justify-content-between mb-3" key={index}>
+                  {createElement(AntIcon[field.icon], {
+                    size: 30,
+                    color: "blue",
+                  })}
+                  <span className="m-1">{field.value}</span>
+                </div>
+              )}
+            </>
+          ))}
+        </Row>
+      </Col>
+    </Row>
+  );
+};
+{
+  /* <Row>
+      <Col xs="2">
         <Image
           //fluid
           className="shadow m-2 fixed-size"
           src="/src/assets/az.jpg"
         ></Image>
       </Col>
+      <Col xs={10}>
+        <h1 className="">{data.name}</h1>
+      </Col>
 
-      <Col xs={5}>
-        {/* <Row className=" justify-content">
+      <Col xs={5}> */
+}
+{
+  /* <Row className=" justify-content">
           <Col className=" pt-5 justify-content-md-center">
             <div className=" mb-5">
               {createElement(AntIcon[`${"AiFillAlert"}`], {
@@ -47,9 +83,13 @@ const CVPersonalInfo = ({ data }: Props) => {
               {data.phone}
             </div>
           </Col>
-        </Row> */}
-      </Col>
-      <Col xs={1}>
+        </Row> */
+}
+{
+  /* </Col> */
+}
+{
+  /* <Col xs={1}>
         <Button
           className="btn btn-secondary float-end"
           // onClick={() => {
@@ -59,9 +99,9 @@ const CVPersonalInfo = ({ data }: Props) => {
         >
           Edit
         </Button>
-      </Col>
-    </Row>
-  );
-};
+      </Col> */
+}
+//   </Row>
+// );
 
 export default CVPersonalInfo;

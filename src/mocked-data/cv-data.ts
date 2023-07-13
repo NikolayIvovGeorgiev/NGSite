@@ -6,6 +6,7 @@ const CVList: CVInterface[] = [
   settings: { },
   data: {
     personalInfo: {
+      photo: '',
       name:"Nikolay Ivov Georgiev",
       birthDate: '',
       fields: [
