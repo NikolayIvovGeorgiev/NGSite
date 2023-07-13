@@ -1,5 +1,6 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { SideCVControlBar } from "./CV/SideCVControlBar";
 
 const NavBar = () => {
   return (

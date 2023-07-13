@@ -4,15 +4,16 @@ import CVSectionCard from "./CVSectionCard";
 import PieChartField from "./CVSectionCardSubComponents/PieChartField";
 import ProgressbarField from "./CVSectionCardSubComponents/ProgressbarField";
 import TextField from "./CVSectionCardSubComponents/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CVSectionModify from "./CVEdit/CVSectionModify";
 import { MdOutlineAddCircle } from "react-icons/md";
 
 interface Props {
   data: CVInterface;
+  isEditing: boolean;
 }
 
-const CVBody = ({ data }: Props) => {
+const CVBody = ({ data, isEditing }: Props) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingCol, setEditingCol] = useState<string | null>(null);
   const [cvData, setCVData] = useState<CVInterface>(data);
@@ -41,6 +42,7 @@ const CVBody = ({ data }: Props) => {
     console.log(editingIndex, editingCol);
     setEditingIndex(0);
     setEditingCol(col);
+    console.log(isEditing);
 
     setCVData({
       ...cvData,
@@ -83,19 +85,23 @@ const CVBody = ({ data }: Props) => {
       <Row>
         <Col xs={6} className="border">
           <div className="d-flex justify-content-center">
-            <Button
-              variant="primary"
-              className="border p-4 m-3 rounded-5 text-center"
-              onClick={() => addSection("leftCol")}
-            >
-              Add new section
-              <MdOutlineAddCircle />
-            </Button>
+            {isEditing && (
+              <Button
+                variant="primary"
+                className={`border p-4 m-3 rounded-5 `}
+                onClick={() => addSection("leftCol")}
+              >
+                Add new section
+                <MdOutlineAddCircle />
+              </Button>
+            )}
           </div>
           {cvData.data.sections.leftCol.map(
             (section: Section, index: number) => {
               if (
-                (editingIndex === index && editingCol === "leftCol") ||
+                (editingIndex === index &&
+                  editingCol === "leftCol" &&
+                  isEditing === true) ||
                 section.state === "new"
               ) {
                 return (
@@ -110,6 +116,7 @@ const CVBody = ({ data }: Props) => {
               } else {
                 return (
                   <CVSectionCard
+                    isEditing={isEditing}
                     data={section}
                     index={index}
                     heading={section.title}
@@ -133,14 +140,16 @@ const CVBody = ({ data }: Props) => {
         </Col>
         <Col className="border">
           <div className="d-flex justify-content-center">
-            <Button
-              variant="primary"
-              className="border p-4 m-3 rounded-5 text-center"
-              onClick={() => addSection("rightCol")}
-            >
-              Add new section
-              <MdOutlineAddCircle />
-            </Button>
+            {isEditing && (
+              <Button
+                variant="primary"
+                className="border p-4 m-3 rounded-5 text-center"
+                onClick={() => addSection("rightCol")}
+              >
+                Add new section
+                <MdOutlineAddCircle />
+              </Button>
+            )}
           </div>
           {cvData.data.sections.rightCol.map(
             (section: Section, index: number) => {
@@ -160,6 +169,7 @@ const CVBody = ({ data }: Props) => {
               } else {
                 return (
                   <CVSectionCard
+                    isEditing={isEditing}
                     data={section}
                     index={index}
                     heading={section.title}
