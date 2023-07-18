@@ -49,6 +49,15 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
       fields: updatedFields,
     });
   };
+  const updateSummaryField = (value: string) => {
+    const updatedSummary = value;
+
+    setPersonalInfoData({
+      ...personalInfoData,
+      summary: updatedSummary,
+    });
+  };
+
   const handleFieldTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
     index: number
@@ -66,6 +75,7 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
       fields: updatedFields,
     });
   };
+
   const handleAddNewField = () => {
     const newField = { icon: "", type: "", value: "" };
 
@@ -74,6 +84,7 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
       fields: [...personalInfoData.fields, newField],
     });
   };
+
   const handleRemoveField = (index: number) => {
     const editedContent = [...personalInfoData.fields];
     editedContent.splice(index, 1);
@@ -82,6 +93,7 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
       fields: editedContent,
     });
   };
+
   const handleIconChoice = (icon: string | undefined, index: number) => {
     const updatedFields = [...personalInfoData.fields];
 
@@ -89,6 +101,13 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
     setPersonalInfoData({
       ...personalInfoData,
       fields: updatedFields,
+    });
+  };
+  const handleDeleteSummary = () => {
+    const nulifySummary = null;
+    setPersonalInfoData({
+      ...personalInfoData,
+      summary: nulifySummary,
     });
   };
 
@@ -223,26 +242,83 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
                 );
               }
             )}
-          <Button
-            variant="primary"
-            onClick={() => {
-              handleAddNewField();
-            }}
-          >
-            Add Field
-          </Button>
+          <div className="flex mb-3">
+            <Button
+              variant="primary"
+              onClick={() => {
+                handleAddNewField();
+              }}
+            >
+              Add Field
+            </Button>
+          </div>
+          {personalInfoData.summary !== null && (
+            <>
+              <div className="flex">
+                <textarea
+                  rows={3}
+                  className="w-75 ms-5"
+                  value={personalInfoData.summary}
+                  onChange={(e) => {
+                    updateSummaryField(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="flex">
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    setPersonalInfoData({
+                      ...personalInfoData,
+                      summary: null,
+                    });
+                  }}
+                >
+                  Delete Summary
+                </Button>
+              </div>
+            </>
+          )}
+          {personalInfoData.summary == null && (
+            <>
+              <div className="flex">
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    setPersonalInfoData({
+                      ...personalInfoData,
+                      summary: "",
+                    });
+                  }}
+                >
+                  Add Summary
+                </Button>
+              </div>
+            </>
+          )}
         </Col>
       </Row>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          className="btn btn-accent float-end  m-2"
+          onClick={() => {
+            onSave(personalInfoData);
+          }}
+        >
+          {" "}
+          Cancel Edit
+        </Button>
 
-      <Button
-        className="btn btn-accent float-end"
-        onClick={() => {
-          onSave(personalInfoData);
-        }}
-      >
-        {" "}
-        Save Section
-      </Button>
+        <Button
+          className="btn btn-accent float-end m-2"
+          onClick={() => {
+            onSave(personalInfoData);
+          }}
+        >
+          {" "}
+          Save Section
+        </Button>
+      </div>
       <Placeholder size="sm" className="mb-1" xs={12} bg="accent" />
     </>
   );

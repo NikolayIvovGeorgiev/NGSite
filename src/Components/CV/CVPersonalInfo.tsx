@@ -24,7 +24,7 @@ const CVPersonalInfo = ({ data }: Props) => {
         </Row>
         <Row>
           {data.fields.map((field, index) => (
-            <>
+            <Col key={index} xs={6} className="justify-content">
               {field.icon && (
                 <div className="justify-content-between mb-3" key={index}>
                   {createElement(AntIcon[field.icon], {
@@ -34,9 +34,19 @@ const CVPersonalInfo = ({ data }: Props) => {
                   <span className="m-1">{field.value}</span>
                 </div>
               )}
-            </>
+              {!field.icon && (
+                <div className="m-1">
+                  <span className="m-1">{field.value}</span>
+                </div>
+              )}
+            </Col>
           ))}
         </Row>
+        {data.summary && (
+          <div className="m-1 border-top-1">
+            <p>{data.summary}</p>
+          </div>
+        )}
       </Col>
     </Row>
   );
@@ -88,19 +98,7 @@ const CVPersonalInfo = ({ data }: Props) => {
 {
   /* </Col> */
 }
-{
-  /* <Col xs={1}>
-        <Button
-          className="btn btn-secondary float-end"
-          // onClick={() => {
-          //   //TODO ТАЗИ ФУНКЦИЯ ТРЯБВА ДА ИДВА ОТ CVVIEW и да сменя компонента
-          //   onClick(index);
-          // }}
-        >
-          Edit
-        </Button>
-      </Col> */
-}
+
 //   </Row>
 // );
 

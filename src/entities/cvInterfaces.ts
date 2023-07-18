@@ -3,6 +3,7 @@ export interface PersonalDataInfo {
   name: string;
   birthDate: string;
   fields: iPersonalInfoData[]
+  summary: string | null
 }
 export interface iPersonalInfoData{
   icon?: string;

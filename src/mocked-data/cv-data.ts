@@ -12,9 +12,10 @@ const CVList: CVInterface[] = [
       fields: [
         {icon: "AiFillLinkedin", type: 'link', value: "https://www.linkedin.com/in/nikolay-georgiev-348aa8130/"},
         {icon: "",type:"text", value: "Sofia"},
-        {icon: "",type:'email', value: "nikolay.ivov.georgiev@gmail.com"},
-        {icon: "",type:'phone', value:"35988515898"}
-      ]
+        {icon: "AiOutlineMail",type:'email', value: "nikolay.ivov.georgiev@gmail.com"},
+        {icon: "AiFillPhone",type:'phone', value:"35988515898"},  
+      ],
+      summary: 'Lorem Lorem'
     },
     sections: {
       leftCol : [

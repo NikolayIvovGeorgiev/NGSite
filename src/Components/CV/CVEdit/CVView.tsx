@@ -33,6 +33,7 @@ const CVView = () => {
           personalInfo: updatedPersonalInfo,
         },
       });
+      setIsEditing(false);
     } else {
       console.error("Error: could not update data");
     }
