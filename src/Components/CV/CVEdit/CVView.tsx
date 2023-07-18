@@ -11,9 +11,13 @@ import { SideCVControlBar } from "../SideCVControlBar";
 const CVView = () => {
   const [cvData, setCvData] = useState<CVInterface | undefined>();
   const { id } = useParams();
-  const [isEditing, setIsEditing] = useState(false);
+  const [personalInfoEditMode, setpersonalInfoEditMode] = useState(false);
+  const [isEditingMode, setIsEditingMode] = useState(false);
   const handleEditButtonClick = () => {
-    setIsEditing(!isEditing);
+    setIsEditingMode(!isEditingMode);
+  };
+  const handlepersonalInfoEditButton = () => {
+    setpersonalInfoEditMode(!personalInfoEditMode);
   };
 
   useEffect(() => {
@@ -33,27 +37,34 @@ const CVView = () => {
           personalInfo: updatedPersonalInfo,
         },
       });
-      setIsEditing(false);
     } else {
       console.error("Error: could not update data");
     }
   };
 
+  const handleSave = (data?: PersonalDataInfo) => {
+    if (data) savePersonalInfoData(data);
+    handlepersonalInfoEditButton();
+  };
+
   return cvData ? (
     <>
       <SideCVControlBar onEditButtonClick={handleEditButtonClick} />
-      {isEditing && (
+      {personalInfoEditMode && (
         <CVPersonalIfnoMOdify
           data={cvData.data.personalInfo}
-          onSave={savePersonalInfoData}
+          onSave={handleSave}
         />
       )}
-      {!isEditing && (
-        <CVPersonalInfo data={cvData.data.personalInfo as PersonalDataInfo} />
+      {!personalInfoEditMode && (
+        <CVPersonalInfo
+          onEditButton={handlepersonalInfoEditButton}
+          isEditing={isEditingMode}
+          data={cvData.data.personalInfo as PersonalDataInfo}
+        />
       )}
 
-      <CVBody isEditing={isEditing} data={cvData}></CVBody>
-      <CVSideBar />
+      <CVBody isEditingMode={isEditingMode} data={cvData}></CVBody>
     </>
   ) : (
     <>No CV found</>

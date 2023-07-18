@@ -14,14 +14,15 @@ import {
 import { createElement, useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import IconModal from "./IconModal";
+import { cloneDeep } from "lodash";
 
 interface Props {
   data: PersonalDataInfo;
-  onSave: (data: PersonalDataInfo) => void;
+  onSave: (data?: PersonalDataInfo) => void;
 }
 
 const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
-  const [personalInfoData, setPersonalInfoData] = useState(data);
+  const [personalInfoData, setPersonalInfoData] = useState(cloneDeep(data));
   const [selectedfile, setSelectedFile] = useState(null);
 
   let [displayPicture, setDisplayPicture] = useState("/src/assets/noimage.jpg");
@@ -56,6 +57,8 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
       ...personalInfoData,
       summary: updatedSummary,
     });
+
+    console.log();
   };
 
   const handleFieldTypeChange = (
@@ -101,13 +104,6 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
     setPersonalInfoData({
       ...personalInfoData,
       fields: updatedFields,
-    });
-  };
-  const handleDeleteSummary = () => {
-    const nulifySummary = null;
-    setPersonalInfoData({
-      ...personalInfoData,
-      summary: nulifySummary,
     });
   };
 
@@ -302,7 +298,7 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
         <Button
           className="btn btn-accent float-end  m-2"
           onClick={() => {
-            onSave(personalInfoData);
+            onSave();
           }}
         >
           {" "}

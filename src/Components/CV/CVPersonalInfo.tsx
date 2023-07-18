@@ -7,9 +7,11 @@ import { createElement } from "react";
 
 interface Props {
   data: PersonalDataInfo;
+  isEditing: boolean;
+  onEditButton: () => void;
 }
 
-const CVPersonalInfo = ({ data }: Props) => {
+const CVPersonalInfo = ({ data, isEditing, onEditButton }: Props) => {
   return (
     <Row>
       <Col xs={2}>
@@ -48,58 +50,20 @@ const CVPersonalInfo = ({ data }: Props) => {
           </div>
         )}
       </Col>
+      {isEditing === true && (
+        <div className="flex pb-3">
+          <Button
+            className="btn btn-secondary float-end flex"
+            onClick={() => {
+              onEditButton();
+            }}
+          >
+            Edit Personal Info
+          </Button>
+        </div>
+      )}
     </Row>
   );
 };
-{
-  /* <Row>
-      <Col xs="2">
-        <Image
-          //fluid
-          className="shadow m-2 fixed-size"
-          src="/src/assets/az.jpg"
-        ></Image>
-      </Col>
-      <Col xs={10}>
-        <h1 className="">{data.name}</h1>
-      </Col>
-
-      <Col xs={5}> */
-}
-{
-  /* <Row className=" justify-content">
-          <Col className=" pt-5 justify-content-md-center">
-            <div className=" mb-5">
-              {createElement(AntIcon[`${"AiFillAlert"}`], {
-                size: 30,
-                color: "blue",
-              })}
-              <AiFillLinkedin size={30} color="blue" />
-              <i className="fa-solid fa-dinosaur"></i>
-              {}
-            </div>
-            <div>
-              <FaCity size={30} color="blue" />
-              {data.city}
-            </div>
-          </Col>
-          <Col className=" pt-5  justify-content-md-center">
-            <div className=" mb-5">
-              <AiOutlineMail size={30} color="blue" />
-              {data.email}
-            </div>
-            <div>
-              <AiFillPhone size={30} color="blue" />
-              {data.phone}
-            </div>
-          </Col>
-        </Row> */
-}
-{
-  /* </Col> */
-}
-
-//   </Row>
-// );
 
 export default CVPersonalInfo;

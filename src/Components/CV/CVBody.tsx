@@ -10,10 +10,10 @@ import { MdOutlineAddCircle } from "react-icons/md";
 
 interface Props {
   data: CVInterface;
-  isEditing: boolean;
+  isEditingMode: boolean;
 }
 
-const CVBody = ({ data, isEditing }: Props) => {
+const CVBody = ({ data, isEditingMode }: Props) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingCol, setEditingCol] = useState<string | null>(null);
   const [cvData, setCVData] = useState<CVInterface>(data);
@@ -42,7 +42,6 @@ const CVBody = ({ data, isEditing }: Props) => {
     console.log(editingIndex, editingCol);
     setEditingIndex(0);
     setEditingCol(col);
-    console.log(isEditing);
 
     setCVData({
       ...cvData,
@@ -85,7 +84,7 @@ const CVBody = ({ data, isEditing }: Props) => {
       <Row>
         <Col xs={6} className="border">
           <div className="d-flex justify-content-center">
-            {isEditing && (
+            {isEditingMode && (
               <Button
                 variant="primary"
                 className={`border p-4 m-3 rounded-5 `}
@@ -101,7 +100,7 @@ const CVBody = ({ data, isEditing }: Props) => {
               if (
                 (editingIndex === index &&
                   editingCol === "leftCol" &&
-                  isEditing === true) ||
+                  isEditingMode === true) ||
                 section.state === "new"
               ) {
                 return (
@@ -116,7 +115,7 @@ const CVBody = ({ data, isEditing }: Props) => {
               } else {
                 return (
                   <CVSectionCard
-                    isEditing={isEditing}
+                    isEditing={isEditingMode}
                     data={section}
                     index={index}
                     heading={section.title}
@@ -140,7 +139,7 @@ const CVBody = ({ data, isEditing }: Props) => {
         </Col>
         <Col className="border">
           <div className="d-flex justify-content-center">
-            {isEditing && (
+            {isEditingMode && (
               <Button
                 variant="primary"
                 className="border p-4 m-3 rounded-5 text-center"
@@ -154,7 +153,9 @@ const CVBody = ({ data, isEditing }: Props) => {
           {cvData.data.sections.rightCol.map(
             (section: Section, index: number) => {
               if (
-                (editingIndex === index && editingCol === "rightCol") ||
+                (editingIndex === index &&
+                  editingCol === "rightCol" &&
+                  isEditingMode === true) ||
                 section.state === "new"
               ) {
                 return (
@@ -169,7 +170,7 @@ const CVBody = ({ data, isEditing }: Props) => {
               } else {
                 return (
                   <CVSectionCard
-                    isEditing={isEditing}
+                    isEditing={isEditingMode}
                     data={section}
                     index={index}
                     heading={section.title}
