@@ -3,7 +3,7 @@ import { CVInterface, PersonalDataInfo } from "../../../entities/cvInterfaces";
 import CVList from "../../../mocked-data/cv-data";
 import CVBody from "../CVBody";
 import CVPersonalInfo from "../CVPersonalInfo";
-import CVPersonalIfnoMOdify from "./CVPersonalIfnoModify";
+import CVPersonalInfoModify from "./CVPersonalInfoModify";
 import { useEffect, useState } from "react";
 import CVSideBar from "../CVSideBar";
 import { SideCVControlBar } from "../SideCVControlBar";
@@ -11,13 +11,15 @@ import { SideCVControlBar } from "../SideCVControlBar";
 const CVView = () => {
   const [cvData, setCvData] = useState<CVInterface | undefined>();
   const { id } = useParams();
+
   const [personalInfoEditMode, setpersonalInfoEditMode] = useState(false);
+  const handlepersonalInfoEditButton = () => {
+    setpersonalInfoEditMode(!personalInfoEditMode);
+  };
+
   const [isEditingMode, setIsEditingMode] = useState(false);
   const handleEditButtonClick = () => {
     setIsEditingMode(!isEditingMode);
-  };
-  const handlepersonalInfoEditButton = () => {
-    setpersonalInfoEditMode(!personalInfoEditMode);
   };
 
   useEffect(() => {
@@ -51,7 +53,7 @@ const CVView = () => {
     <>
       <SideCVControlBar onEditButtonClick={handleEditButtonClick} />
       {personalInfoEditMode && (
-        <CVPersonalIfnoMOdify
+        <CVPersonalInfoModify
           data={cvData.data.personalInfo}
           onSave={handleSave}
         />
@@ -60,7 +62,7 @@ const CVView = () => {
         <CVPersonalInfo
           onEditButton={handlepersonalInfoEditButton}
           isEditing={isEditingMode}
-          data={cvData.data.personalInfo as PersonalDataInfo}
+          data={cvData.data.personalInfo}
         />
       )}
 

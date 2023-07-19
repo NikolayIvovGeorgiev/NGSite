@@ -6,7 +6,7 @@ const CVList: CVInterface[] = [
   settings: { },
   data: {
     personalInfo: {
-      photo: '',
+      photo: '/src/assets/az.jpg',
       name:"Nikolay Ivov Georgiev",
       birthDate: '',
       fields: [
@@ -45,7 +45,7 @@ const CVList: CVInterface[] = [
         state: 'old',
         data: {
           config: {},
-          content: undefined
+          content: []
         }
       },
       {
@@ -311,6 +311,28 @@ const CVList: CVInterface[] = [
     }              
   }
   },
+  {
+    id: 2,
+    note: 'my second CV',
+    settings: { },
+    data: {
+      personalInfo: {
+        photo: null,
+        name:"",
+        birthDate: '',
+        fields: [
+           
+        ],
+        summary: null
+      },
+      sections: {
+        leftCol : [
+          ],
+        rightCol: [
+        ],
+      }              
+    }
+    },
 ];
   
  export default CVList;

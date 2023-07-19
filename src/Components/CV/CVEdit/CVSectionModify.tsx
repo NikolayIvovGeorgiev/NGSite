@@ -12,7 +12,8 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { ImCross } from "react-icons/im";
 import { TEXT_SECTION_OPTIONAL_FIELDS as optionalFields } from "../constants";
-import { get } from "lodash";
+import { cloneDeep, get } from "lodash";
+import SectionDeleteButton from "./SectionDeleteModal";
 
 interface Props {
   data: Section;
@@ -23,7 +24,7 @@ interface Props {
   //   col: string | number;
   //   index: number;
   // };
-  onSave: (sectionData: Section) => void;
+  onSave: (sectionData?: Section) => void;
 }
 
 const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
@@ -58,7 +59,7 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
   const [togglesValue, setTogglesValue] = useState<string[]>(
     setInitialToggleButtons()
   );
-  const [sectionData, setSectionData] = useState<any>(data);
+  const [sectionData, setSectionData] = useState<any>(cloneDeep(data));
   const [validated, setValidated] = useState(false);
   const [chosenSectionType, setChosenSectionType] = useState(sectionData.type);
   /**
@@ -240,39 +241,30 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
   };
 
   return (
-    <div className="border-gradient-title m-0 p-2">
-      <Row>
-        {/* SECTION TITLE */}
-        <Col xs={10}>
-          <InputGroup>
-            <Form.Control
-              size="lg"
-              value={sectionData.title}
-              aria-label={heading}
-              aria-describedby="NewTitleSection"
-              onChange={(e) => {
-                setSectionData({
-                  ...sectionData,
-                  title: e.target.value,
-                });
-              }}
-            />
-          </InputGroup>
-          <Form.Text className="text-accent p-2"> Section Title</Form.Text>
-        </Col>
-        <Col xs={2}>
-          {/* DELETE SECTION / SHOULD BE KEBAB */}
-          <Button
-            size="sm"
-            className="btn btn-accent float-end"
-            onClick={() => {}}
-          >
-            {" "}
-            Delete Section
-          </Button>
-        </Col>
-      </Row>
-      <br></br>
+    <div>
+      <div className="border-gradient-title m-0 p-2">
+        <Row>
+          {/* SECTION TITLE */}
+          <Col xs={12}>
+            <Form.Text className="text-accent p-2"> Section Title</Form.Text>
+            <InputGroup>
+              <Form.Control
+                size="lg"
+                value={sectionData.title}
+                aria-label={heading}
+                aria-describedby="NewTitleSection"
+                onChange={(e) => {
+                  setSectionData({
+                    ...sectionData,
+                    title: e.target.value,
+                  });
+                }}
+              />
+            </InputGroup>
+          </Col>
+          <Col xs={1}>{/* DELETE SECTION / SHOULD BE KEBAB */}</Col>
+        </Row>
+      </div>
       <div className="border-gradient-body p-2">
         {/* DROPDOWN SECTION TYPE */}
         <select
@@ -332,6 +324,9 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                       <Form.Group
                         id={`${sectionData.id} + ${textField.title} + ${index} `}
                       >
+                        <Form.Text className="text-accent">
+                          Text Title
+                        </Form.Text>
                         <Form.Control
                           aria-label="Title"
                           value={textField.title}
@@ -342,9 +337,6 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                           }}
                           placeholder="Title"
                         />
-                        <Form.Text className="text-accent">
-                          Text Title
-                        </Form.Text>
                       </Form.Group>
                     </Row>
                     {/* Subtitle */}
@@ -352,6 +344,7 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                       <Form.Group
                         id={`${sectionData.id} + ${textField.subtitle} + ${index} `}
                       >
+                        <Form.Text className="text-accent">Subtitle</Form.Text>
                         <Form.Control
                           aria-label="Subtitle"
                           value={textField.subtitle}
@@ -367,7 +360,6 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                           }}
                           placeholder="Subtitle"
                         />
-                        <Form.Text className="text-accent">Subtitle</Form.Text>
                       </Form.Group>
                     </Row>
                     {/* IF DESCRIPTION */}
@@ -692,9 +684,26 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
             </Button>
           </Form>
         )}
+      </div>
+      <div className="d-flex justify-content-end">
         {/* SAVE SECTION + SANITIZE SECTION + STATE-OLD */}
         <Button
-          className="btn btn-accent float-end"
+          className="btn btn-accent"
+          onClick={() => {
+            sectionData.state = "old";
+            sanitzeSection();
+            onSave();
+          }}
+        >
+          {" "}
+          Cancel Edit{" "}
+        </Button>
+        <Button className="btn btn-accent" onClick={() => {}}>
+          {" "}
+          Delete Section
+        </Button>
+        <Button
+          className="btn btn-accent"
           onClick={() => {
             sectionData.state = "old";
             sanitzeSection();
@@ -704,8 +713,6 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
           {" "}
           Save Section
         </Button>
-        <br></br>
-        <br></br>
       </div>
     </div>
   );

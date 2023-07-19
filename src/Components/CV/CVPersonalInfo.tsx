@@ -14,12 +14,11 @@ interface Props {
 const CVPersonalInfo = ({ data, isEditing, onEditButton }: Props) => {
   return (
     <Row>
-      <Col xs={2}>
-        <Image
-          className="shadow m-2 fixed-size"
-          src="/src/assets/az.jpg"
-        ></Image>
-      </Col>
+      {data.photo !== null && (
+        <Col xs={2}>
+          <Image className="shadow m-2 fixed-size" src={data.photo}></Image>
+        </Col>
+      )}
       <Col xs={10} className="d-flex flex-column">
         <Row className="align-items-center justify-content-center">
           <h1 className="text-center">{data.name}</h1>

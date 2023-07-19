@@ -21,7 +21,7 @@ interface Props {
   onSave: (data?: PersonalDataInfo) => void;
 }
 
-const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
+const CVPersonalInfoModify = ({ data, onSave }: Props) => {
   const [personalInfoData, setPersonalInfoData] = useState(cloneDeep(data));
   const [selectedfile, setSelectedFile] = useState(null);
 
@@ -320,4 +320,4 @@ const CVPersonalIfnoMOdify = ({ data, onSave }: Props) => {
   );
 };
 
-export default CVPersonalIfnoMOdify;
+export default CVPersonalInfoModify;

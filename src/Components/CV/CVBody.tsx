@@ -7,6 +7,7 @@ import TextField from "./CVSectionCardSubComponents/TextField";
 import { useEffect, useState } from "react";
 import CVSectionModify from "./CVEdit/CVSectionModify";
 import { MdOutlineAddCircle } from "react-icons/md";
+import { isEmpty } from "lodash";
 
 interface Props {
   data: CVInterface;
@@ -56,13 +57,15 @@ const CVBody = ({ data, isEditingMode }: Props) => {
     console.log(cvData.data.sections);
   };
 
-  const saveSection = (section: Section) => {
+  const saveSection = (section?: Section) => {
     if (
       editingCol !== null &&
       editingIndex !== null &&
-      editingIndex !== undefined
+      editingIndex !== undefined &&
+      !isEmpty(section)
     ) {
       let updatedCol = cvData.data.sections[editingCol];
+
       updatedCol[editingIndex] = section;
       setCVData({
         ...cvData,
@@ -97,43 +100,40 @@ const CVBody = ({ data, isEditingMode }: Props) => {
           </div>
           {cvData.data.sections.leftCol.map(
             (section: Section, index: number) => {
-              if (
-                (editingIndex === index &&
-                  editingCol === "leftCol" &&
-                  isEditingMode === true) ||
-                section.state === "new"
-              ) {
-                return (
-                  <CVSectionModify
-                    data={section}
-                    index={data.id}
-                    heading={section.title}
-                    key={index}
-                    onSave={saveSection}
-                  />
-                );
-              } else {
-                return (
-                  <CVSectionCard
-                    isEditing={isEditingMode}
-                    data={section}
-                    index={index}
-                    heading={section.title}
-                    key={index}
-                    onClick={() => {
-                      onEdit(index, "leftCol");
-                    }}
-                  >
-                    {section.type === "Progress-bar" ? (
-                      <ProgressbarField data={section.data.content} />
-                    ) : section.type === "Text-field" ? (
-                      <TextField data={section.data.content} />
-                    ) : section.type === "Pie-Chart" ? (
-                      <PieChartField data={section.data.content} />
-                    ) : null}
-                  </CVSectionCard>
-                );
-              }
+              return (
+                <div key={index} className="mty">
+                  {(editingIndex === index &&
+                    editingCol === "leftCol" &&
+                    isEditingMode === true) ||
+                  section.state === "new" ? (
+                    <CVSectionModify
+                      data={section}
+                      index={data.id}
+                      heading={section.title}
+                      key={index}
+                      onSave={saveSection}
+                    />
+                  ) : (
+                    <CVSectionCard
+                      isEditing={isEditingMode}
+                      data={section}
+                      index={index}
+                      heading={section.title}
+                      onClick={() => {
+                        onEdit(index, "leftCol");
+                      }}
+                    >
+                      {section.type === "Progress-bar" ? (
+                        <ProgressbarField data={section.data.content} />
+                      ) : section.type === "Text-field" ? (
+                        <TextField data={section.data.content} />
+                      ) : section.type === "Pie-Chart" ? (
+                        <PieChartField data={section.data.content} />
+                      ) : null}
+                    </CVSectionCard>
+                  )}
+                </div>
+              );
             }
           )}
         </Col>

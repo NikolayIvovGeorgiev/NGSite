@@ -1,5 +1,5 @@
 export interface PersonalDataInfo {
-  photo: string;
+  photo: string | null;
   name: string;
   birthDate: string;
   fields: iPersonalInfoData[]
