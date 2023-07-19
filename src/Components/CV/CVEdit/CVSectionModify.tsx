@@ -583,9 +583,24 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
                           max={10}
                           name="Skill"
                           required
-                          onChange={(e) => {
-                            inputFieldOnChange(index, "level", e.target.value);
-                          }}
+                          onChange={
+                            (e) => {
+                              {
+                                // Validate the input before setting the state
+                                const inputValue = parseInt(e.target.value, 10);
+                                const validatedValue = isNaN(inputValue)
+                                  ? 0
+                                  : Math.min(Math.max(inputValue, 0), 10);
+                                inputFieldOnChange(
+                                  index,
+                                  "level",
+                                  validatedValue
+                                );
+                              }
+                            }
+                            // inputFieldOnChange(index, "level", e.target.value);
+                            // }
+                          }
                           placeholder="max 10"
                         />
                         <Form.Control.Feedback type="invalid">
