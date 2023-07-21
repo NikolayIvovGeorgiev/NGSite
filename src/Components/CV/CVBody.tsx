@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import CVSectionModify from "./CVEdit/CVSectionModify";
 import { MdOutlineAddCircle } from "react-icons/md";
 import { isEmpty } from "lodash";
+import { produce } from "immer";
+import ConfirmationModal from "../shared/modals/ConfirmationModal";
 
 interface Props {
   data: CVInterface;
@@ -18,6 +20,11 @@ const CVBody = ({ data, isEditingMode }: Props) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingCol, setEditingCol] = useState<string | null>(null);
   const [cvData, setCVData] = useState<CVInterface>(data);
+  const [showConfirmationModal, setshowConfirmationModal] = useState(false);
+  const [deleteData, setDeleteData] = useState<{
+    index: number;
+    col: string;
+  } | null>(null);
 
   const createNewSection = () => {
     const newSection = {
@@ -81,10 +88,31 @@ const CVBody = ({ data, isEditingMode }: Props) => {
     setEditingIndex(null);
     setEditingCol(null);
   };
+  const deleteSection = () => {
+    if (deleteData) {
+      setCVData(
+        produce(cvData, (draftCvData) => {
+          draftCvData.data.sections[deleteData.col].splice(deleteData.index, 1);
+        })
+      );
+      setEditingCol(null);
+      setEditingIndex(0);
+      setshowConfirmationModal(false);
+    }
+  };
 
   return (
     <Container className="flex">
       <Row>
+        <ConfirmationModal
+          OnClick={showConfirmationModal}
+          onConfirm={() => {
+            deleteSection();
+          }}
+          onDecline={() => {
+            setshowConfirmationModal(false);
+          }}
+        />
         <Col xs={6} className="border">
           <div className="d-flex justify-content-center">
             {isEditingMode && (
@@ -112,6 +140,10 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                       heading={section.title}
                       key={index}
                       onSave={saveSection}
+                      onDelete={() => {
+                        setshowConfirmationModal(true);
+                        setDeleteData({ index: index, col: "leftCol" });
+                      }}
                     />
                   ) : (
                     <CVSectionCard
@@ -165,6 +197,10 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                     heading={section.title}
                     key={index}
                     onSave={saveSection}
+                    onDelete={() => {
+                      setshowConfirmationModal(true);
+                      setDeleteData({ index: index, col: "rightCol" });
+                    }}
                   />
                 );
               } else {

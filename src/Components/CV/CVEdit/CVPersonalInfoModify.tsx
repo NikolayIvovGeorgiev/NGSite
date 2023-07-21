@@ -13,7 +13,7 @@ import {
 } from "../../../entities/cvInterfaces";
 import { createElement, useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
-import IconModal from "./IconModal";
+import IconModal from "../../shared/modals/IconModal";
 import { cloneDeep } from "lodash";
 
 interface Props {

@@ -25,9 +25,10 @@ interface Props {
   //   index: number;
   // };
   onSave: (sectionData?: Section) => void;
+  onDelete: () => void;
 }
 
-const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
+const CVSectionModify = ({ data, index, heading, onSave, onDelete }: Props) => {
   /**
    * SET TYPES OF THE DATA IN EDIT, FOR ALREADY EXISTING DATA
    * RETRUN DEFAULT VALUES
@@ -698,7 +699,12 @@ const CVSectionModify = ({ data, index, heading, onSave }: Props) => {
           {" "}
           Cancel Edit{" "}
         </Button>
-        <Button className="btn btn-accent" onClick={() => {}}>
+        <Button
+          className="btn btn-accent"
+          onClick={() => {
+            onDelete();
+          }}
+        >
           {" "}
           Delete Section
         </Button>
