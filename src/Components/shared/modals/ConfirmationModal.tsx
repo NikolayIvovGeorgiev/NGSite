@@ -2,29 +2,25 @@ import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
 interface Props {
-  OnClick: boolean;
+  showModal: boolean;
   onConfirm?: () => void;
   onDecline?: () => void;
 }
 
-const ConfirmationModal = ({ OnClick, onConfirm, onDecline }: Props) => {
-  const [show, setShow] = useState(OnClick);
-  const handleNo = () => {
-    if (onDecline) onDecline();
-    setShow(false);
-  };
-  const handleYes = () => {
-    if (onConfirm) onConfirm();
-    setShow(false);
-  };
-  useEffect(() => {
-    setShow(OnClick);
-  }, [OnClick]);
+const ConfirmationModal = ({ showModal, onConfirm, onDecline }: Props) => {
+  const [show, setShow] = useState(showModal);
 
-  //   confirmed = show;
+  useEffect(() => {
+    setShow(showModal);
+  }, [showModal]);
   return (
     <>
-      <Modal show={show} onHide={handleNo}>
+      <Modal
+        show={show}
+        onHide={() => {
+          setShow(false);
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>
@@ -32,10 +28,22 @@ const ConfirmationModal = ({ OnClick, onConfirm, onDecline }: Props) => {
           All the data in the component will be lost. Do you want to continue?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleNo}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              if (onDecline) onDecline();
+              setShow(false);
+            }}
+          >
             No
           </Button>
-          <Button variant="secondary" onClick={handleYes}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              if (onConfirm) onConfirm();
+              setShow(false);
+            }}
+          >
             Yes
           </Button>
         </Modal.Footer>

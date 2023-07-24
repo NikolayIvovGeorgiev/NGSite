@@ -689,7 +689,7 @@ const CVSectionModify = ({ data, index, heading, onSave, onDelete }: Props) => {
       <div className="d-flex justify-content-end">
         {/* SAVE SECTION + SANITIZE SECTION + STATE-OLD */}
         <Button
-          className="btn btn-accent"
+          className="btn btn-accent me-1"
           onClick={() => {
             sectionData.state = "old";
             sanitzeSection();
@@ -700,7 +700,7 @@ const CVSectionModify = ({ data, index, heading, onSave, onDelete }: Props) => {
           Cancel Edit{" "}
         </Button>
         <Button
-          className="btn btn-accent"
+          className="btn btn-accent me-1"
           onClick={() => {
             onDelete();
           }}
@@ -709,7 +709,7 @@ const CVSectionModify = ({ data, index, heading, onSave, onDelete }: Props) => {
           Delete Section
         </Button>
         <Button
-          className="btn btn-accent"
+          className="btn btn-accent me-1"
           onClick={() => {
             sectionData.state = "old";
             sanitzeSection();

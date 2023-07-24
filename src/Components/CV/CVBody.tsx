@@ -10,6 +10,8 @@ import { MdOutlineAddCircle } from "react-icons/md";
 import { isEmpty } from "lodash";
 import { produce } from "immer";
 import ConfirmationModal from "../shared/modals/ConfirmationModal";
+import { setAutoFreeze } from "immer";
+setAutoFreeze(false);
 
 interface Props {
   data: CVInterface;
@@ -47,7 +49,6 @@ const CVBody = ({ data, isEditingMode }: Props) => {
   };
 
   const addSection = (col: any) => {
-    console.log(editingIndex, editingCol);
     setEditingIndex(0);
     setEditingCol(col);
 
@@ -65,6 +66,10 @@ const CVBody = ({ data, isEditingMode }: Props) => {
   };
 
   const saveSection = (section?: Section) => {
+    console.log(editingCol);
+    console.log(editingIndex);
+    console.log(isEmpty(section));
+
     if (
       editingCol !== null &&
       editingIndex !== null &&
@@ -72,8 +77,11 @@ const CVBody = ({ data, isEditingMode }: Props) => {
       !isEmpty(section)
     ) {
       let updatedCol = cvData.data.sections[editingCol];
+      debugger;
 
       updatedCol[editingIndex] = section;
+
+      console.log(updatedCol[editingIndex]);
       setCVData({
         ...cvData,
         data: {
@@ -96,7 +104,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
         })
       );
       setEditingCol(null);
-      setEditingIndex(0);
+      setEditingIndex(null);
       setshowConfirmationModal(false);
     }
   };
@@ -105,7 +113,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
     <Container className="flex">
       <Row>
         <ConfirmationModal
-          OnClick={showConfirmationModal}
+          showModal={showConfirmationModal}
           onConfirm={() => {
             deleteSection();
           }}
