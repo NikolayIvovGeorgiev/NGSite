@@ -12,6 +12,8 @@ import { produce } from "immer";
 import ConfirmationModal from "../shared/modals/ConfirmationModal";
 import { setAutoFreeze } from "immer";
 setAutoFreeze(false);
+import { DragDropContext } from "@hello-pangea/dnd";
+import { Droppable, Draggable } from "@hello-pangea/dnd";
 
 interface Props {
   data: CVInterface;
@@ -77,7 +79,6 @@ const CVBody = ({ data, isEditingMode }: Props) => {
       !isEmpty(section)
     ) {
       let updatedCol = cvData.data.sections[editingCol];
-      debugger;
 
       updatedCol[editingIndex] = section;
 
@@ -108,60 +109,279 @@ const CVBody = ({ data, isEditingMode }: Props) => {
       setshowConfirmationModal(false);
     }
   };
+  const onDragEnd = (result: { destination: any; source: any }) => {
+    const { destination, source } = result;
+
+    if (
+      !destination ||
+      (destination.droppableId === source.droppableId &&
+        destination.index === source.index)
+    ) {
+      return;
+    }
+
+    setCVData(
+      produce(cvData, (draftCvData) => {
+        let itemToMove = draftCvData.data.sections[source.droppableId].splice(
+          source.index,
+          1
+        )[0];
+        draftCvData.data.sections[destination.droppableId].splice(
+          destination.index,
+          0,
+          itemToMove
+        );
+      })
+    );
+  };
 
   return (
-    <Container className="flex">
-      <Row>
-        <ConfirmationModal
-          showModal={showConfirmationModal}
-          onConfirm={() => {
-            deleteSection();
-          }}
-          onDecline={() => {
-            setshowConfirmationModal(false);
-          }}
-        />
-        <Col xs={6} className="border">
-          <div className="d-flex justify-content-center">
-            {isEditingMode && (
-              <Button
-                variant="primary"
-                className={`border p-4 m-3 rounded-5 `}
-                onClick={() => addSection("leftCol")}
-              >
-                Add new section
-                <MdOutlineAddCircle />
-              </Button>
-            )}
-          </div>
-          {cvData.data.sections.leftCol.map(
-            (section: Section, index: number) => {
-              return (
-                <div key={index} className="mty">
-                  {(editingIndex === index &&
-                    editingCol === "leftCol" &&
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Container className="flex">
+        <Row>
+          <ConfirmationModal
+            showModal={showConfirmationModal}
+            onConfirm={() => {
+              deleteSection();
+            }}
+            onDecline={() => {
+              setshowConfirmationModal(false);
+            }}
+          />
+          <Col xs={6} className="border">
+            <div className="d-flex justify-content-center">
+              {isEditingMode && editingIndex === null && (
+                <Button
+                  variant="primary"
+                  className={`border p-4 m-3 rounded-5 `}
+                  onClick={() => addSection("leftCol")}
+                >
+                  Add new section
+                  <MdOutlineAddCircle />
+                </Button>
+              )}
+            </div>
+            <Droppable
+              droppableId="leftCol"
+              type="Section"
+              key={"DropapbleLeftCol"}
+            >
+              {(provided, snapshot) => (
+                <div
+                  key={"leftCol"}
+                  ref={provided.innerRef}
+                  style={{
+                    backgroundColor: snapshot.isDraggingOver
+                      ? "white"
+                      : "white",
+                    border: snapshot.isDraggingOver ? "1px solid gray" : "none",
+                  }}
+                  {...provided.droppableProps}
+                >
+                  {cvData.data.sections.leftCol.map(
+                    (section: Section, index: number) => {
+                      return (
+                        <Draggable
+                          key={section.id}
+                          draggableId={`${section.id}+${section.title}+${index}`}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              key={`${section.id} + ${index}`}
+                              className="mty"
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              {(editingIndex === index &&
+                                editingCol === "leftCol" &&
+                                isEditingMode === true) ||
+                              section.state === "new" ? (
+                                <CVSectionModify
+                                  data={section}
+                                  index={data.id}
+                                  heading={section.title}
+                                  key={index}
+                                  onSave={saveSection}
+                                  onDelete={() => {
+                                    setshowConfirmationModal(true);
+                                    setDeleteData({
+                                      index: index,
+                                      col: "leftCol",
+                                    });
+                                  }}
+                                />
+                              ) : (
+                                <CVSectionCard
+                                  isEditing={isEditingMode}
+                                  data={section}
+                                  index={index}
+                                  heading={section.title}
+                                  onClick={() => {
+                                    onEdit(index, "leftCol");
+                                  }}
+                                >
+                                  {section.type === "Progress-bar" ? (
+                                    <ProgressbarField
+                                      data={section.data.content}
+                                    />
+                                  ) : section.type === "Text-field" ? (
+                                    <TextField data={section.data.content} />
+                                  ) : section.type === "Pie-Chart" ? (
+                                    <PieChartField
+                                      data={section.data.content}
+                                    />
+                                  ) : null}
+                                </CVSectionCard>
+                              )}
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    }
+                  )}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </Col>
+          <Col className="border">
+            <div className="d-flex justify-content-center">
+              {isEditingMode && editingIndex === null && (
+                <Button
+                  variant="primary"
+                  className={`border p-4 m-3 rounded-5 `}
+                  onClick={() => addSection("rightCol")}
+                >
+                  Add new section
+                  <MdOutlineAddCircle />
+                </Button>
+              )}
+            </div>
+            <Droppable
+              droppableId="rightCol"
+              type="Section"
+              key={"DropapbleRightCol"}
+            >
+              {(provided, snapshot) => (
+                <div
+                  key={"rightCol"}
+                  ref={provided.innerRef}
+                  style={{
+                    backgroundColor: snapshot.isDraggingOver ? "gray" : "white",
+                  }}
+                  {...provided.droppableProps}
+                >
+                  {cvData.data.sections.rightCol.map(
+                    (section: Section, index: number) => {
+                      return (
+                        <Draggable
+                          key={section.id}
+                          draggableId={`${section.id}+${section.title}+${index}`}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              key={`${section.id} + ${index}`}
+                              className="mty"
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              {(editingIndex === index &&
+                                editingCol === "rightCol" &&
+                                isEditingMode === true) ||
+                              section.state === "new" ? (
+                                <CVSectionModify
+                                  data={section}
+                                  index={data.id}
+                                  heading={section.title}
+                                  key={index}
+                                  onSave={saveSection}
+                                  onDelete={() => {
+                                    setshowConfirmationModal(true);
+                                    setDeleteData({
+                                      index: index,
+                                      col: "rightCol",
+                                    });
+                                  }}
+                                />
+                              ) : (
+                                <CVSectionCard
+                                  isEditing={isEditingMode}
+                                  data={section}
+                                  index={index}
+                                  heading={section.title}
+                                  onClick={() => {
+                                    onEdit(index, "rightCol");
+                                  }}
+                                >
+                                  {section.type === "Progress-bar" ? (
+                                    <ProgressbarField
+                                      data={section.data.content}
+                                    />
+                                  ) : section.type === "Text-field" ? (
+                                    <TextField data={section.data.content} />
+                                  ) : section.type === "Pie-Chart" ? (
+                                    <PieChartField
+                                      data={section.data.content}
+                                    />
+                                  ) : null}
+                                </CVSectionCard>
+                              )}
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    }
+                  )}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+            {/* <div className="d-flex justify-content-center">
+              {isEditingMode && (
+                <Button
+                  variant="primary"
+                  className="border p-4 m-3 rounded-5 text-center"
+                  onClick={() => addSection("rightCol")}
+                >
+                  Add new section
+                  <MdOutlineAddCircle />
+                </Button>
+              )}
+            </div>
+            {cvData.data.sections.rightCol.map(
+              (section: Section, index: number) => {
+                if (
+                  (editingIndex === index &&
+                    editingCol === "rightCol" &&
                     isEditingMode === true) ||
-                  section.state === "new" ? (
+                  section.state === "new"
+                ) {
+                  return (
                     <CVSectionModify
                       data={section}
-                      index={data.id}
+                      index={index}
                       heading={section.title}
                       key={index}
                       onSave={saveSection}
                       onDelete={() => {
                         setshowConfirmationModal(true);
-                        setDeleteData({ index: index, col: "leftCol" });
+                        setDeleteData({ index: index, col: "rightCol" });
                       }}
                     />
-                  ) : (
+                  );
+                } else {
+                  return (
                     <CVSectionCard
                       isEditing={isEditingMode}
                       data={section}
                       index={index}
                       heading={section.title}
-                      onClick={() => {
-                        onEdit(index, "leftCol");
-                      }}
+                      key={index}
+                      onClick={() => onEdit(index, "rightCol")}
                     >
                       {section.type === "Progress-bar" ? (
                         <ProgressbarField data={section.data.content} />
@@ -171,71 +391,14 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                         <PieChartField data={section.data.content} />
                       ) : null}
                     </CVSectionCard>
-                  )}
-                </div>
-              );
-            }
-          )}
-        </Col>
-        <Col className="border">
-          <div className="d-flex justify-content-center">
-            {isEditingMode && (
-              <Button
-                variant="primary"
-                className="border p-4 m-3 rounded-5 text-center"
-                onClick={() => addSection("rightCol")}
-              >
-                Add new section
-                <MdOutlineAddCircle />
-              </Button>
-            )}
-          </div>
-          {cvData.data.sections.rightCol.map(
-            (section: Section, index: number) => {
-              if (
-                (editingIndex === index &&
-                  editingCol === "rightCol" &&
-                  isEditingMode === true) ||
-                section.state === "new"
-              ) {
-                return (
-                  <CVSectionModify
-                    data={section}
-                    index={index}
-                    heading={section.title}
-                    key={index}
-                    onSave={saveSection}
-                    onDelete={() => {
-                      setshowConfirmationModal(true);
-                      setDeleteData({ index: index, col: "rightCol" });
-                    }}
-                  />
-                );
-              } else {
-                return (
-                  <CVSectionCard
-                    isEditing={isEditingMode}
-                    data={section}
-                    index={index}
-                    heading={section.title}
-                    key={index}
-                    onClick={() => onEdit(index, "rightCol")}
-                  >
-                    {section.type === "Progress-bar" ? (
-                      <ProgressbarField data={section.data.content} />
-                    ) : section.type === "Text-field" ? (
-                      <TextField data={section.data.content} />
-                    ) : section.type === "Pie-Chart" ? (
-                      <PieChartField data={section.data.content} />
-                    ) : null}
-                  </CVSectionCard>
-                );
+                  );
+                }
               }
-            }
-          )}
-        </Col>
-      </Row>
-    </Container>
+            )} */}
+          </Col>
+        </Row>
+      </Container>
+    </DragDropContext>
   );
 };
 
