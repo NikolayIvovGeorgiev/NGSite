@@ -1,10 +1,17 @@
 
 // Theme base colors
 
-$dark: #333652;
-$light: #E9EAEC;
-$light-blue: #90ADC6;
-$accent: #FAD02C;
+$CT-yellow-dark: #333652;
+$CT-yellow-light: #E9EAEC;
+$CT-yellow-lightSecondary: #90ADC6;
+$CT-yellow-accent: #FAD02C;
+
+$CT-blue-dark: #146C94;
+$CT-blue-light: #F6F1F1;
+$CT-blue-lightSecondary: #AFD3E2;
+$CT-blue-accent:  #19A7CE ;
+
+
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -15,34 +22,43 @@ $accent: #FAD02C;
   -webkit-text-size-adjust: 100%;
 };
 
+
+h2 {
+  display: block;
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  color: blue;
+}
+
 .fixed-size {
   height: 240px;
   width: 180px;
 }
 
 .sidebar {
-  width: 200px;
+  width: 100%;
   background-color: #f1f1f1;
   position: fixed;
-  top: 15%;
-  right: 45px;
-  transform: translateY(-50%);
-  padding: 15px;
-  box-sizing: border-box;
-  z-index: 100;
+  bottom: 0;
+  left: 0;
+  // box-shadow: 0px 0px 8px $dark;
 }
 
-$theme-colors: (
-  'primary':$light,
-  'secondary':$light-blue,
-  'background': $dark, 
-  'accent': $accent,
-);
+// $theme-colors: (
+//   'primary':$light,
+//   'secondary':$light-blue,
+//   'background': $dark, 
+//   'accent': $accent,
+// );
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 
 .gradient-border {
   background: linear-gradient(#E9EAEC, #E9EAEC) 50% 50%/calc(100% - 7px) calc(100% - 7px) no-repeat,
-  linear-gradient(109deg, $accent 10%, rgba(80, 160, 203, 0) 80%);
+  linear-gradient(109deg, $CT-yellow-accent 10%, rgba(80, 160, 203, 0) 80%);
   border-radius: 3px;
   box-sizing: border-box;
 }
@@ -51,13 +67,60 @@ $theme-colors: (
   
   border: 3px solid;
   border-image-slice: 1;
-  border-image-source: linear-gradient(165deg, $accent 10%, rgba(0,0,0,0) 20%);
+  border-image-source: linear-gradient(165deg, $CT-yellow-accent 10%, rgba(0,0,0,0) 20%);
   border-bottom: 0;
 }
 .border-gradient-body {
 
   border: 3px solid;
   border-image-slice: 1;
-  border-image-source: linear-gradient(165deg, $accent 55%, rgba(0,0,0,0) 65%);
+  border-image-source: linear-gradient(165deg, $CT-yellow-accent 55%, rgba(0,0,0,0) 65%);
 }
+
+
+.cv-section {
+  h2 {
+    display: block;
+    font-size: 2em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+  
+
+}
+
+// .cv-section.ct-yellow {
+//   h2 {
+//     color: $accent;
+//   }
+//   h3{
+
+//   }
+//   h4{
+//     color: $accent;
+//   }
+//   p{
+
+//   }
+//   {
+
+//   }
+// }
+// .cv-section.ct-blue {
+//   h2 {
+//     color: $accent;
+//   }
+//   h3{
+
+//   }
+//   h4{
+//     color: $accent;
+//   }
+//   p{
+
+//   }
+// }
 

@@ -42,11 +42,24 @@ export interface Section {
     | iPieChartComponentData[];
   } 
 }
+// export interface Color{
+//   dark: string,
+//   light: string,
+//   lightSecondary: string,
+//   accent: string,
+// }
 
 export interface CVInterface {
   id: number,
   note: string,
-  settings: {[key: string]: string | boolean | number},
+  settings: {
+    colorTheme : {
+      dark: string,
+      light: string,
+      lightSecondary: string,
+      accent: string,
+    }
+    },
   data: {
     personalInfo: PersonalDataInfo,
     sections: {

@@ -3,24 +3,27 @@ import { Row, Col, Button } from "react-bootstrap";
 
 interface Props {
   onEditButtonClick: () => void;
+  onColorPaletteClick: () => void;
 }
 
-export const SideCVControlBar = ({ onEditButtonClick }: Props) => {
+export const SideCVControlBar = ({
+  onEditButtonClick,
+  onColorPaletteClick,
+}: Props) => {
   return (
     <div className="sidebar">
-      <Row>
-        <Col xs={12} className="p-2">
-          <Button className="btn btn-accent" onClick={onEditButtonClick}>
-            Edit
-          </Button>
-        </Col>
-        <Col xs={12} className="p-2">
-          <button>Print</button>
-        </Col>
-        <Col xs={12} className="p-2">
-          <button>Download</button>
-        </Col>
-      </Row>
+      <div className="container p-0 d-flex justify-content-end py-2">
+        <Button className="btn btn-accent me-3" onClick={onColorPaletteClick}>
+          Color Palette
+        </Button>
+        <Button className="btn btn-accent me-3" onClick={onEditButtonClick}>
+          Edit
+        </Button>
+        <Button className="btn btn-primary me-3" color="white">
+          Print
+        </Button>
+        <Button className="btn btn-accent"> Download</Button>
+      </div>
     </div>
   );
 };

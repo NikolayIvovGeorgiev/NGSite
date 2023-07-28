@@ -5,8 +5,9 @@ import CVBody from "../CVBody";
 import CVPersonalInfo from "../CVPersonalInfo";
 import CVPersonalInfoModify from "./CVPersonalInfoModify";
 import { useEffect, useState } from "react";
-import CVSideBar from "../CVSideBar";
 import { SideCVControlBar } from "../SideCVControlBar";
+import PaletteModal from "../../shared/modals/PaletteModal";
+import { produce } from "immer";
 
 const CVView = () => {
   const [cvData, setCvData] = useState<CVInterface | undefined>();
@@ -15,6 +16,36 @@ const CVView = () => {
   const [personalInfoEditMode, setpersonalInfoEditMode] = useState(false);
   const handlepersonalInfoEditButton = () => {
     setpersonalInfoEditMode(!personalInfoEditMode);
+  };
+  const [showPaletteModal, setShowPaletteModal] = useState(false);
+  const handlePaletteButton = () => {
+    setShowPaletteModal(!showPaletteModal);
+  };
+  const changeCvColors = (selectedColor: string) => {
+    const colorThemes = {
+      blue: {
+        dark: "#146C94",
+        light: "#F6F1F1",
+        lightSecondary: "#AFD3E2",
+        accent: "#19A7CE",
+      },
+      yellow: {
+        dark: "#333652",
+        light: "#E9EAEC",
+        lightSecondary: "#90ADC6",
+        accent: "#FAD02C",
+      },
+    };
+    if (selectedColor === "blue" || selectedColor === "yellow") {
+      if (cvData) {
+        const newColorTheme = colorThemes[selectedColor];
+        setCvData(
+          produce(cvData, (draftCvData) => {
+            draftCvData.settings.colorTheme = newColorTheme;
+          })
+        );
+      }
+    }
   };
 
   const [isEditingMode, setIsEditingMode] = useState(false);
@@ -51,7 +82,15 @@ const CVView = () => {
 
   return cvData ? (
     <>
-      <SideCVControlBar onEditButtonClick={handleEditButtonClick} />
+      <PaletteModal
+        showPaletteModal={showPaletteModal}
+        onConfirm={changeCvColors}
+        // onDecline={}
+      />
+      <SideCVControlBar
+        onColorPaletteClick={handlePaletteButton}
+        onEditButtonClick={handleEditButtonClick}
+      />
       {personalInfoEditMode && (
         <CVPersonalInfoModify
           data={cvData.data.personalInfo}
@@ -62,7 +101,7 @@ const CVView = () => {
         <CVPersonalInfo
           onEditButton={handlepersonalInfoEditButton}
           isEditing={isEditingMode}
-          data={cvData.data.personalInfo}
+          data={cvData}
         />
       )}
 

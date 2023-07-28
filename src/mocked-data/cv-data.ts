@@ -3,7 +3,14 @@ const CVList: CVInterface[] = [
   {
   id: 1,
   note: 'my first CV',
-  settings: { },
+  settings: {
+    colorTheme: [
+      {dark: '#333652',},
+      {light: '#E9EAEC',},
+      {lightSecondary: '#90ADC6',},
+      {accent: "#FAD02C",}
+    ] 
+  },
   data: {
     personalInfo: {
       photo: '/src/assets/az.jpg',
@@ -11,11 +18,11 @@ const CVList: CVInterface[] = [
       birthDate: '',
       fields: [
         {icon: "AiFillLinkedin", type: 'link', value: "https://www.linkedin.com/in/nikolay-georgiev-348aa8130/"},
-        {icon: "",type:"text", value: "Sofia"},
+        {icon: "AiFillEnvironment",type:"text", value: "Sofia"},
         {icon: "AiOutlineMail",type:'email', value: "nikolay.ivov.georgiev@gmail.com"},
         {icon: "AiFillPhone",type:'phone', value:"35988515898"},  
       ],
-      summary: 'Lorem Lorem'
+      summary: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere voluptates laudantium corporis ipsam. Recusandae veniam officiis eaque impedit repudiandae illum sint placeat tempora culpa quia deleniti, iure nesciunt laudantium? Nulla!'
     },
     sections: {
       leftCol : [

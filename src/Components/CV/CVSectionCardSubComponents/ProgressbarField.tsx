@@ -18,7 +18,12 @@ const ProgressbarField = ({ data }: Props) => {
             <Row key={index}>
               <Col>{content.title}</Col>
               <Col>
-                <ProgressBar animated max={10} now={content.level} />
+                <ProgressBar
+                  //variant={accent}
+                  animated
+                  max={10}
+                  now={content.level}
+                />
               </Col>
             </Row>
           </div>

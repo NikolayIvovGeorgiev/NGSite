@@ -22,7 +22,7 @@ const CVSectionCard = ({
 }: Props) => {
   return (
     <>
-      <h2 className="border-gradient-title m-0 p-2" id={heading}>
+      <h2 className={"border-gradient-title m-0 p-2"} id={heading}>
         {heading}
         {isEditing && (
           <Button

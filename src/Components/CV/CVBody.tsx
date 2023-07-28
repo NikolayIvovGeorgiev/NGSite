@@ -148,7 +148,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
               setshowConfirmationModal(false);
             }}
           />
-          <Col xs={6} className="border">
+          <Col xs={6}>
             <div className="d-flex justify-content-center">
               {isEditingMode && editingIndex === null && (
                 <Button
@@ -189,7 +189,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                           {(provided, snapshot) => (
                             <div
                               key={`${section.id} + ${index}`}
-                              className="mty"
+                              className="mty cv-section"
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
@@ -246,7 +246,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
               )}
             </Droppable>
           </Col>
-          <Col className="border">
+          <Col>
             <div className="d-flex justify-content-center">
               {isEditingMode && editingIndex === null && (
                 <Button
@@ -284,7 +284,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                           {(provided, snapshot) => (
                             <div
                               key={`${section.id} + ${index}`}
-                              className="mty"
+                              className="mty cv-section"
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
@@ -340,61 +340,6 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                 </div>
               )}
             </Droppable>
-            {/* <div className="d-flex justify-content-center">
-              {isEditingMode && (
-                <Button
-                  variant="primary"
-                  className="border p-4 m-3 rounded-5 text-center"
-                  onClick={() => addSection("rightCol")}
-                >
-                  Add new section
-                  <MdOutlineAddCircle />
-                </Button>
-              )}
-            </div>
-            {cvData.data.sections.rightCol.map(
-              (section: Section, index: number) => {
-                if (
-                  (editingIndex === index &&
-                    editingCol === "rightCol" &&
-                    isEditingMode === true) ||
-                  section.state === "new"
-                ) {
-                  return (
-                    <CVSectionModify
-                      data={section}
-                      index={index}
-                      heading={section.title}
-                      key={index}
-                      onSave={saveSection}
-                      onDelete={() => {
-                        setshowConfirmationModal(true);
-                        setDeleteData({ index: index, col: "rightCol" });
-                      }}
-                    />
-                  );
-                } else {
-                  return (
-                    <CVSectionCard
-                      isEditing={isEditingMode}
-                      data={section}
-                      index={index}
-                      heading={section.title}
-                      key={index}
-                      onClick={() => onEdit(index, "rightCol")}
-                    >
-                      {section.type === "Progress-bar" ? (
-                        <ProgressbarField data={section.data.content} />
-                      ) : section.type === "Text-field" ? (
-                        <TextField data={section.data.content} />
-                      ) : section.type === "Pie-Chart" ? (
-                        <PieChartField data={section.data.content} />
-                      ) : null}
-                    </CVSectionCard>
-                  );
-                }
-              }
-            )} */}
           </Col>
         </Row>
       </Container>
