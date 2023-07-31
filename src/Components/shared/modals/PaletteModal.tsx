@@ -7,7 +7,6 @@ import {
 } from "react-bootstrap";
 import blueImage from "/src/assets/blue.jpg";
 import yellowImage from "/src/assets/Yellow.jpg";
-import { color } from "chart.js/helpers";
 
 interface Props {
   showPaletteModal: boolean;
@@ -45,8 +44,8 @@ const ConfirmationModal = ({
             value={selectedColor}
             onChange={(color) => setSelectedColor(color)}
           >
-            <ToggleButton
-              className="flex p-2  btn-no-hover me-5"
+            {/* <ToggleButton
+              className="flex p-2 btn-no-hover me-5"
               id="blue"
               value={"blue"}
               type="radio"
@@ -65,7 +64,37 @@ const ConfirmationModal = ({
                 height={100}
                 width={150}
               />
-            </ToggleButton>
+            </ToggleButton> */}
+
+            <input
+              type="radio"
+              className="d-none btn btn-check"
+              name="options-base"
+              id="blue"
+              autoComplete="off"
+              value="blue"
+              checked
+            />
+            <label className="btn" htmlFor="blue">
+              <img src={blueImage} alt="bluePalette" height={100} width={150} />
+            </label>
+
+            <input
+              type="radio"
+              className="d-none btn btn-check"
+              name="options-base"
+              id="yellow"
+              value="yellow"
+              autoComplete="off"
+            />
+            <label className="btn" htmlFor="yellow">
+              <img
+                src={yellowImage}
+                alt="yellowPallete"
+                height={100}
+                width={150}
+              />
+            </label>
           </ToggleButtonGroup>
         </Modal.Body>
         <Modal.Footer>

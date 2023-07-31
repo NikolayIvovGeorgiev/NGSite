@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { Section } from "../../entities/cvInterfaces";
+import { Section, Settings } from "../../entities/cvInterfaces";
 import { Button } from "react-bootstrap";
 
 interface Props {
@@ -10,10 +10,12 @@ interface Props {
   children?: ReactNode;
   isEditing: boolean;
   onClick: (index: number) => void;
+  settings: Settings;
 }
 
 const CVSectionCard = ({
   data,
+  settings,
   index,
   heading,
   children,
@@ -22,7 +24,13 @@ const CVSectionCard = ({
 }: Props) => {
   return (
     <>
-      <h2 className={"border-gradient-title m-0 p-2"} id={heading}>
+      <h2
+        className={"border-gradient-title m-0 p-2"}
+        style={{
+          borderImageSource: `linear-gradient(165deg, red, rgba(0,0,0,0) 65%)`,
+        }}
+        id={heading}
+      >
         {heading}
         {isEditing && (
           <Button
@@ -35,7 +43,14 @@ const CVSectionCard = ({
           </Button>
         )}
       </h2>
-      <div className="border-gradient-body p-2">{children}</div>
+      <div
+        className="border-gradient-body p-2"
+        style={{
+          borderImageSource: `linear-gradient(165deg, red, rgba(0,0,0,0) 65%)`,
+        }}
+      >
+        {children}
+      </div>
     </>
   );
 };

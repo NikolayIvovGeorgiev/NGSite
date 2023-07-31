@@ -49,6 +49,7 @@ const CVView = () => {
   };
 
   const [isEditingMode, setIsEditingMode] = useState(false);
+
   const handleEditButtonClick = () => {
     setIsEditingMode(!isEditingMode);
   };
@@ -56,7 +57,24 @@ const CVView = () => {
   useEffect(() => {
     if (!cvData) {
       const currentCv = CVList.find((currentCv) => Number(id) === currentCv.id);
-      if (currentCv) setCvData({ ...currentCv });
+      if (currentCv) {
+        setCvData({ ...currentCv });
+        if (currentCv.data.personalInfo.name === "") {
+          setIsEditingMode(true);
+          setpersonalInfoEditMode(true);
+        }
+        if (
+          !currentCv.data.sections.leftCol.length &&
+          !currentCv.data.sections.rightCol.length
+        ) {
+          setIsEditingMode(true);
+        }
+      }
+
+      // http.get(`localhost:4000/cv/${id}`)
+      //   .then((response) => {
+      //     if (response) setCvData({ ...response });
+      //   })
     }
   });
   const savePersonalInfoData = (data: PersonalDataInfo) => {

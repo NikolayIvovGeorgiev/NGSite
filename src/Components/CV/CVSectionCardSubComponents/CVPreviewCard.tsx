@@ -8,16 +8,16 @@ interface Props {
 const CVPreviewCard = ({ cv }: Props) => {
   return (
     <>
-      <Nav.Link as={Link} to={`${cv.id}`}>
-        <Card style={{ width: "18rem" }}>
-          <Card.Img variant="top" />
-          <Card.Body>
-            <Card.Title>{cv.id}</Card.Title>
-            <Card.Text>{cv.note}</Card.Text>
-            <Button variant="primary">Go somewhere</Button>
-          </Card.Body>
-        </Card>
-      </Nav.Link>
+      <Card style={{ width: "18rem" }}>
+        <Card.Img variant="top" />
+        <Card.Body>
+          <Card.Text>{cv.note}</Card.Text>
+          <Card.Text>{cv.lastEdited.toString()}</Card.Text>
+          <Nav.Link as={Link} to={`${cv.id}`}>
+            <Button variant="primary">View&Edit</Button>
+          </Nav.Link>
+        </Card.Body>
+      </Card>
     </>
   );
 };

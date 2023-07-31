@@ -3,13 +3,14 @@ const CVList: CVInterface[] = [
   {
   id: 1,
   note: 'my first CV',
+  lastEdited: new Date("7/31/2023"),
   settings: {
-    colorTheme: [
-      {dark: '#333652',},
-      {light: '#E9EAEC',},
-      {lightSecondary: '#90ADC6',},
-      {accent: "#FAD02C",}
-    ] 
+    colorTheme: {
+      dark: '#333652',
+      light: '#E9EAEC',
+      lightSecondary: '#90ADC6',
+      accent: "#FAD02C"
+    }
   },
   data: {
     personalInfo: {
@@ -321,7 +322,15 @@ const CVList: CVInterface[] = [
   {
     id: 2,
     note: 'my second CV',
-    settings: { },
+    lastEdited: new Date("7/31/2023"),
+    settings: { 
+      colorTheme: {
+        dark: '#333652',
+        light: '#E9EAEC',
+        lightSecondary: '#90ADC6',
+        accent: "#FAD02C"
+      }
+    },
     data: {
       personalInfo: {
         photo: null,

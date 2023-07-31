@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Section,
+  Settings,
   iPieChartComponentData,
   iProgressBarComponentData,
   iTextFieldComponentData,
@@ -17,6 +18,7 @@ import SectionDeleteButton from "./SectionDeleteModal";
 
 interface Props {
   data: Section;
+  settings: Settings;
   heading: string;
   index: number;
   // children?: ReactNode;
@@ -28,7 +30,14 @@ interface Props {
   onDelete: () => void;
 }
 
-const CVSectionModify = ({ data, index, heading, onSave, onDelete }: Props) => {
+const CVSectionModify = ({
+  data,
+  settings,
+  index,
+  heading,
+  onSave,
+  onDelete,
+}: Props) => {
   /**
    * SET TYPES OF THE DATA IN EDIT, FOR ALREADY EXISTING DATA
    * RETRUN DEFAULT VALUES

@@ -199,6 +199,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 isEditingMode === true) ||
                               section.state === "new" ? (
                                 <CVSectionModify
+                                  settings={data.settings}
                                   data={section}
                                   index={data.id}
                                   heading={section.title}
@@ -214,6 +215,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 />
                               ) : (
                                 <CVSectionCard
+                                  settings={data.settings}
                                   isEditing={isEditingMode}
                                   data={section}
                                   index={index}
@@ -294,6 +296,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 isEditingMode === true) ||
                               section.state === "new" ? (
                                 <CVSectionModify
+                                  settings={data.settings}
                                   data={section}
                                   index={data.id}
                                   heading={section.title}
@@ -309,6 +312,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 />
                               ) : (
                                 <CVSectionCard
+                                  settings={data.settings}
                                   isEditing={isEditingMode}
                                   data={section}
                                   index={index}

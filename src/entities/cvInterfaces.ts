@@ -48,18 +48,20 @@ export interface Section {
 //   lightSecondary: string,
 //   accent: string,
 // }
-
-export interface CVInterface {
-  id: number,
-  note: string,
-  settings: {
-    colorTheme : {
+export interface Settings{
+      colorTheme?: {
       dark: string,
       light: string,
       lightSecondary: string,
       accent: string,
     }
-    },
+}
+
+export interface CVInterface {
+  id: number,
+  note: string,
+  lastEdited: Date;
+  settings: Settings ,
   data: {
     personalInfo: PersonalDataInfo,
     sections: {
