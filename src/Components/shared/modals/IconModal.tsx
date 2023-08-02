@@ -3,13 +3,15 @@ import { Button, Col, Modal, Row } from "react-bootstrap";
 import { createElement } from "react";
 import * as AntIcon from "react-icons/ai";
 import { IconType } from "react-icons";
+import { Settings } from "../../../entities/cvInterfaces";
 
 interface Props {
   defaultIcon: string | undefined;
   OnSave: (icon: string | undefined) => void;
+  settings: Settings;
 }
 
-const IconModal = ({ defaultIcon, OnSave }: Props) => {
+const IconModal = ({ defaultIcon, OnSave, settings }: Props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -44,12 +46,15 @@ const IconModal = ({ defaultIcon, OnSave }: Props) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button
+        className="btn bg-transparent btn-outline-primary"
+        onClick={handleShow}
+      >
         {/* TODO find a way to fix this :D */}
         {iconChoice &&
           createElement(AntIcon[iconChoice], {
             size: 30,
-            color: "blue",
+            color: `${settings.colorTheme?.accent}`,
           })}
         {!iconChoice &&
           createElement(AntIcon[`${"AiOutlineCloseCircle"}`], {
@@ -68,7 +73,7 @@ const IconModal = ({ defaultIcon, OnSave }: Props) => {
               <span key={icon + index}>
                 {icon === "AiOutlineCloseCircle" && (
                   <Button
-                    className="mb-2 p-2  flex"
+                    className=" btn bg-transparent btn-outline-primary mb-2 p-2  flex"
                     onClick={() => handleIconClick("")}
                   >
                     {createElement(AntIcon[icon], {
@@ -79,12 +84,12 @@ const IconModal = ({ defaultIcon, OnSave }: Props) => {
                 )}
                 {icon !== "AiOutlineCloseCircle" && (
                   <Button
-                    className="mb-2 p-2 m-2 flex"
+                    className="btn bg-transparent btn-outline-primary mb-2 p-2 m-2 flex"
                     onClick={() => handleIconClick(icon)}
                   >
                     {createElement(AntIcon[icon], {
                       size: 30,
-                      color: "blue",
+                      color: `${settings.colorTheme?.accent}`,
                     })}
                   </Button>
                 )}

@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { CVInterface } from "../entities/cvInterfaces";
 import { produce } from "immer";
 import { cloneDeep } from "lodash";
+import { useNavigate } from "react-router-dom";
+import { CvColorThemes } from "../Components/shared/constants/color-themes";
 
 const CVPage = () => {
   const [cvList, setCvList] = useState(CVList);
@@ -16,12 +18,7 @@ const CVPage = () => {
     note: "",
     lastEdited: new Date(),
     settings: {
-      colorTheme: {
-        dark: "#333652",
-        light: "#E9EAEC",
-        lightSecondary: "#90ADC6",
-        accent: "#FAD02C",
-      },
+      colorTheme: CvColorThemes[0],
     },
     data: {
       personalInfo: {
@@ -48,7 +45,6 @@ const CVPage = () => {
       })
     );
     setShowModal(false);
-    console.log(CVList);
   };
 
   useEffect(() => {

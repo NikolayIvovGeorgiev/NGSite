@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "react-bootstrap";
-import blueImage from "/src/assets/blue.jpg";
-import yellowImage from "/src/assets/Yellow.jpg";
+import { Button, Col, Modal, Row, ToggleButtonGroup } from "react-bootstrap";
+import { CvColorThemes } from "../constants/color-themes";
+import { ColorTheme } from "../../../entities/cvInterfaces";
 
 interface Props {
   showPaletteModal: boolean;
-  onConfirm?: (color: string) => void;
+  onConfirm?: (theme: ColorTheme) => void;
   onDecline?: () => void;
 }
 
@@ -20,7 +15,9 @@ const ConfirmationModal = ({
   onDecline,
 }: Props) => {
   const [show, setShow] = useState(showPaletteModal);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedTheme, setSelectedTheme] = useState<ColorTheme>(
+    CvColorThemes[0]
+  );
 
   useEffect(() => {
     setShow(showPaletteModal);
@@ -37,64 +34,39 @@ const ConfirmationModal = ({
           <Modal.Title>Choose Color Palette</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {}
           <ToggleButtonGroup
             type="radio"
-            name="options"
-            className="mb-2"
-            value={selectedColor}
-            onChange={(color) => setSelectedColor(color)}
+            name="theme-button"
+            className="mb-2 flex-wrap"
+            value={selectedTheme}
           >
-            {/* <ToggleButton
-              className="flex p-2 btn-no-hover me-5"
-              id="blue"
-              value={"blue"}
-              type="radio"
-            >
-              <img src={blueImage} alt="bluePalette" height={100} width={150} />
-            </ToggleButton>
-            <ToggleButton
-              className="flex p-2 btn-no-hover btn-no-hover-bg"
-              id="yellow"
-              value={"yellow"}
-              type="radio"
-            >
-              <img
-                src={yellowImage}
-                alt="yellowPallete"
-                height={100}
-                width={150}
-              />
-            </ToggleButton> */}
-
-            <input
-              type="radio"
-              className="d-none btn btn-check"
-              name="options-base"
-              id="blue"
-              autoComplete="off"
-              value="blue"
-              checked
-            />
-            <label className="btn" htmlFor="blue">
-              <img src={blueImage} alt="bluePalette" height={100} width={150} />
-            </label>
-
-            <input
-              type="radio"
-              className="d-none btn btn-check"
-              name="options-base"
-              id="yellow"
-              value="yellow"
-              autoComplete="off"
-            />
-            <label className="btn" htmlFor="yellow">
-              <img
-                src={yellowImage}
-                alt="yellowPallete"
-                height={100}
-                width={150}
-              />
-            </label>
+            {CvColorThemes.map((theme, index) => {
+              return (
+                <div key={index}>
+                  <input
+                    type="radio"
+                    className="d-none btn btn-check"
+                    name="theme-button"
+                    id={`${index}`}
+                    value={`${index}`}
+                    onChange={() => {
+                      setSelectedTheme(theme);
+                    }}
+                  />
+                  <label className="btn me-1" htmlFor={`${index}`}>
+                    {/* <img src={blueImage} alt="bluePalette" height={100} width={150} />
+                     */}
+                    <Row style={{ height: 100, width: 175 }} className="mx-1">
+                      <Col style={{ background: theme.dark }}></Col>
+                      <Col style={{ background: theme.light }}></Col>
+                      <Col style={{ background: theme.lightSecondary }}></Col>
+                      <Col style={{ background: theme.accent }}></Col>
+                    </Row>
+                  </label>
+                </div>
+              );
+            })}
           </ToggleButtonGroup>
         </Modal.Body>
         <Modal.Footer>
@@ -110,7 +82,7 @@ const ConfirmationModal = ({
           <Button
             variant="secondary"
             onClick={() => {
-              if (onConfirm) onConfirm(selectedColor || "");
+              if (onConfirm) onConfirm(selectedTheme);
               setShow(false);
             }}
           >

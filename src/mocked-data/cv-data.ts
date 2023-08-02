@@ -9,7 +9,7 @@ const CVList: CVInterface[] = [
       dark: '#333652',
       light: '#E9EAEC',
       lightSecondary: '#90ADC6',
-      accent: "#FAD02C"
+      accent: "#FF7F50"
     }
   },
   data: {

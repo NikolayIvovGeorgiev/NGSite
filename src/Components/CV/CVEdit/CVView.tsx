@@ -1,5 +1,9 @@
 import { useParams } from "react-router-dom";
-import { CVInterface, PersonalDataInfo } from "../../../entities/cvInterfaces";
+import {
+  CVInterface,
+  ColorTheme,
+  PersonalDataInfo,
+} from "../../../entities/cvInterfaces";
 import CVList from "../../../mocked-data/cv-data";
 import CVBody from "../CVBody";
 import CVPersonalInfo from "../CVPersonalInfo";
@@ -21,30 +25,14 @@ const CVView = () => {
   const handlePaletteButton = () => {
     setShowPaletteModal(!showPaletteModal);
   };
-  const changeCvColors = (selectedColor: string) => {
-    const colorThemes = {
-      blue: {
-        dark: "#146C94",
-        light: "#F6F1F1",
-        lightSecondary: "#AFD3E2",
-        accent: "#19A7CE",
-      },
-      yellow: {
-        dark: "#333652",
-        light: "#E9EAEC",
-        lightSecondary: "#90ADC6",
-        accent: "#FAD02C",
-      },
-    };
-    if (selectedColor === "blue" || selectedColor === "yellow") {
-      if (cvData) {
-        const newColorTheme = colorThemes[selectedColor];
-        setCvData(
-          produce(cvData, (draftCvData) => {
-            draftCvData.settings.colorTheme = newColorTheme;
-          })
-        );
-      }
+
+  const changeCvTheme = (selectedTheme: ColorTheme) => {
+    if (cvData) {
+      setCvData(
+        produce(cvData, (draftCvData) => {
+          draftCvData.settings.colorTheme = selectedTheme;
+        })
+      );
     }
   };
 
@@ -99,11 +87,19 @@ const CVView = () => {
   };
 
   return cvData ? (
-    <>
+    <div
+      className="p-2"
+      style={{ backgroundColor: cvData.settings.colorTheme?.light }}
+    >
       <PaletteModal
         showPaletteModal={showPaletteModal}
-        onConfirm={changeCvColors}
-        // onDecline={}
+        onConfirm={(theme) => {
+          changeCvTheme(theme);
+          setShowPaletteModal(false);
+        }}
+        onDecline={() => {
+          setShowPaletteModal(false);
+        }}
       />
       <SideCVControlBar
         onColorPaletteClick={handlePaletteButton}
@@ -111,20 +107,26 @@ const CVView = () => {
       />
       {personalInfoEditMode && (
         <CVPersonalInfoModify
+          settings={cvData.settings}
           data={cvData.data.personalInfo}
           onSave={handleSave}
         />
       )}
       {!personalInfoEditMode && (
         <CVPersonalInfo
+          settings={cvData.settings}
           onEditButton={handlepersonalInfoEditButton}
           isEditing={isEditingMode}
           data={cvData}
         />
       )}
 
-      <CVBody isEditingMode={isEditingMode} data={cvData}></CVBody>
-    </>
+      <CVBody
+        isEditingMode={isEditingMode}
+        data={cvData}
+        settings={cvData.settings}
+      ></CVBody>
+    </div>
   ) : (
     <>No CV found</>
   );

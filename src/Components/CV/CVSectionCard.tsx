@@ -25,9 +25,10 @@ const CVSectionCard = ({
   return (
     <>
       <h2
-        className={"border-gradient-title m-0 p-2"}
+        className={`border-gradient-title m-0 p-2`}
         style={{
-          borderImageSource: `linear-gradient(165deg, red, rgba(0,0,0,0) 65%)`,
+          color: `${settings.colorTheme?.dark}`,
+          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
         }}
         id={heading}
       >
@@ -46,7 +47,7 @@ const CVSectionCard = ({
       <div
         className="border-gradient-body p-2"
         style={{
-          borderImageSource: `linear-gradient(165deg, red, rgba(0,0,0,0) 65%)`,
+          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
         }}
       >
         {children}

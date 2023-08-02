@@ -1,5 +1,5 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { CVInterface, Section } from "../../entities/cvInterfaces";
+import { CVInterface, Section, Settings } from "../../entities/cvInterfaces";
 import CVSectionCard from "./CVSectionCard";
 import PieChartField from "./CVSectionCardSubComponents/PieChartField";
 import ProgressbarField from "./CVSectionCardSubComponents/ProgressbarField";
@@ -18,9 +18,10 @@ import { Droppable, Draggable } from "@hello-pangea/dnd";
 interface Props {
   data: CVInterface;
   isEditingMode: boolean;
+  settings: Settings;
 }
 
-const CVBody = ({ data, isEditingMode }: Props) => {
+const CVBody = ({ data, isEditingMode, settings }: Props) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingCol, setEditingCol] = useState<string | null>(null);
   const [cvData, setCVData] = useState<CVInterface>(data);
@@ -172,9 +173,8 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                   ref={provided.innerRef}
                   style={{
                     backgroundColor: snapshot.isDraggingOver
-                      ? "white"
-                      : "white",
-                    border: snapshot.isDraggingOver ? "1px solid gray" : "none",
+                      ? `${settings.colorTheme?.lightSecondary}`
+                      : `${settings.colorTheme?.light}`,
                   }}
                   {...provided.droppableProps}
                 >
@@ -271,7 +271,9 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                   key={"rightCol"}
                   ref={provided.innerRef}
                   style={{
-                    backgroundColor: snapshot.isDraggingOver ? "gray" : "white",
+                    backgroundColor: snapshot.isDraggingOver
+                      ? `${settings.colorTheme?.lightSecondary}`
+                      : `${settings.colorTheme?.light}`,
                   }}
                   {...provided.droppableProps}
                 >

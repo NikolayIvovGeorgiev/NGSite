@@ -49,13 +49,16 @@ export interface Section {
 //   accent: string,
 // }
 export interface Settings{
-      colorTheme?: {
-      dark: string,
-      light: string,
-      lightSecondary: string,
-      accent: string,
-    }
+      colorTheme?: ColorTheme
 }
+
+export interface ColorTheme {
+  dark: string,
+  light: string,
+  lightSecondary: string,
+  accent: string,
+}
+
 
 export interface CVInterface {
   id: number,

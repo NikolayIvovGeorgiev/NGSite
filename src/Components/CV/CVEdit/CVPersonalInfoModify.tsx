@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import {
   PersonalDataInfo,
+  Settings,
   iPersonalInfoData,
 } from "../../../entities/cvInterfaces";
 import { createElement, useEffect, useState } from "react";
@@ -17,11 +18,12 @@ import IconModal from "../../shared/modals/IconModal";
 import { cloneDeep } from "lodash";
 
 interface Props {
+  settings: Settings;
   data: PersonalDataInfo;
   onSave: (data?: PersonalDataInfo) => void;
 }
 
-const CVPersonalInfoModify = ({ data, onSave }: Props) => {
+const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
   const [personalInfoData, setPersonalInfoData] = useState(cloneDeep(data));
   const [selectedfile, setSelectedFile] = useState(null);
 
@@ -178,6 +180,7 @@ const CVPersonalInfoModify = ({ data, onSave }: Props) => {
                       </Col>
                       <Col>
                         <IconModal
+                          settings={settings}
                           defaultIcon={personalInfoField.icon}
                           OnSave={(icon) => handleIconChoice(icon, index)}
                         />
