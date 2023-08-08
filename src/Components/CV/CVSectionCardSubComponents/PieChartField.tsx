@@ -1,14 +1,18 @@
 import { isEmpty } from "lodash";
-import { iPieChartComponentData } from "../../../entities/cvInterfaces";
+import {
+  Settings,
+  iPieChartComponentData,
+} from "../../../entities/cvInterfaces";
 import { Chart } from "primereact/chart";
 import { useState, useEffect } from "react";
 import { fetchData } from "../../../mocked-data/cv-data";
 
 interface Props {
   data?: iPieChartComponentData[];
+  settings: Settings;
 }
 
-const PieChartField = ({ data }: Props) => {
+const PieChartField = ({ data, settings }: Props) => {
   const [loading, setLoading] = useState(true);
   const [chartOptions] = useState({
     plugins: {
@@ -24,18 +28,18 @@ const PieChartField = ({ data }: Props) => {
       {
         data: [] as number[],
         backgroundColor: [
-          "#42A5F5",
-          "#66BB6A",
-          "#FFB74D",
-          "#5eeb34",
-          "#34bdeb",
+          settings.colorTheme?.accent,
+          settings.colorTheme?.background,
+          settings.colorTheme?.text,
+          settings.colorTheme?.background,
+          settings.colorTheme?.text,
         ] as string[],
         hoverBackgroundColor: [
-          "#42A5F5",
-          "#66BB6A",
-          "#FFB74D",
-          "#5eeb34",
-          "#34bdeb",
+          settings.colorTheme?.background,
+          settings.colorTheme?.accent,
+          settings.colorTheme?.background,
+          settings.colorTheme?.text,
+          settings.colorTheme?.background,
         ] as string[],
       },
     ],

@@ -116,7 +116,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
         <Col xs={2}>
           <Image
             //fluid
-            className="shadow m-2 fixed-size"
+            className="shadow w-100"
             src={displayPicture}
           ></Image>
           <div>
@@ -133,12 +133,11 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
           </div>
         </Col>
         <Col xs={10}>
-          <Row className="d-flex justify-content-center align-items-center pt-2 pe-5">
+          <Row className="d-flex justify-content-center align-items-center">
             {/*NAME*/}
-            <Form.Text className=" text-accent"> Name</Form.Text>
             <InputGroup>
               <Form.Control
-                className="shadow"
+                className="shadow mb-2"
                 size="lg"
                 value={personalInfoData.name}
                 onChange={(e) => {
@@ -154,7 +153,10 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
             personalInfoData.fields?.map(
               (personalInfoField: iPersonalInfoData, index: number) => {
                 return (
-                  <InputGroup key={`${personalInfoData.name} + ${index}`}>
+                  <InputGroup
+                    className="mb-2"
+                    key={`${personalInfoData.name} + ${index}`}
+                  >
                     <Form.Group
                       id={`${personalInfoData.name} + ${
                         personalInfoData.fields.length
@@ -162,9 +164,9 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                       as={Row}
                       className="w-100 justify-content-center"
                     >
-                      <Col xs={2}>
+                      <Col xs={2} className="align-self-center">
                         <select
-                          className="custom-select text-md-center mb-1"
+                          className="custom-select text-md-center"
                           id="FieldTypeDropDown"
                           defaultValue={personalInfoField.type}
                           onChange={(e) => {
@@ -210,7 +212,6 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
 
                         {personalInfoField.type !== "date" && (
                           <>
-                            <Form.Text className="text-accent">Value</Form.Text>
                             <Form.Control
                               aria-label="personalInfoField-value"
                               value={personalInfoField.value}
@@ -232,7 +233,10 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                       <Col xs={1}>
                         <ImCross
                           className="justify"
-                          style={{ cursor: "pointer" }}
+                          style={{
+                            cursor: "pointer",
+                            color: `${settings.colorTheme?.accent}`,
+                          }}
                           onClick={() => handleRemoveField(index)}
                         />
                       </Col>
@@ -318,7 +322,6 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
           Save Section
         </Button>
       </div>
-      <Placeholder size="sm" className="mb-1" xs={12} bg="accent" />
     </>
   );
 };

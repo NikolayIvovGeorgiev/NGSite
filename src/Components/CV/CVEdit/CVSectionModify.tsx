@@ -15,6 +15,7 @@ import { ImCross } from "react-icons/im";
 import { TEXT_SECTION_OPTIONAL_FIELDS as optionalFields } from "../constants";
 import { cloneDeep, get } from "lodash";
 import SectionDeleteButton from "./SectionDeleteModal";
+import { color } from "chart.js/helpers";
 
 interface Props {
   data: Section;
@@ -252,11 +253,21 @@ const CVSectionModify = ({
 
   return (
     <div>
-      <div className="border-gradient-title m-0 p-2">
+      <div
+        className="border-gradient-title m-0 p-3 px-4"
+        style={{
+          color: `${settings.colorTheme?.heading}`,
+          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
+          backgroundColor: `${settings.colorTheme?.background}`,
+        }}
+      >
         <Row>
           {/* SECTION TITLE */}
-          <Col xs={12}>
-            <Form.Text className="text-accent p-2"> Section Title</Form.Text>
+          <Col xs={12} className="">
+            <Form.Text style={{ color: `${settings.colorTheme?.heading}` }}>
+              {" "}
+              Section Title
+            </Form.Text>
             <InputGroup>
               <Form.Control
                 size="lg"
@@ -275,10 +286,17 @@ const CVSectionModify = ({
           <Col xs={1}>{/* DELETE SECTION / SHOULD BE KEBAB */}</Col>
         </Row>
       </div>
-      <div className="border-gradient-body p-2">
+      <div
+        className="border-gradient-body p-4"
+        style={{
+          color: `${settings.colorTheme?.heading}`,
+          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
+          backgroundColor: `${settings.colorTheme?.background}`,
+        }}
+      >
         {/* DROPDOWN SECTION TYPE */}
         <select
-          className="custom-select w-100 text-md-center mb-1"
+          className="custom-select w-100 text-md-center mb-4"
           id="SubcomponentDropDown"
           defaultValue={chosenSectionType}
           onChange={handleComponentTypeChange}
@@ -295,7 +313,7 @@ const CVSectionModify = ({
           <Form>
             {/* Toggle buttons */}
             <ToggleButtonGroup
-              className=" d-flex justify-content-between border"
+              className=" d-flex justify-content-between border mb-4"
               size="sm"
               type="checkbox"
               value={togglesValue}
@@ -305,6 +323,7 @@ const CVSectionModify = ({
                 variant="outline-accent"
                 id="tbg-btn-1"
                 value={"list"}
+                style={{ color: `${settings.colorTheme?.heading}` }}
               >
                 List
               </ToggleButton>
@@ -312,6 +331,7 @@ const CVSectionModify = ({
                 variant="outline-accent"
                 id="tbg-btn-2"
                 value={"description"}
+                style={{ color: `${settings.colorTheme?.heading}` }}
               >
                 Description
               </ToggleButton>
@@ -319,22 +339,28 @@ const CVSectionModify = ({
                 variant="outline-accent"
                 id="tbg-btn-3"
                 value={"dates"}
+                style={{ color: `${settings.colorTheme?.heading}` }}
               >
                 Date
               </ToggleButton>
             </ToggleButtonGroup>
-            <Placeholder size="sm" className="mb-1" xs={12} bg="accent" />
+            <hr
+              style={{ borderColor: `${settings.colorTheme?.accent}` }}
+              className="border-2 opacity-100"
+            />
             {/* Sections Foreach */}
             {sectionData.data.content?.map(
               (textField: iTextFieldComponentData, index: number) => {
                 return (
                   <InputGroup key={`${index}`}>
                     {/* Title */}
-                    <Row className="w-100">
+                    <div className="w-100 mb-4">
                       <Form.Group
                         id={`${sectionData.id} + ${textField.title} + ${index} `}
                       >
-                        <Form.Text className="text-accent">
+                        <Form.Text
+                          style={{ color: `${settings.colorTheme?.heading}` }}
+                        >
                           Text Title
                         </Form.Text>
                         <Form.Control
@@ -348,13 +374,17 @@ const CVSectionModify = ({
                           placeholder="Title"
                         />
                       </Form.Group>
-                    </Row>
+                    </div>
                     {/* Subtitle */}
-                    <Row className="w-100">
+                    <div className="w-100 mb-4">
                       <Form.Group
                         id={`${sectionData.id} + ${textField.subtitle} + ${index} `}
                       >
-                        <Form.Text className="text-accent">Subtitle</Form.Text>
+                        <Form.Text
+                          style={{ color: `${settings.colorTheme?.heading}` }}
+                        >
+                          Subtitle
+                        </Form.Text>
                         <Form.Control
                           aria-label="Subtitle"
                           value={textField.subtitle}
@@ -371,13 +401,18 @@ const CVSectionModify = ({
                           placeholder="Subtitle"
                         />
                       </Form.Group>
-                    </Row>
+                    </div>
                     {/* IF DESCRIPTION */}
                     {togglesValue.includes("description") && (
-                      <Row className="w-100">
+                      <div className="w-100 mb-4">
                         <Form.Group
                           id={`${sectionData.id} + ${textField.subtitle} + ${index} `}
                         >
+                          <Form.Text
+                            style={{ color: `${settings.colorTheme?.heading}` }}
+                          >
+                            Description
+                          </Form.Text>
                           <Form.Control
                             aria-label="Description"
                             value={textField.description}
@@ -394,30 +429,31 @@ const CVSectionModify = ({
                             }}
                             placeholder="Description"
                           />
-                          <Form.Text className="text-accent ">
-                            Description
-                          </Form.Text>
                         </Form.Group>
-                      </Row>
+                      </div>
                     )}
                     {/* IF LISTS */}
                     {togglesValue.includes("list") && (
                       <>
+                        <Form.Text
+                          style={{
+                            color: `${settings.colorTheme?.heading}`,
+                          }}
+                        >
+                          List Element
+                        </Form.Text>
                         {textField?.list &&
                           textField.list?.map(
                             (listElement: string, listIndex: number) => {
                               return (
                                 <InputGroup
+                                  className="mb-2"
                                   key={`${sectionData.id} + ${textField.title}+${listIndex}`}
                                 >
-                                  <Row className="w-100">
-                                    <Form.Text className="text-accent ">
-                                      List Element
-                                    </Form.Text>
-                                    <Row className="w-100">
+                                  <div className="w-100">
+                                    <div className="w-100 d-flex">
                                       <Form.Group
-                                        as={Col}
-                                        xs={11}
+                                        className="w-100"
                                         id={`${sectionData.id} + ${
                                           listElement.length
                                         } + ${listIndex + 1} `}
@@ -440,44 +476,59 @@ const CVSectionModify = ({
                                           placeholder="List Item"
                                         />
                                       </Form.Group>
-                                    </Row>
-                                    <Col xs={1}>
-                                      <ImCross
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() =>
-                                          handleRemove(index, "list", listIndex)
-                                        }
-                                      />
-                                    </Col>
-                                  </Row>
+                                      <div className="align-items-center d-flex justify-content-end ps-2">
+                                        <ImCross
+                                          style={{ cursor: "pointer" }}
+                                          onClick={() =>
+                                            handleRemove(
+                                              index,
+                                              "list",
+                                              listIndex
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
                                 </InputGroup>
                               );
                             }
                           )}
-
-                        <Button
-                          className="justify"
-                          variant="primary"
-                          onClick={() => handleAddListItem(index)}
-                        >
-                          Add List Item
-                        </Button>
+                        <div className=" d-flex mb-4 w-100 justify-content-center">
+                          <Button
+                            className="justify rounded-5"
+                            variant="primary"
+                            style={{
+                              backgroundColor: settings.colorTheme?.accent,
+                              color: settings.colorTheme?.background,
+                            }}
+                            onClick={() => handleAddListItem(index)}
+                          >
+                            +
+                          </Button>
+                        </div>
                       </>
                     )}
                     {/* IF DATES */}
                     {togglesValue.includes("dates") && (
-                      <Row className="w-100">
+                      <Row className=" d-flex w-100 mb-4">
                         {/* Start Date FORM */}
-                        <Col xs={6}>
+                        <Col xs={12} md={6} className="ps-0">
                           <Form.Group
                             id={`${sectionData.id} + ${textField.startDate} + ${index} `}
                           >
+                            <Form.Text
+                              style={{ color: settings.colorTheme?.heading }}
+                            >
+                              Start Date
+                            </Form.Text>
                             <Form.Control
                               aria-label="Description"
                               value={textField.startDate}
                               type="month"
                               name="startDate"
                               required
+                              style={{ color: settings.colorTheme?.accent }}
                               onChange={(e) => {
                                 inputFieldOnChange(
                                   index,
@@ -486,22 +537,25 @@ const CVSectionModify = ({
                                 );
                               }}
                             />
-                            <Form.Text className="text-accent">
-                              Start Date
-                            </Form.Text>
                           </Form.Group>
                         </Col>
                         {/* END Date FORM */}
-                        <Col xs={6}>
+                        <Col xs={12} md={6} className="pe-0">
                           <Form.Group
                             id={`${sectionData.id} + ${textField.endDate} + ${index} `}
                           >
+                            <Form.Text
+                              style={{ color: settings.colorTheme?.heading }}
+                            >
+                              End Date
+                            </Form.Text>
                             <Form.Control
                               aria-label="Description"
                               value={textField.endDate}
                               type="month"
                               name="endDate"
                               required
+                              style={{ color: settings.colorTheme?.accent }}
                               onChange={(e) => {
                                 inputFieldOnChange(
                                   index,
@@ -510,25 +564,22 @@ const CVSectionModify = ({
                                 );
                               }}
                             />
-                            <Form.Text className="text-accent">
-                              End Date
-                            </Form.Text>
                           </Form.Group>
                         </Col>
                       </Row>
                     )}
                     {/* Remove Text Field */}
-                    <Button
-                      variant="primary"
-                      onClick={() => handleRemove(index)}
-                    >
-                      Remove Text Field
-                    </Button>
-                    <Placeholder
-                      size="sm"
-                      className="m-1"
-                      xs={12}
-                      bg="secondary"
+                    <div className="w-100 d-flex justify-content-end">
+                      <Button
+                        variant="primary mb-2 rounded"
+                        onClick={() => handleRemove(index)}
+                      >
+                        Remove Text Field
+                      </Button>
+                    </div>
+                    <hr
+                      style={{ borderColor: `${settings.colorTheme?.accent}` }}
+                      className=" w-100 border-2 opacity-100 mb-4"
                     />
                   </InputGroup>
                 );
@@ -581,7 +632,7 @@ const CVSectionModify = ({
                           aria-label="Level"
                           value={progressBarSection.level}
                           type="number"
-                          min={0}
+                          min={undefined}
                           max={10}
                           name="Skill"
                           required
@@ -657,7 +708,7 @@ const CVSectionModify = ({
                       <Form.Group
                         as={Col}
                         xs={4}
-                        id={`${sectionData.id} + ${pieChartSection.percent} + ${index} `}
+                        id={`${sectionData.id} + ${pieChartSection.percent} + ${index}`}
                       >
                         <Form.Control
                           aria-label="Level"
@@ -695,7 +746,14 @@ const CVSectionModify = ({
           </Form>
         )}
       </div>
-      <div className="d-flex justify-content-end">
+      <div
+        className="d-flex justify-content-end"
+        style={{
+          color: `${settings.colorTheme?.heading}`,
+          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
+          backgroundColor: `${settings.colorTheme?.background}`,
+        }}
+      >
         {/* SAVE SECTION + SANITIZE SECTION + STATE-OLD */}
         <Button
           className="btn btn-accent me-1"

@@ -1,12 +1,16 @@
 import ProgressBar from "react-bootstrap/ProgressBar";
-import { iProgressBarComponentData } from "../../../entities/cvInterfaces";
+import {
+  Settings,
+  iProgressBarComponentData,
+} from "../../../entities/cvInterfaces";
 import { Col, Row } from "react-bootstrap";
 
 interface Props {
   data?: iProgressBarComponentData[];
+  settings: Settings;
 }
 
-const ProgressbarField = ({ data }: Props) => {
+const ProgressbarField = ({ data, settings }: Props) => {
   if (!data) {
     return null;
   }
@@ -14,16 +18,39 @@ const ProgressbarField = ({ data }: Props) => {
     <div>
       {data.map((content: iProgressBarComponentData, index: number) => {
         return (
-          <div key={`textProgress-${index + 1}`}>
+          <div className="p-1" key={`textProgress-${index + 1}`}>
             <Row key={index}>
-              <Col>{content.title}</Col>
-              <Col>
-                <ProgressBar
-                  //variant={accent}
-                  animated
-                  max={10}
-                  now={content.level}
-                />
+              <Col
+                md={6}
+                sm={12}
+                style={{
+                  color: `${settings.colorTheme?.text}`,
+                }}
+              >
+                {content.title}
+              </Col>
+              <Col md={6} sm={12}>
+                <div
+                  className="progress"
+                  style={{
+                    backgroundColor: `${settings.colorTheme?.heading}`,
+                    margin: 10,
+                    padding: 2,
+                  }}
+                >
+                  <div
+                    className="progress-bar"
+                    role="progressbar"
+                    style={{
+                      backgroundColor: `${settings.colorTheme?.accent}`,
+                      width: `${content.level * 10}%`,
+                      borderRadius: "4px",
+                    }}
+                    aria-valuenow={content.level}
+                    aria-valuemin={0}
+                    aria-valuemax={10}
+                  ></div>
+                </div>
               </Col>
             </Row>
           </div>

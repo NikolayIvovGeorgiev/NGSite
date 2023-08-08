@@ -58,9 +58,9 @@ const ConfirmationModal = ({
                     {/* <img src={blueImage} alt="bluePalette" height={100} width={150} />
                      */}
                     <Row style={{ height: 100, width: 175 }} className="mx-1">
-                      <Col style={{ background: theme.dark }}></Col>
-                      <Col style={{ background: theme.light }}></Col>
-                      <Col style={{ background: theme.lightSecondary }}></Col>
+                      <Col style={{ background: theme.heading }}></Col>
+                      <Col style={{ background: theme.background }}></Col>
+                      <Col style={{ background: theme.text }}></Col>
                       <Col style={{ background: theme.accent }}></Col>
                     </Row>
                   </label>

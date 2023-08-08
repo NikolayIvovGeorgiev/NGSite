@@ -11,7 +11,7 @@ export const SideCVControlBar = ({
   onColorPaletteClick,
 }: Props) => {
   return (
-    <div className="sidebar">
+    <div className="sidebar z-10">
       <div className="container p-0 d-flex justify-content-end py-2">
         <Button className="btn btn-accent me-3" onClick={onColorPaletteClick}>
           Color Palette

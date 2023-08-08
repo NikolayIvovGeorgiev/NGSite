@@ -1,10 +1,10 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { CVInterface, Section, Settings } from "../../entities/cvInterfaces";
 import CVSectionCard from "./CVSectionCard";
 import PieChartField from "./CVSectionCardSubComponents/PieChartField";
 import ProgressbarField from "./CVSectionCardSubComponents/ProgressbarField";
 import TextField from "./CVSectionCardSubComponents/TextField";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CVSectionModify from "./CVEdit/CVSectionModify";
 import { MdOutlineAddCircle } from "react-icons/md";
 import { isEmpty } from "lodash";
@@ -138,7 +138,7 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Container className="flex">
+      <div className="flex">
         <Row>
           <ConfirmationModal
             showModal={showConfirmationModal}
@@ -149,7 +149,7 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
               setshowConfirmationModal(false);
             }}
           />
-          <Col xs={6}>
+          <Col xs={12} md={6}>
             <div className="d-flex justify-content-center">
               {isEditingMode && editingIndex === null && (
                 <Button
@@ -173,8 +173,8 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                   ref={provided.innerRef}
                   style={{
                     backgroundColor: snapshot.isDraggingOver
-                      ? `${settings.colorTheme?.lightSecondary}`
-                      : `${settings.colorTheme?.light}`,
+                      ? `${settings.colorTheme?.background}`
+                      : `${settings.colorTheme?.text}`,
                   }}
                   {...provided.droppableProps}
                 >
@@ -227,12 +227,17 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                                   {section.type === "Progress-bar" ? (
                                     <ProgressbarField
                                       data={section.data.content}
+                                      settings={data.settings}
                                     />
                                   ) : section.type === "Text-field" ? (
-                                    <TextField data={section.data.content} />
+                                    <TextField
+                                      data={section.data.content}
+                                      settings={data.settings}
+                                    />
                                   ) : section.type === "Pie-Chart" ? (
                                     <PieChartField
                                       data={section.data.content}
+                                      settings={data.settings}
                                     />
                                   ) : null}
                                 </CVSectionCard>
@@ -248,7 +253,7 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
               )}
             </Droppable>
           </Col>
-          <Col>
+          <Col xs={12} md={6}>
             <div className="d-flex justify-content-center">
               {isEditingMode && editingIndex === null && (
                 <Button
@@ -272,8 +277,8 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                   ref={provided.innerRef}
                   style={{
                     backgroundColor: snapshot.isDraggingOver
-                      ? `${settings.colorTheme?.lightSecondary}`
-                      : `${settings.colorTheme?.light}`,
+                      ? `${settings.colorTheme?.background}`
+                      : `${settings.colorTheme?.background}`,
                   }}
                   {...provided.droppableProps}
                 >
@@ -326,12 +331,17 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                                   {section.type === "Progress-bar" ? (
                                     <ProgressbarField
                                       data={section.data.content}
+                                      settings={data.settings}
                                     />
                                   ) : section.type === "Text-field" ? (
-                                    <TextField data={section.data.content} />
+                                    <TextField
+                                      data={section.data.content}
+                                      settings={data.settings}
+                                    />
                                   ) : section.type === "Pie-Chart" ? (
                                     <PieChartField
                                       data={section.data.content}
+                                      settings={data.settings}
                                     />
                                   ) : null}
                                 </CVSectionCard>
@@ -348,7 +358,7 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
             </Droppable>
           </Col>
         </Row>
-      </Container>
+      </div>
     </DragDropContext>
   );
 };

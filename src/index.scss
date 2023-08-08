@@ -12,12 +12,6 @@ $CT-blue-lightSecondary: #AFD3E2;
 $CT-blue-accent:  #19A7CE ;
 
 
-// $dark: "#146C94";
-// $light: "#F6F1F1";
-// $lightSecondary: "#AFD3E2";
-// $accent: "#19A7CE";
-
-
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-synthesis: none;
@@ -39,26 +33,26 @@ h2 {
   color: blue;
 }
 
+hr {
+  opacity: 1 !important;
+}
+
 .fixed-size {
   height: 240px;
   width: 180px;
 }
 
+.z-10{
+  z-index: 10;
+}
 .sidebar {
   width: 100%;
   background-color: #f1f1f1;
   position: fixed;
   bottom: 0;
   left: 0;
-  // box-shadow: 0px 0px 8px $dark;
 }
 
-// $theme-colors: (
-//   'primary':$light,
-//   'secondary':$light-blue,
-//   'background': $dark, 
-//   'accent': $accent,
-// );
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 
 .gradient-border {
@@ -95,6 +89,10 @@ h2 {
   }
   
 
+}
+
+.fs-h1-top-normalize {
+  line-height: calc(1.375rem + 0.5vw);
 }
 
 // .cv-section.ct-yellow {
@@ -151,6 +149,7 @@ h2 {
 @include media-breakpoint-up(sm) { 
   .cv-photo{
     width: 100%;
+    max-width: none;
  }
  .d-flex-sm {
    display: flex !important;

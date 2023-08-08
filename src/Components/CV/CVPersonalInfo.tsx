@@ -1,12 +1,6 @@
-import { Col, Row, Image, Button, Container } from "react-bootstrap";
-import { AiFillLinkedin, AiOutlineMail, AiFillPhone } from "react-icons/ai";
-import { FaCity } from "react-icons/fa";
+import { Col, Row, Image, Button } from "react-bootstrap";
 import * as AntIcon from "react-icons/ai";
-import {
-  CVInterface,
-  PersonalDataInfo,
-  Settings,
-} from "../../entities/cvInterfaces";
+import { CVInterface, Settings } from "../../entities/cvInterfaces";
 import { createElement } from "react";
 
 interface Props {
@@ -19,11 +13,8 @@ interface Props {
 const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
   const personalInfoFields = data.data.personalInfo.fields || [];
   return (
-    <Container>
-      <Row className="align-items-center justify-content-center">
-        <h1 className="text-center">{data.data.personalInfo.name}</h1>
-      </Row>
-      <Row>
+    <div>
+      <Row className="mb-5">
         {data.data.personalInfo.photo !== null && (
           <Col
             md={3}
@@ -38,6 +29,16 @@ const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
         )}
         <Col md={9} xs={12} className="d-flex flex-column">
           <Row>
+            <h1
+              className="mb-5 fs-h1-top-normalize"
+              style={{
+                color: `${settings.colorTheme?.heading}`,
+              }}
+            >
+              {data.data.personalInfo.name}
+            </h1>
+          </Row>
+          <Row>
             {personalInfoFields.map((field, index) => (
               <Col
                 key={index}
@@ -51,39 +52,62 @@ const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
                       size: 30,
                       color: [data.settings.colorTheme?.accent],
                     })}
-                    <span className="m-1">{field.value}</span>
+                    <span
+                      className="m-1"
+                      style={{
+                        color: `${settings.colorTheme?.text}`,
+                      }}
+                    >
+                      {field.value}
+                    </span>
                   </div>
                 )}
                 {!field.icon && (
                   <div className="m-1">
-                    <span className="m-1">{field.value}</span>
+                    <span
+                      className="m-1"
+                      style={{
+                        color: `${settings.colorTheme?.text}`,
+                      }}
+                    >
+                      {field.value}
+                    </span>
                   </div>
                 )}
               </Col>
             ))}
           </Row>
+          <Row>
+            {data.data.personalInfo.summary && (
+              <div>
+                <p
+                  className="m-0"
+                  style={{
+                    color: `${settings.colorTheme?.heading}`,
+                  }}
+                >
+                  {data.data.personalInfo.summary}
+                </p>
+              </div>
+            )}
+          </Row>
         </Col>
       </Row>
       <Row>
-        {data.data.personalInfo.summary && (
-          <div className="m-1 border-top-1">
-            <p>{data.data.personalInfo.summary}</p>
+        {isEditing === true && (
+          <div className="flex pb-3">
+            <Button
+              className="btn btn-secondary float-end flex"
+              onClick={() => {
+                onEditButton();
+              }}
+            >
+              Edit Personal Info
+            </Button>
           </div>
         )}
       </Row>
-      {isEditing === true && (
-        <div className="flex pb-3">
-          <Button
-            className="btn btn-secondary float-end flex"
-            onClick={() => {
-              onEditButton();
-            }}
-          >
-            Edit Personal Info
-          </Button>
-        </div>
-      )}
-    </Container>
+    </div>
   );
 };
 

@@ -47,13 +47,13 @@ const IconModal = ({ defaultIcon, OnSave, settings }: Props) => {
   return (
     <>
       <Button
-        className="btn bg-transparent btn-outline-primary"
+        className="btn bg-transparent btn-outline-primary accordion-button"
         onClick={handleShow}
       >
         {/* TODO find a way to fix this :D */}
         {iconChoice &&
           createElement(AntIcon[iconChoice], {
-            size: 30,
+            size: 40,
             color: `${settings.colorTheme?.accent}`,
           })}
         {!iconChoice &&

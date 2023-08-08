@@ -88,8 +88,8 @@ const CVView = () => {
 
   return cvData ? (
     <div
-      className="p-2"
-      style={{ backgroundColor: cvData.settings.colorTheme?.light }}
+      className="p-5"
+      style={{ backgroundColor: cvData.settings.colorTheme?.background }}
     >
       <PaletteModal
         showPaletteModal={showPaletteModal}

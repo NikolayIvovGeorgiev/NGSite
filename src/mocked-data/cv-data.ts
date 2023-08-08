@@ -6,10 +6,10 @@ const CVList: CVInterface[] = [
   lastEdited: new Date("7/31/2023"),
   settings: {
     colorTheme: {
-      dark: '#333652',
-      light: '#E9EAEC',
-      lightSecondary: '#90ADC6',
-      accent: "#FF7F50"
+      heading: "#fffafa",
+      background:  "#080808" ,
+      text: "#69d0f0" ,
+     accent: "#02b8fa" ,
     }
   },
   data: {
@@ -94,103 +94,8 @@ const CVList: CVInterface[] = [
           ]
         }
 
-      },{
-        id: '',
-        type: 'Progress-bar',
-        title: 'Test skills',
-        state: '',
-        data: {
-          config: {},
-          content: [
-            { title: '', level: undefined},
-            { title: '', level: undefined},
-            { title: '', level: undefined}
-          ]
-        }
-
       },
-      {
-        id: '345j',
-        type: 'Text-field',
-        title: 'Experience',
-        state: 'old',
-        data: {
-          config: {
-            dateColumn: true
-          },
-          content: [
-            {
-                startDate: "2019-09",
-                endDate: "2021-12",
-                title: 'Technical Manager',
-                subtitle: 'Acoustic Force',
-                list: [
-                  "TODO", "TODO", "TODO"
-                ],
-                description: undefined,
-                
-              },
-            {
-                startDate: "2019-09",
-                endDate: "2021-12",
-                title: 'Ecologist',
-                subtitle: 'BKS Kremikovci 98',
-                list: [
-                  "Management of waste collection processes.", "Negotiating environmental service contacts.", "Management of work teams for the implementation of waste management contacts.",
-                  "Preparation of annual reports, completion of accounting books and creating environmental reports.", "Working with regulations and related waste management programs."
-                ],
-              },
-            {
-              startDate: "2019-01",
-              endDate: "2021-09",
-              title: 'Ecologist',
-              subtitle: 'Annes 96 for Lufthansa Technik Sofia',
-              list: [
-                "Organize, monitor and control the waste separation and storage process.", "Provide training for LTSF and cleaning personnel to properly dispose, collect, separate and store waste.", "Organization of temporary storage sites. Filling and maintaining up-to-date accounting records for the available separated waste."
-              ]
-            },
-            // {
-            //     startDate: "2018-04",
-            //     endDate: "2018-11",
-            //     title: 'Administrative Assistant',
-            //     subtitle: 'Software University LTD',
-            //     list: [
-            //         "Implementation of CRM strategy to create a long-term mutually beneficial customer relationships.",
-            //         " Answering to customer questions, received through the communication channels.",
-            //         "Administration of communication platforms.",
-            //         " Creation of statement and analytical documents"
-            //     ]
-            //   },
-            //   {
-            //     startDate: "2017-04",
-            //     endDate: "2017-11",
-            //     title: 'Executor advertising projects',
-            //     subtitle: 'Ad Spot LTD',
-            //     list: [
-            //       " Implementation of internal and external advertising projects", "Working with clients and organizing promotions", "Solving problems and cases of a technical or other nature"
-            //     ]
-            //   },
-            //   {
-            //     startDate: "2016-02",
-            //     endDate: "2017-04",
-            //     title: 'Dispatcher',
-            //     subtitle: 'Carrier Commercial Refrigeration Bulgaria',
-            //     list: [
-            //       "Monitoring of air conditioning systems and  coordination of service teams", "Signal creation and related activities in ERP-SAP(MM+LE)", "Supporting transport organizing activities"
-            //     ]
-            //   },
-            //   {
-            //     startDate: "2011-06",
-            //     endDate: "2012-01",
-            //     title: 'Seller consultant “Stock loans”',
-            //     subtitle: 'Unicredit Consumer Financing',
-            //     list: [
-            //       "Presentation of credit products and concluding contracts with customers for commodity loans", "Presentation of credit related insurance products and insurance policies."
-            //     ]
-            //   },
-          ]
-        }
-      },
+      
       {
         id: 'wegh345o',
         type: 'Text-field',
@@ -297,6 +202,88 @@ const CVList: CVInterface[] = [
         }
       }],
       rightCol: [
+        {
+          id: '345j',
+          type: 'Text-field',
+          title: 'Experience',
+          state: 'old',
+          data: {
+            config: {
+              dateColumn: true
+            },
+            content: [
+              {
+                  startDate: "2019-09",
+                  endDate: "2021-12",
+                  title: 'Technical Manager',
+                  subtitle: 'Acoustic Force',
+                  list: [
+                    "TODO", "TODO", "TODO"
+                  ],
+                  description: undefined,
+                  
+                },
+              {
+                  startDate: "2019-09",
+                  endDate: "2021-12",
+                  title: 'Ecologist',
+                  subtitle: 'BKS Kremikovci 98',
+                  list: [
+                    "Management of waste collection processes.", "Negotiating environmental service contacts.", "Management of work teams for the implementation of waste management contacts.",
+                    "Preparation of annual reports, completion of accounting books and creating environmental reports.", "Working with regulations and related waste management programs."
+                  ],
+                },
+              {
+                startDate: "2019-01",
+                endDate: "2021-09",
+                title: 'Ecologist',
+                subtitle: 'Annes 96 for Lufthansa Technik Sofia',
+                list: [
+                  "Organize, monitor and control the waste separation and storage process.", "Provide training for LTSF and cleaning personnel to properly dispose, collect, separate and store waste.", "Organization of temporary storage sites. Filling and maintaining up-to-date accounting records for the available separated waste."
+                ]
+              },
+              {
+                  startDate: "2018-04",
+                  endDate: "2018-11",
+                  title: 'Administrative Assistant',
+                  subtitle: 'Software University LTD',
+                  list: [
+                      "Implementation of CRM strategy to create a long-term mutually beneficial customer relationships.",
+                      " Answering to customer questions, received through the communication channels.",
+                      "Administration of communication platforms.",
+                      " Creation of statement and analytical documents"
+                  ]
+                },
+                {
+                  startDate: "2017-04",
+                  endDate: "2017-11",
+                  title: 'Executor advertising projects',
+                  subtitle: 'Ad Spot LTD',
+                  list: [
+                    " Implementation of internal and external advertising projects", "Working with clients and organizing promotions", "Solving problems and cases of a technical or other nature"
+                  ]
+                },
+                {
+                  startDate: "2016-02",
+                  endDate: "2017-04",
+                  title: 'Dispatcher',
+                  subtitle: 'Carrier Commercial Refrigeration Bulgaria',
+                  list: [
+                    "Monitoring of air conditioning systems and  coordination of service teams", "Signal creation and related activities in ERP-SAP(MM+LE)", "Supporting transport organizing activities"
+                  ]
+                },
+                {
+                  startDate: "2011-06",
+                  endDate: "2012-01",
+                  title: 'Seller consultant “Stock loans”',
+                  subtitle: 'Unicredit Consumer Financing',
+                  list: [
+                    "Presentation of credit products and concluding contracts with customers for commodity loans", "Presentation of credit related insurance products and insurance policies."
+                  ]
+                },
+            ]
+          }
+        },
       {
         id: '234hu',
         type: 'Progress-bar',
@@ -325,9 +312,9 @@ const CVList: CVInterface[] = [
     lastEdited: new Date("7/31/2023"),
     settings: { 
       colorTheme: {
-        dark: '#333652',
-        light: '#E9EAEC',
-        lightSecondary: '#90ADC6',
+        heading: '#333652',
+        background: '#E9EAEC',
+        text: '#90ADC6',
         accent: "#FAD02C"
       }
     },

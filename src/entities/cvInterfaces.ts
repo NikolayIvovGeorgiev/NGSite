@@ -13,7 +13,7 @@ export interface iPersonalInfoData{
 export interface iProgressBarComponentData {
   id?: number;
   title?: string;
-  level?: number;
+  level: number;
 }
 export interface iTextFieldComponentData {
   title?: string;
@@ -53,9 +53,9 @@ export interface Settings{
 }
 
 export interface ColorTheme {
-  dark: string,
-  light: string,
-  lightSecondary: string,
+  heading: string,
+  background: string,
+  text: string,
   accent: string,
 }
 
