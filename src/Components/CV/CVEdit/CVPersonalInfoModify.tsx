@@ -1,18 +1,10 @@
-import {
-  Row,
-  Image,
-  Button,
-  Placeholder,
-  Form,
-  InputGroup,
-  Col,
-} from "react-bootstrap";
+import { Row, Image, Button, Form, InputGroup, Col } from "react-bootstrap";
 import {
   PersonalDataInfo,
   Settings,
   iPersonalInfoData,
 } from "../../../entities/cvInterfaces";
-import { createElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import IconModal from "../../shared/modals/IconModal";
 import { cloneDeep } from "lodash";
@@ -25,18 +17,15 @@ interface Props {
 
 const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
   const [personalInfoData, setPersonalInfoData] = useState(cloneDeep(data));
-  const [selectedfile, setSelectedFile] = useState(null);
+  let [displayPicture, setDisplayPicture] = useState(
+    data.photo ? data.photo : "/src/assets/noimage.jpg"
+  );
 
-  let [displayPicture, setDisplayPicture] = useState("/src/assets/noimage.jpg");
-
-  const updatePicture = () => {
-    if (selectedfile !== null) {
-      setDisplayPicture(URL.createObjectURL(selectedfile));
-    }
-  };
   const fileSelectedHandler = (event: any) => {
-    setSelectedFile(event?.target.files[0]);
+    setDisplayPicture(URL.createObjectURL(event?.target.files[0]));
+    fileUploadHandler(); // Upload to server when ready
   };
+
   const fileUploadHandler = () => {
     // Upload picture to server
   };
@@ -109,35 +98,43 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
     });
   };
 
+  useEffect(() => {});
+
   return (
     <>
       <Row>
         {/*PHOTO*/}
-        <Col xs={2}>
+        <Col xs={3} className="position-relative">
           <Image
             //fluid
             className="shadow w-100"
             src={displayPicture}
           ></Image>
-          <div>
-            <label> Select Image</label>
-            <input type="file" accept="Image" onChange={fileSelectedHandler} />
-            <Button
-              className="btn btn-accent"
-              onClick={() => {
-                fileUploadHandler(), updatePicture();
-              }}
+          <div className="position-absolute top-0 bottom-0 start-0 end-0 p-inherit">
+            <label
+              htmlFor="profilePhoto"
+              className="w-100 h-100 c-pointer d-flex align-items-center justify-content-center"
             >
-              Upload
-            </Button>
+              {" "}
+              <span className="fs-4 fw-bold p-4 text-center">
+                Upload profile photo
+              </span>
+            </label>
+            <input
+              id="profilePhoto"
+              type="file"
+              accept="Image"
+              className="d-none"
+              onChange={fileSelectedHandler}
+            />
           </div>
         </Col>
-        <Col xs={10}>
-          <Row className="d-flex justify-content-center align-items-center">
+        <Col xs={9}>
+          <div className="d-flex align-items-center justify-content-between">
             {/*NAME*/}
             <InputGroup>
               <Form.Control
-                className="shadow mb-2"
+                className="shadow mb-4"
                 size="lg"
                 value={personalInfoData.name}
                 onChange={(e) => {
@@ -148,23 +145,26 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                 }}
               />
             </InputGroup>
-          </Row>
+          </div>
           {personalInfoData?.fields &&
             personalInfoData.fields?.map(
               (personalInfoField: iPersonalInfoData, index: number) => {
                 return (
+                  // display: grid;
+                  // grid-template-columns: auto auto 1fr auto;
+                  // grid-gap: 1rem;
+
                   <InputGroup
-                    className="mb-2"
+                    className="d-grid"
                     key={`${personalInfoData.name} + ${index}`}
                   >
                     <Form.Group
+                      className=" d-grid grid align-items-center mb-2"
                       id={`${personalInfoData.name} + ${
                         personalInfoData.fields.length
                       } + ${index + 1} `}
-                      as={Row}
-                      className="w-100 justify-content-center"
                     >
-                      <Col xs={2} className="align-self-center">
+                      <div className=" align-self-center me-2">
                         <select
                           className="custom-select text-md-center"
                           id="FieldTypeDropDown"
@@ -179,16 +179,16 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                           <option value="date">Date</option>
                           <option value="text">Text</option>
                         </select>
-                      </Col>
-                      <Col>
+                      </div>
+                      <div className=" align-self-center me-2">
                         <IconModal
                           settings={settings}
                           defaultIcon={personalInfoField.icon}
                           OnSave={(icon) => handleIconChoice(icon, index)}
                         />
-                      </Col>
+                      </div>
                       {/*Value*/}
-                      <Col xs={5}>
+                      <div className=" align-self-center me-2">
                         {personalInfoField.type === "date" && (
                           <Form.Group
                             id={`${data.name} + ${personalInfoField.type} + ${index} `}
@@ -228,24 +228,23 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                             />
                           </>
                         )}
-                      </Col>
+                      </div>
                       {/*Remove Field*/}
-                      <Col xs={1}>
+                      <div className="">
                         <ImCross
-                          className="justify"
                           style={{
-                            cursor: "pointer",
                             color: `${settings.colorTheme?.accent}`,
                           }}
+                          className="v-align-unset c-pointer"
                           onClick={() => handleRemoveField(index)}
                         />
-                      </Col>
+                      </div>
                     </Form.Group>
                   </InputGroup>
                 );
               }
             )}
-          <div className="flex mb-3">
+          <div className="d-flex justify-content-end mb-4">
             <Button
               variant="primary"
               onClick={() => {
@@ -257,17 +256,17 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
           </div>
           {personalInfoData.summary !== null && (
             <>
-              <div className="flex">
+              <div className="flex mb-2">
                 <textarea
                   rows={3}
-                  className="w-75 ms-5"
+                  className="w-100 rounded"
                   value={personalInfoData.summary}
                   onChange={(e) => {
                     updateSummaryField(e.target.value);
                   }}
                 />
               </div>
-              <div className="flex">
+              <div className="d-flex justify-content-end mb-4">
                 <Button
                   variant="primary"
                   onClick={() => {
@@ -284,7 +283,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
           )}
           {personalInfoData.summary == null && (
             <>
-              <div className="flex">
+              <div className="d-flex justify-content-end mb-4">
                 <Button
                   variant="primary"
                   onClick={() => {
@@ -301,9 +300,9 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
           )}
         </Col>
       </Row>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div className="d-flex justify-content-end mb-4">
         <Button
-          className="btn btn-accent float-end  m-2"
+          className="btn btn-accent me-2 mb-4"
           onClick={() => {
             onSave();
           }}
@@ -313,7 +312,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
         </Button>
 
         <Button
-          className="btn btn-accent float-end m-2"
+          className="btn btn-accent mb-4"
           onClick={() => {
             onSave(personalInfoData);
           }}

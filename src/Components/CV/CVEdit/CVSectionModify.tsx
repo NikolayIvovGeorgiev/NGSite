@@ -86,8 +86,10 @@ const CVSectionModify = ({
       | iProgressBarComponentData
       | iTextFieldComponentData
       | iPieChartComponentData = {};
-    if (chosenSectionType === "Text-field")
+    if (chosenSectionType === "Text-field") {
       newData = { title: "", subtitle: "" };
+      if (togglesValue.includes("list")) newData.list = [""];
+    }
     if (chosenSectionType === "Progress-bar")
       newData = { title: "", level: undefined };
     if (chosenSectionType === "Pie-Chart") newData = { title: "", percent: "" };
@@ -171,10 +173,11 @@ const CVSectionModify = ({
     setValidated(true);
   };
   const handleAddListItem = (index: number) => {
-    if (!!sectionData.data.content[index].list) {
-      let content = [...sectionData.data.content];
-      content[index].list.push("");
+    console.log("called");
 
+    if (!!sectionData.data.content[index].list) {
+      let content = cloneDeep(sectionData.data.content);
+      content[index].list = [...content[index].list, ""];
       setSectionData({
         ...sectionData,
         data: {
@@ -182,26 +185,25 @@ const CVSectionModify = ({
           content: content,
         },
       });
-      console.log(sectionData);
     }
   };
-  const handleChangeButton = (val: any) => {
-    setTogglesValue(val);
-
-    const newlist = [""];
-
-    setSectionData({
-      ...sectionData,
-      data: {
-        ...sectionData.data,
-        content: sectionData.data.content.map(
-          (dataObject: iTextFieldComponentData) => ({
-            ...dataObject,
-            list: newlist,
-          })
-        ),
-      },
-    });
+  const handleChangeButton = (newToggleValues: any) => {
+    const oldToggleValues = cloneDeep(togglesValue);
+    setTogglesValue(newToggleValues);
+    if (!oldToggleValues.includes("list") && newToggleValues.includes("list")) {
+      setSectionData({
+        ...sectionData,
+        data: {
+          ...sectionData.data,
+          content: sectionData.data.content.map(
+            (dataObject: iTextFieldComponentData) => ({
+              ...dataObject,
+              list: [""],
+            })
+          ),
+        },
+      });
+    }
   };
   const sanitzeSection = () => {
     if (!togglesValue.includes(optionalFields.description)) {
@@ -440,7 +442,7 @@ const CVSectionModify = ({
                             color: `${settings.colorTheme?.heading}`,
                           }}
                         >
-                          List Element
+                          List
                         </Form.Text>
                         {textField?.list &&
                           textField.list?.map(
@@ -513,7 +515,7 @@ const CVSectionModify = ({
                     {togglesValue.includes("dates") && (
                       <Row className=" d-flex w-100 mb-4">
                         {/* Start Date FORM */}
-                        <Col xs={12} md={6} className="ps-0">
+                        <Col xs={12} md={6} className="ps-0 p-0-md-down ">
                           <Form.Group
                             id={`${sectionData.id} + ${textField.startDate} + ${index} `}
                           >
@@ -540,7 +542,7 @@ const CVSectionModify = ({
                           </Form.Group>
                         </Col>
                         {/* END Date FORM */}
-                        <Col xs={12} md={6} className="pe-0">
+                        <Col xs={12} md={6} className="pe-0 p-0-md-down ">
                           <Form.Group
                             id={`${sectionData.id} + ${textField.endDate} + ${index} `}
                           >
@@ -755,37 +757,39 @@ const CVSectionModify = ({
         }}
       >
         {/* SAVE SECTION + SANITIZE SECTION + STATE-OLD */}
-        <Button
-          className="btn btn-accent me-1"
-          onClick={() => {
-            sectionData.state = "old";
-            sanitzeSection();
-            onSave();
-          }}
-        >
-          {" "}
-          Cancel Edit{" "}
-        </Button>
-        <Button
-          className="btn btn-accent me-1"
-          onClick={() => {
-            onDelete();
-          }}
-        >
-          {" "}
-          Delete Section
-        </Button>
-        <Button
-          className="btn btn-accent me-1"
-          onClick={() => {
-            sectionData.state = "old";
-            sanitzeSection();
-            onSave(sectionData);
-          }}
-        >
-          {" "}
-          Save Section
-        </Button>
+        <div className="mb-4">
+          <Button
+            className="btn btn-accent me-1"
+            onClick={() => {
+              sectionData.state = "old";
+              sanitzeSection();
+              onSave();
+            }}
+          >
+            {" "}
+            Cancel Edit{" "}
+          </Button>
+          <Button
+            className="btn btn-accent me-1"
+            onClick={() => {
+              onDelete();
+            }}
+          >
+            {" "}
+            Delete Section
+          </Button>
+          <Button
+            className="btn btn-accent me-1"
+            onClick={() => {
+              sectionData.state = "old";
+              sanitzeSection();
+              onSave(sectionData);
+            }}
+          >
+            {" "}
+            Save Section
+          </Button>
+        </div>
       </div>
     </div>
   );
