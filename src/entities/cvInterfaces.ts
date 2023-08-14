@@ -72,3 +72,6 @@ export interface CVInterface {
     }
     }
 }
+export interface TaskList {
+  [key: string]: string[];
+}
