@@ -8,10 +8,13 @@ import CVList from "../../../mocked-data/cv-data";
 import CVBody from "../CVBody";
 import CVPersonalInfo from "../CVPersonalInfo";
 import CVPersonalInfoModify from "./CVPersonalInfoModify";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SideCVControlBar } from "../SideCVControlBar";
 import PaletteModal from "../../shared/modals/PaletteModal";
 import { produce } from "immer";
+import { Row } from "react-bootstrap";
+import { useReactToPrint } from "react-to-print";
+import html2pdf from "html2pdf.js";
 
 const CVView = () => {
   const [cvData, setCvData] = useState<CVInterface | undefined>();
@@ -25,6 +28,25 @@ const CVView = () => {
   const handlePaletteButton = () => {
     setShowPaletteModal(!showPaletteModal);
   };
+
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const handleDownload = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: `${cvData?.note}.pdf`,
+    copyStyles: true,
+    print: async (printIframe: HTMLIFrameElement) => {
+      const document = printIframe.contentDocument;
+      if (document) {
+        const html = document.getElementsByTagName("html")[0];
+        console.log(html);
+        await html2pdf().from(html).save();
+      }
+    },
+  });
 
   const changeCvTheme = (selectedTheme: ColorTheme) => {
     if (cvData) {
@@ -87,8 +109,8 @@ const CVView = () => {
   };
 
   return cvData ? (
-    <div
-      className="p-5"
+    <Row
+      className="p-5 margin-bottom-bars"
       style={{ backgroundColor: cvData.settings.colorTheme?.background }}
     >
       <PaletteModal
@@ -102,8 +124,10 @@ const CVView = () => {
         }}
       />
       <SideCVControlBar
+        onPrintButtonClick={handlePrint}
         onColorPaletteClick={handlePaletteButton}
         onEditButtonClick={handleEditButtonClick}
+        onSaveButtonClick={handleDownload}
       />
       {personalInfoEditMode && (
         <CVPersonalInfoModify
@@ -112,21 +136,26 @@ const CVView = () => {
           onSave={handleSave}
         />
       )}
-      {!personalInfoEditMode && (
-        <CVPersonalInfo
-          settings={cvData.settings}
-          onEditButton={handlepersonalInfoEditButton}
-          isEditing={isEditingMode}
-          data={cvData}
-        />
-      )}
+      <div
+        ref={componentRef}
+        style={{ backgroundColor: cvData.settings.colorTheme?.background }}
+      >
+        {!personalInfoEditMode && (
+          <CVPersonalInfo
+            settings={cvData.settings}
+            onEditButton={handlepersonalInfoEditButton}
+            isEditing={isEditingMode}
+            data={cvData}
+          />
+        )}
 
-      <CVBody
-        isEditingMode={isEditingMode}
-        data={cvData}
-        settings={cvData.settings}
-      ></CVBody>
-    </div>
+        <CVBody
+          isEditingMode={isEditingMode}
+          data={cvData}
+          settings={cvData.settings}
+        ></CVBody>
+      </div>
+    </Row>
   ) : (
     <>No CV found</>
   );

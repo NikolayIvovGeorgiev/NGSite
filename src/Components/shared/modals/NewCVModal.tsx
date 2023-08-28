@@ -5,9 +5,10 @@ interface Props {
   showModal: boolean;
   onConfirm?: (note: string) => void;
   onDecline?: () => void;
+  onExit?: () => void;
 }
 
-const NewCvModal = ({ showModal, onConfirm, onDecline }: Props) => {
+const NewCvModal = ({ showModal, onConfirm, onDecline, onExit }: Props) => {
   const [show, setShow] = useState(showModal);
   const [noteText, setNoteText] = useState("");
 
@@ -21,6 +22,11 @@ const NewCvModal = ({ showModal, onConfirm, onDecline }: Props) => {
   return (
     <>
       <Modal
+        onExit={() => {
+          if (onExit) onExit();
+          setShow(false);
+          setNoteText("");
+        }}
         show={show}
         onHide={() => {
           setShow(false);

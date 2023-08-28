@@ -53,31 +53,31 @@ const CVPage = () => {
   return (
     <>
       <NewCvModal
+        onExit={() => {
+          setShowModal(false);
+        }}
         showModal={showModal}
         onConfirm={createNewCV}
         onDecline={() => {
           setShowModal(false);
         }}
       />
-      <Container>
-        <Row xs={3}>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setShowModal(true);
-            }}
-          >
-            <ImPlus className="me-2" />
-            New CV
-          </Button>
-        </Row>
-        <Row>
-          {cvList.map((cv, index) => {
-            return <CVPreviewCard cv={cv} key={index} />;
-          })}
-          <div className="d-flex justify-content-around"></div>
-        </Row>
-      </Container>
+      <Row className="p-4">
+        {cvList.map((cv, index) => {
+          return <CVPreviewCard cv={cv} key={index} />;
+        })}
+        <div className="d-flex justify-content-around"></div>
+        <Button
+          className="mt-4"
+          variant="primary"
+          onClick={() => {
+            setShowModal(true);
+          }}
+        >
+          <ImPlus className="me-2" />
+          New CV
+        </Button>
+      </Row>
     </>
   );
 };

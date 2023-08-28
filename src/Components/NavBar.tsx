@@ -1,42 +1,94 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { SideCVControlBar } from "./CV/SideCVControlBar";
+import { FormEvent, useState } from "react";
+import { getAuthToken, loginUser } from "../services/fetch.service";
 
 const NavBar = () => {
+  const [isLogIn, setIsLogIn] = useState(getAuthToken() ? true : false);
+  const handleLogIn = (event: any) => {
+    event.preventDefault();
+
+    console.log(isLogIn);
+
+    const data = new FormData(event.target);
+
+    const username = data.get("username")?.toString();
+    const password = data.get("password")?.toString();
+
+    if (password && username) {
+      const payload = {
+        username,
+        password,
+      };
+      loginUser(payload).then(() => {
+        setIsLogIn(getAuthToken() ? true : false);
+      });
+    }
+  };
+
   return (
-    <Navbar bg="background" expand="xl">
-      <Container>
-        <Navbar.Brand as={Link} to="/" className="text-primary">
+    <Navbar
+      bg="background"
+      expand="xl"
+      className="fixed-bar top-0 bg-white shadow"
+    >
+      <Container className="p-0">
+        <Navbar.Brand as={Link} to="/" className="">
           Nikolay Georgiev
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Item>
-              <Nav.Link as={Link} to="/cv" className="nav-link text-primary">
-                CV
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/test-page"
-                className="nav-link text-primary"
-              >
-                Test Page
-              </Nav.Link>
-            </Nav.Item>
-            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown> */}
+          <Nav className="me-auto w-100 align-items-center justify-content-between">
+            <div className="d-flex">
+              <Nav.Item>
+                <Nav.Link as={Link} to="/cv" className="nav-link ">
+                  CV
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link as={Link} to="/test-page" className="nav-link ">
+                  Test Page
+                </Nav.Link>
+              </Nav.Item>
+            </div>
+            <div className="d-flex align-items-center">
+              {!isLogIn && (
+                <>
+                  <Form
+                    className="d-flex align-items-center"
+                    onSubmit={handleLogIn}
+                  >
+                    <Form.Control
+                      type="text"
+                      name="username"
+                      placeholder="username"
+                      className="me-2"
+                      aria-label="Search"
+                    />
+                    <Form.Control
+                      type="password"
+                      name="password"
+                      placeholder="password"
+                      className="me-2"
+                      aria-label="Search"
+                    />
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      className=" me-3 w-50 "
+                    >
+                      Log in
+                    </Button>
+                  </Form>
+                  <Nav.Item>
+                    <Nav.Link as={Link} to="/test-page" className="nav-link ">
+                      Register
+                    </Nav.Link>
+                  </Nav.Item>
+                </>
+              )}
+            </div>
           </Nav>
         </Navbar.Collapse>
       </Container>

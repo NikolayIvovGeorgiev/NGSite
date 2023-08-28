@@ -21,7 +21,23 @@ $CT-blue-accent:  #19A7CE ;
   -webkit-text-size-adjust: 100%;
 };
 
+.fixed-bar {
+ position: fixed !important;
+ height: 60px;
+ width: 100%;
+ z-index: 100;
+}
+.margin-top-bars {
+  margin-top: 60px;
+}
+.margin-bottom-bars {
+  margin-bottom: 60px;
+}
 
+.left-0 {
+  left: 0;
+}
+ 
 h2 {
   display: block;
   font-size: 2em;
