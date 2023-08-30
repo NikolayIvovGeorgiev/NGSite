@@ -5,6 +5,7 @@ import ErrorPage from "./Pages/ErrorPage";
 import HomePage from "./Pages/HomePage";
 import CVPage from "./Pages/CVPage";
 import CVView from "./Components/CV/CVEdit/CVView";
+import RegisterPage from "./Pages/RegisterPage";
 // import TestPage from "./Components/TestPage/TestPage";
 
 const router = createBrowserRouter([
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "cv", element: <CVPage /> },
       { path: `cv/:id`, element: <CVView /> },
+      { path: "register-page", element: <RegisterPage /> },
       // { path: "test-page", element: <TestPage /> },
     ],
   },

@@ -26,6 +26,11 @@ const NavBar = () => {
       });
     }
   };
+  const handleLogOut = () => {
+    localStorage.removeItem("authorization");
+    window.location.reload();
+    console.log(localStorage.getItem("authorization"));
+  };
 
   return (
     <Navbar
@@ -82,11 +87,25 @@ const NavBar = () => {
                     </Button>
                   </Form>
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/test-page" className="nav-link ">
+                    <Nav.Link
+                      as={Link}
+                      to="/register-page"
+                      className="nav-link "
+                    >
                       Register
                     </Nav.Link>
                   </Nav.Item>
                 </>
+              )}
+              {isLogIn && (
+                <Button
+                  variant="primary"
+                  className="me-3"
+                  onClick={handleLogOut}
+                >
+                  {" "}
+                  Log Out
+                </Button>
               )}
             </div>
           </Nav>
