@@ -1,5 +1,11 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import {
+  getAuthToken,
+  loginUser,
+  registerUser,
+} from "../services/fetch.service";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [password, setPassword] = useState("");
@@ -7,17 +13,41 @@ const RegisterPage = () => {
     setPassword(event.target.value);
   };
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
+
   const handleConfirmPassword = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setConfirmPassword(event.target.value);
   };
+
   const handleRegister = (event: any) => {
     event.preventDefault();
+
+    const data = new FormData(event.target);
+
+    const username = data.get("username")?.toString();
 
     if (password !== confirmPassword) {
       alert("Passwords do not match.");
       return;
+    }
+
+    if (username && password && confirmPassword) {
+      const payload = {
+        username,
+        password,
+        confirmPassword,
+      };
+      registerUser(payload).then(() => {
+        const loginPayload = {
+          username,
+          password,
+        };
+        loginUser(loginPayload).then(() => {
+          navigate("/cv");
+        });
+      });
     }
   };
   return (

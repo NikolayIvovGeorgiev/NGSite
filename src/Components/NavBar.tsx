@@ -1,18 +1,26 @@
 import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { SideCVControlBar } from "./CV/SideCVControlBar";
-import { FormEvent, useState } from "react";
-import { getAuthToken, loginUser } from "../services/fetch.service";
+import { useEffect, useState } from "react";
+import {
+  deleteAuthToken,
+  getAuthToken,
+  loginUser,
+} from "../services/fetch.service";
 
 const NavBar = () => {
   const [isLogIn, setIsLogIn] = useState(getAuthToken() ? true : false);
+
+  useEffect(() => {
+    window.addEventListener("storageUpdate", () => {
+      setIsLogIn(getAuthToken() ? true : false);
+    });
+  });
+
   const handleLogIn = (event: any) => {
     event.preventDefault();
 
-    console.log(isLogIn);
-
     const data = new FormData(event.target);
-
     const username = data.get("username")?.toString();
     const password = data.get("password")?.toString();
 
@@ -21,15 +29,8 @@ const NavBar = () => {
         username,
         password,
       };
-      loginUser(payload).then(() => {
-        setIsLogIn(getAuthToken() ? true : false);
-      });
+      loginUser(payload);
     }
-  };
-  const handleLogOut = () => {
-    localStorage.removeItem("authorization");
-    window.location.reload();
-    console.log(localStorage.getItem("authorization"));
   };
 
   return (
@@ -101,7 +102,7 @@ const NavBar = () => {
                 <Button
                   variant="primary"
                   className="me-3"
-                  onClick={handleLogOut}
+                  onClick={deleteAuthToken}
                 >
                   {" "}
                   Log Out
