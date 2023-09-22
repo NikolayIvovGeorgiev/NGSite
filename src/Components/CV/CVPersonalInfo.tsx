@@ -38,6 +38,7 @@ const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
               {data.data.personalInfo.name}
             </h1>
           </Row>
+
           <Row>
             {personalInfoFields.map((field, index) => (
               <Col
@@ -77,21 +78,21 @@ const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
               </Col>
             ))}
           </Row>
-          <Row>
-            {data.data.personalInfo.summary && (
-              <div>
-                <p
-                  className="m-0"
-                  style={{
-                    color: `${settings.colorTheme?.heading}`,
-                  }}
-                >
-                  {data.data.personalInfo.summary}
-                </p>
-              </div>
-            )}
-          </Row>
         </Col>
+        <Row>
+          {data.data.personalInfo.summary && (
+            <div>
+              <p
+                className="m-0"
+                style={{
+                  color: `${settings.colorTheme?.heading}`,
+                }}
+              >
+                {data.data.personalInfo.summary}
+              </p>
+            </div>
+          )}
+        </Row>
       </Row>
       <Row>
         {isEditing === true && (

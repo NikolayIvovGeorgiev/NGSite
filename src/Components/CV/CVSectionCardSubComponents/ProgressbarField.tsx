@@ -18,8 +18,8 @@ const ProgressbarField = ({ data, settings }: Props) => {
     <div>
       {data.map((content: iProgressBarComponentData, index: number) => {
         return (
-          <div className="p-1" key={`textProgress-${index + 1}`}>
-            <Row key={index}>
+          <div key={`textProgress-${index + 1}`}>
+            <Row key={index} className="mediaSize align-self-md-center">
               <Col
                 md={6}
                 sm={12}
@@ -29,9 +29,9 @@ const ProgressbarField = ({ data, settings }: Props) => {
               >
                 {content.title}
               </Col>
-              <Col md={6} sm={12}>
+              <Col md={6} sm={12} className=" mediaSize align-self-md-center">
                 <div
-                  className="progress"
+                  className="progress "
                   style={{
                     backgroundColor: `${settings.colorTheme?.heading}`,
                     margin: 10,
@@ -39,7 +39,7 @@ const ProgressbarField = ({ data, settings }: Props) => {
                   }}
                 >
                   <div
-                    className="progress-bar"
+                    className="progress-bar "
                     role="progressbar"
                     style={{
                       backgroundColor: `${settings.colorTheme?.accent}`,

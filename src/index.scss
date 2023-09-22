@@ -113,7 +113,7 @@ hr {
 .cv-section {
   h2 {
     display: block;
-    font-size: 2em;
+    // font-size: 2em;
     margin-top: 0.67em;
     margin-bottom: 0.67em;
     margin-left: 0;
@@ -251,4 +251,61 @@ hr {
     justify-content: normal !important;
   }
  }
+
+//  @page {
+//   margin: 1in; // margin for each printed piece of paper
+// }
+
+// @page :first {
+//   margin-top: 2in; // top margin for first page of paper
+// }
+.special_canvas{width: 100% !important; height: auto !important;}
+@media print {
+  body {
+    // margin: 0; // 
+    // padding-top:2.5cm;
+    // padding-bottom:2.5cm;
+    // height:auto;
+    background-color: black;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 100%;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact!important;  
+
+  }
+  
+  .page-break {
+    margin-top: 1rem;
+    display: block;
+    page-break-before: auto;
+  }
+
+  @page {
+    size: auto;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact!important;  
+    // margin-top: 12mm;
+    // margin-bottom: 12mm;
+  }
+  
+  /* Hide headers and footers */
+  header, footer {
+      display: none;
+  }
+  h1, .h1 {font-size: 16px !important};
+  h2, .h2 {font-size: 14px !important};
+  h3, .h3 {font-size: 13px};
+  h4, .h4 {font-size: 12px};
+  p,  .p  {font-size: 12px};
+ .mediaSize {font-size: 10px}
+
+ 
+  .col-md-6{width: 50%;}
+  
+}
 

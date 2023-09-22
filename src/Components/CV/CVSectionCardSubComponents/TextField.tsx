@@ -21,7 +21,7 @@ const TextField = ({ data, settings }: Props) => {
           <div key={`textFielWraper-${index}`}>
             <Row key={`textField-${index}`}>
               {(content.startDate || content.endDate) && (
-                <Col xs={3}>
+                <Col xs={2}>
                   <p
                     style={{
                       color: `${settings.colorTheme?.heading}`,

@@ -78,7 +78,14 @@ const PieChartField = ({ data, settings }: Props) => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <Chart type="pie" data={chartData} options={chartOptions} />
+        <Chart
+          type="pie"
+          data={chartData}
+          options={chartOptions}
+          pt={{
+            canvas: { className: "special_canvas" },
+          }}
+        />
       )}
     </div>
   );

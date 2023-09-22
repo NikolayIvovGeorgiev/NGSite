@@ -109,10 +109,7 @@ const CVView = () => {
   };
 
   return cvData ? (
-    <Row
-      className="p-5 margin-bottom-bars"
-      style={{ backgroundColor: cvData.settings.colorTheme?.background }}
-    >
+    <Row style={{ backgroundColor: cvData.settings.colorTheme?.background }}>
       <PaletteModal
         showPaletteModal={showPaletteModal}
         onConfirm={(theme) => {
@@ -138,6 +135,7 @@ const CVView = () => {
       )}
       <div
         ref={componentRef}
+        className="p-5 margin-bottom-bars print-area"
         style={{ backgroundColor: cvData.settings.colorTheme?.background }}
       >
         {!personalInfoEditMode && (
