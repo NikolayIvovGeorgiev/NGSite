@@ -14,6 +14,13 @@ interface registerData{
     password: string,
     confirmPassword: string
 }
+interface cvData{
+    id?: null | number;
+    name: string;
+    birthDate?: Date | string;
+    summary?: null | string;
+    image?: null | string;
+}
 
 export const loginUser = (payload: loginData) => {
     return new Promise<AxiosResponse<any>>((resolve, reject) => {
@@ -51,4 +58,17 @@ export const setAuthToken = (token: string) => {
 export const deleteAuthToken = () => {
     localStorage.removeItem("authorization");
     window.dispatchEvent(new Event('storageUpdate'));
+ }
+
+ export const createCV = (payload: cvData) => {
+    return new Promise<AxiosResponse<any>>((resolve, reject) => {
+        axiosInstance.post('/CVs', JSON.stringify(payload))
+        .then((response) => {
+            console.log(response);
+            resolve(response);
+        }).catch((error) => {
+                console.error(error.response.data);
+                reject(error);
+            })
+    })
  }

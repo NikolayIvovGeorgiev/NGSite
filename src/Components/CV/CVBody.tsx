@@ -1,5 +1,9 @@
 import { Button, Col, Row } from "react-bootstrap";
-import { CVInterface, Section, Settings } from "../../entities/cvInterfaces";
+import {
+  CVInterface,
+  Section,
+  iProgressBarComponentData,
+} from "../../entities/cvInterfaces";
 import CVSectionCard from "./CVSectionCard";
 import PieChartField from "./CVSectionCardSubComponents/PieChartField";
 import ProgressbarField from "./CVSectionCardSubComponents/ProgressbarField";
@@ -18,10 +22,9 @@ import { Droppable, Draggable } from "@hello-pangea/dnd";
 interface Props {
   data: CVInterface;
   isEditingMode: boolean;
-  settings: Settings;
 }
 
-const CVBody = ({ data, isEditingMode, settings }: Props) => {
+const CVBody = ({ data, isEditingMode }: Props) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingCol, setEditingCol] = useState<string | null>(null);
   const [cvData, setCVData] = useState<CVInterface>(data);
@@ -167,15 +170,15 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
               type="Section"
               key={"DropapbleLeftCol"}
             >
-              {(provided, snapshot) => (
+              {(provided: any) => (
                 <div
                   key={"leftCol"}
                   ref={provided.innerRef}
-                  style={{
-                    backgroundColor: snapshot.isDraggingOver
-                      ? `${settings.colorTheme?.background}`
-                      : `${settings.colorTheme?.text}`,
-                  }}
+                  // style={{
+                  //   backgroundColor: snapshot.isDraggingOver
+                  //     ? `${settings.colorTheme?.background}`
+                  //     : `${settings.colorTheme?.text}`,
+                  // }}
                   {...provided.droppableProps}
                 >
                   {cvData.data.sections.leftCol.map(
@@ -186,10 +189,10 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                           draggableId={`${section.id}+${section.title}+${index}`}
                           index={index}
                         >
-                          {(provided, snapshot) => (
+                          {(provided: any) => (
                             <div
                               key={`${section.id} + ${index}`}
-                              className="mty cv-section"
+                              className="mty cv-section "
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
@@ -201,7 +204,7 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                                 <CVSectionModify
                                   settings={data.settings}
                                   data={section}
-                                  index={data.id}
+                                  // index={data.id}
                                   heading={section.title}
                                   key={index}
                                   onSave={saveSection}
@@ -217,7 +220,7 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                                 <CVSectionCard
                                   settings={data.settings}
                                   isEditing={isEditingMode}
-                                  data={section}
+                                  // data={section}
                                   index={index}
                                   heading={section.title}
                                   onClick={() => {
@@ -226,7 +229,10 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                                 >
                                   {section.type === "Progress-bar" ? (
                                     <ProgressbarField
-                                      data={section.data.content}
+                                      data={
+                                        section.data
+                                          .content as iProgressBarComponentData[]
+                                      }
                                       settings={data.settings}
                                     />
                                   ) : section.type === "Text-field" ? (
@@ -271,15 +277,15 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
               type="Section"
               key={"DropapbleRightCol"}
             >
-              {(provided, snapshot) => (
+              {(provided) => (
                 <div
                   key={"rightCol"}
                   ref={provided.innerRef}
-                  style={{
-                    backgroundColor: snapshot.isDraggingOver
-                      ? `${settings.colorTheme?.background}`
-                      : `${settings.colorTheme?.background}`,
-                  }}
+                  // style={{
+                  //   backgroundColor: snapshot.isDraggingOver
+                  //     ? `${settings.colorTheme?.background}`
+                  //     : `${settings.colorTheme?.background}`,
+                  // }}
                   {...provided.droppableProps}
                 >
                   {cvData.data.sections.rightCol.map(
@@ -290,7 +296,7 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                           draggableId={`${section.id}+${section.title}+${index}`}
                           index={index}
                         >
-                          {(provided, snapshot) => (
+                          {(provided) => (
                             <div
                               key={`${section.id} + ${index}`}
                               className="mty cv-section"
@@ -305,7 +311,7 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                                 <CVSectionModify
                                   settings={data.settings}
                                   data={section}
-                                  index={data.id}
+                                  // index={data.id}
                                   heading={section.title}
                                   key={index}
                                   onSave={saveSection}
@@ -321,7 +327,7 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                                 <CVSectionCard
                                   settings={data.settings}
                                   isEditing={isEditingMode}
-                                  data={section}
+                                  // data={section}
                                   index={index}
                                   heading={section.title}
                                   onClick={() => {
@@ -330,7 +336,10 @@ const CVBody = ({ data, isEditingMode, settings }: Props) => {
                                 >
                                   {section.type === "Progress-bar" ? (
                                     <ProgressbarField
-                                      data={section.data.content}
+                                      data={
+                                        section.data
+                                          .content as iProgressBarComponentData[]
+                                      }
                                       settings={data.settings}
                                     />
                                   ) : section.type === "Text-field" ? (

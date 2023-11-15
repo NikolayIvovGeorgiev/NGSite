@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Modal, Row } from "react-bootstrap";
-import { createElement } from "react";
-import * as AntIcon from "react-icons/ai";
-import { IconType } from "react-icons";
+import { useEffect, useState } from "react";
+import { Button, Modal } from "react-bootstrap";
+// import { createElement } from "react";
+// import * as AntIcon from "react-icons/ai";
+// import { IconType } from "react-icons";
 
 interface Props {
-  OnYes: (icon: string | undefined) => void;
+  // OnYes: (icon: string | undefined) => void;
 }
 
-const sectionDeleteModal = ({ OnYes }: Props) => {
+const sectionDeleteModal = ({}: Props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -51,7 +51,7 @@ const sectionDeleteModal = ({ OnYes }: Props) => {
           <Modal.Title>Deleting Section</Modal.Title>
         </Modal.Header>
         <Modal.Body className="flex-wrap">
-          {availableIcons.map((icon, index) => {
+          {availableIcons.map(() => {
             return (
               <p>
                 The information in the section will be lost. Do you want to

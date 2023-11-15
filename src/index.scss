@@ -10,7 +10,11 @@ $CT-blue-dark: #146C94;
 $CT-blue-light: #F6F1F1;
 $CT-blue-lightSecondary: #AFD3E2;
 $CT-blue-accent:  #19A7CE ;
-
+* {
+  -webkit-print-color-adjust: exact !important;   /* Chrome, Safari 6 – 15.3, Edge */
+  color-adjust: exact !important;                 /* Firefox 48 – 96 */
+  print-color-adjust: exact !important;           /* Firefox 97+, Safari 15.4+ */
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -260,38 +264,49 @@ hr {
 //   margin-top: 2in; // top margin for first page of paper
 // }
 .special_canvas{width: 100% !important; height: auto !important;}
+
+
 @media print {
-  body {
-    // margin: 0; // 
-    // padding-top:2.5cm;
-    // padding-bottom:2.5cm;
-    // height:auto;
-    background-color: black;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    height: 100%;
-    -webkit-print-color-adjust:exact !important;
-    print-color-adjust: exact !important;
-    color-adjust: exact!important;  
+  // body{
+  //   background-color: #000;
+  // }
+  .print-container{    
+    // box-shadow: inset 0 0 0 1000px gold;
 
   }
   
-  .page-break {
-    margin-top: 1rem;
-    display: block;
-    page-break-before: auto;
-  }
+  // @page {
+  //   margin: 0;
+  //   background-color: red !important;
+  //   color:red !important;
+  //   color-adjust: exact !important; 
+  //   -webkit-print-color-adjust: exact !important;
+  //   print-color-adjust: exact !important;
+  // }
+  
+  // body {
+  //   // margin: 0; // 
+  //   // padding-top:2.5cm;
+  //   // padding-bottom:2.5cm;
+  //   // height:auto;
+  //   // background-color: yellow;
+  //   margin: 0;
+  //   padding: 0;
+  //   height: 100%;
 
-  @page {
-    size: auto;
-    -webkit-print-color-adjust:exact !important;
-    print-color-adjust: exact !important;
-    color-adjust: exact!important;  
-    // margin-top: 12mm;
-    // margin-bottom: 12mm;
-  }
+  //   // -webkit-print-color-adjust:exact !important;
+  //   // print-color-adjust: exact !important;
+  //   // color-adjust: exact!important;  
+  // }
+   
+  // @page {
+  //   size: auto;
+  //   -webkit-print-color-adjust:exact !important;
+  //   print-color-adjust: exact !important;
+  //   color-adjust: exact!important;  
+  //   // margin-top: 12mm;
+  //   // margin-bottom: 12mm;
+  // }
   
   /* Hide headers and footers */
   header, footer {

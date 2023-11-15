@@ -1,4 +1,4 @@
-import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { DragDropContext } from "@hello-pangea/dnd";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import { Row, Col, Card } from "react-bootstrap";
 import { useState } from "react";
@@ -88,7 +88,7 @@ const HomePage = () => {
                 key={"toDoTasks"}
                 type="List"
               >
-                {(provided, snapshot) => (
+                {(provided) => (
                   <div
                     className="border p-4 shadow-lg"
                     {...provided.droppableProps}
@@ -102,7 +102,7 @@ const HomePage = () => {
                           draggableId={`toDoTask + ${index}`}
                           index={index}
                         >
-                          {(provided, snapshot) => (
+                          {(provided) => (
                             <div
                               ref={provided.innerRef}
                               key={`toDoTask + ${index}`}
@@ -158,7 +158,7 @@ const HomePage = () => {
                 key={"completedTasks"}
                 type="List"
               >
-                {(provided, snapshot) => (
+                {(provided) => (
                   <div
                     className="border p-4 shadow-lg"
                     {...provided.droppableProps}
@@ -173,7 +173,7 @@ const HomePage = () => {
                             draggableId={`completedTasks + ${index}`}
                             index={index}
                           >
-                            {(provided, snapshot) => (
+                            {(provided) => (
                               <div
                                 ref={provided.innerRef}
                                 key={`completedTasks + ${index}`}

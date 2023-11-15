@@ -1,5 +1,4 @@
-import React from "react";
-import { Row, Col, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 interface Props {
   onEditButtonClick: () => void;

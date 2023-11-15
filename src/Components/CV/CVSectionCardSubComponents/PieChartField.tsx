@@ -5,7 +5,6 @@ import {
 } from "../../../entities/cvInterfaces";
 import { Chart } from "primereact/chart";
 import { useState, useEffect } from "react";
-import { fetchData } from "../../../mocked-data/cv-data";
 
 interface Props {
   data?: iPieChartComponentData[];

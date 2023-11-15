@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Modal, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { createElement } from "react";
 import * as AntIcon from "react-icons/ai";
-import { IconType } from "react-icons";
 import { Settings } from "../../../entities/cvInterfaces";
 
 interface Props {
@@ -52,7 +51,7 @@ const IconModal = ({ defaultIcon, OnSave, settings }: Props) => {
       >
         {/* TODO find a way to fix this :D */}
         {iconChoice &&
-          createElement(AntIcon[iconChoice], {
+          createElement(AntIcon[iconChoice as keyof typeof AntIcon], {
             size: 40,
             color: `${settings.colorTheme?.accent}`,
           })}
@@ -76,7 +75,7 @@ const IconModal = ({ defaultIcon, OnSave, settings }: Props) => {
                     className=" btn bg-transparent btn-outline-primary mb-2 p-2  flex"
                     onClick={() => handleIconClick("")}
                   >
-                    {createElement(AntIcon[icon], {
+                    {createElement(AntIcon[icon as keyof typeof AntIcon], {
                       size: 30,
                       color: "red",
                     })}
@@ -87,7 +86,7 @@ const IconModal = ({ defaultIcon, OnSave, settings }: Props) => {
                     className="btn bg-transparent btn-outline-primary mb-2 p-2 m-2 flex"
                     onClick={() => handleIconClick(icon)}
                   >
-                    {createElement(AntIcon[icon], {
+                    {createElement(AntIcon[icon as keyof typeof AntIcon], {
                       size: 30,
                       color: `${settings.colorTheme?.accent}`,
                     })}

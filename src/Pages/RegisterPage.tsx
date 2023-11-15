@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import {
-  getAuthToken,
-  loginUser,
-  registerUser,
-} from "../services/fetch.service";
+import { loginUser, registerUser } from "../services/fetch.service";
 import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {

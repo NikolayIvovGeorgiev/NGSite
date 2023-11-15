@@ -19,6 +19,7 @@ import html2pdf from "html2pdf.js";
 const CVView = () => {
   const [cvData, setCvData] = useState<CVInterface | undefined>();
   const { id } = useParams();
+  // const [setBackgroundColor, setBackgroundColor] = useState<String>();
 
   const [personalInfoEditMode, setpersonalInfoEditMode] = useState(false);
   const handlepersonalInfoEditButton = () => {
@@ -32,6 +33,22 @@ const CVView = () => {
   const componentRef = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
+    // bodyClass: "kur",
+    // pageStyle: `.print-container { background-color: ${
+    //   cvData?.settings.colorTheme?.background ?? "red"
+    // };
+    // }`,
+
+    // html {
+    //   background-color: ${cvData?.settings.colorTheme?.background ?? "red"};
+    // }
+
+    pageStyle: `
+    html { 
+      background-color: ${cvData?.settings.colorTheme?.background ?? "red"};
+    }
+    
+    @page {  margin: 25px 0 25px 0;}`,
   });
 
   const handleDownload = useReactToPrint({
@@ -42,8 +59,15 @@ const CVView = () => {
       const document = printIframe.contentDocument;
       if (document) {
         const html = document.getElementsByTagName("html")[0];
+        const pdfOptions = {
+          margin: [15, 15],
+          html2canvas: { scale: 2, letterRendering: true },
+          jsPDF: { unit: "pt", format: "letter", orientation: "portrait" },
+          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+        };
+
         console.log(html);
-        await html2pdf().from(html).save();
+        await html2pdf().from(html).set(pdfOptions).save();
       }
     },
   });
@@ -147,11 +171,7 @@ const CVView = () => {
           />
         )}
 
-        <CVBody
-          isEditingMode={isEditingMode}
-          data={cvData}
-          settings={cvData.settings}
-        ></CVBody>
+        <CVBody isEditingMode={isEditingMode} data={cvData}></CVBody>
       </div>
     </Row>
   ) : (

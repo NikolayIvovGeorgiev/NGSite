@@ -1,6 +1,5 @@
 import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { SideCVControlBar } from "./CV/SideCVControlBar";
 import { useEffect, useState } from "react";
 import {
   deleteAuthToken,

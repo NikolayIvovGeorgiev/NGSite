@@ -49,10 +49,13 @@ const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
               >
                 {field.icon && (
                   <div className="justify-content-between mb-3" key={index}>
-                    {createElement(AntIcon[field.icon], {
-                      size: 30,
-                      color: [data.settings.colorTheme?.accent],
-                    })}
+                    {createElement(
+                      AntIcon[field.icon as keyof typeof AntIcon],
+                      {
+                        size: 30,
+                        color: [data.settings.colorTheme?.accent],
+                      }
+                    )}
                     <span
                       className="m-1"
                       style={{

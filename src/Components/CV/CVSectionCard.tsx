@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 
-import { Section, Settings } from "../../entities/cvInterfaces";
+import { Settings } from "../../entities/cvInterfaces";
 import { Button } from "react-bootstrap";
 
 interface Props {
-  data: Section;
+  // data: Section;
   index: number;
   heading: string;
   children?: ReactNode;
@@ -14,7 +14,6 @@ interface Props {
 }
 
 const CVSectionCard = ({
-  data,
   settings,
   index,
   heading,
@@ -28,7 +27,7 @@ const CVSectionCard = ({
         className={`border-gradient-title m-0 p-3 px-4`}
         style={{
           color: `${settings.colorTheme?.heading}`,
-          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
+          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(255,255,255,0) 20%)`,
           backgroundColor: `${settings.colorTheme?.background}`,
         }}
         id={heading}
@@ -49,7 +48,7 @@ const CVSectionCard = ({
         className="border-gradient-body p-4"
         style={{
           color: `${settings.colorTheme?.heading}`,
-          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
+          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(255,255,255,0) 65%)`,
           backgroundColor: `${settings.colorTheme?.background}`,
         }}
       >

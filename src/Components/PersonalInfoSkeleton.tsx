@@ -1,4 +1,4 @@
-import { Col, Row, Image, Button } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
 const CVPersonalInfoSkeleton = () => {
   return (

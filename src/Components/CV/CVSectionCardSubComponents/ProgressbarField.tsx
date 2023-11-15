@@ -1,4 +1,3 @@
-import ProgressBar from "react-bootstrap/ProgressBar";
 import {
   Settings,
   iProgressBarComponentData,
@@ -19,7 +18,10 @@ const ProgressbarField = ({ data, settings }: Props) => {
       {data.map((content: iProgressBarComponentData, index: number) => {
         return (
           <div key={`textProgress-${index + 1}`}>
-            <Row key={index} className="mediaSize align-self-md-center">
+            <Row
+              key={index}
+              className="mediaSize align-self-md-center align-items-center"
+            >
               <Col
                 md={6}
                 sm={12}

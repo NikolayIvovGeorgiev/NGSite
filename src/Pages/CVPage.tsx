@@ -1,4 +1,4 @@
-import { Button, Card, Container, Placeholder, Row } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
 import { ImPlus } from "react-icons/im";
 import CVPreviewCard from "../Components/CV/CVSectionCardSubComponents/CVPreviewCard";
 import CVList from "../mocked-data/cv-data";
@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { CVInterface } from "../entities/cvInterfaces";
 import { produce } from "immer";
 import { cloneDeep } from "lodash";
-import { useNavigate } from "react-router-dom";
 import { CvColorThemes } from "../Components/shared/constants/color-themes";
 
 const CVPage = () => {
@@ -44,6 +43,9 @@ const CVPage = () => {
         CVList.push(copy);
       })
     );
+    // createCV(payload).then(()=> {
+
+    // })
     setShowModal(false);
   };
 

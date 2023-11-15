@@ -6,7 +6,7 @@ import {
   iProgressBarComponentData,
   iTextFieldComponentData,
 } from "../../../entities/cvInterfaces";
-import { Button, Row, Col, Placeholder } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import Form from "react-bootstrap/Form";
@@ -14,14 +14,14 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { ImCross } from "react-icons/im";
 import { TEXT_SECTION_OPTIONAL_FIELDS as optionalFields } from "../constants";
 import { cloneDeep, get } from "lodash";
-import SectionDeleteButton from "./SectionDeleteModal";
-import { color } from "chart.js/helpers";
+// import SectionDeleteButton from "./SectionDeleteModal";
+// import { color } from "chart.js/helpers";
 
 interface Props {
   data: Section;
   settings: Settings;
   heading: string;
-  index: number;
+  // index: number;
   // children?: ReactNode;
   // // position: {
   //   col: string | number;
@@ -34,7 +34,6 @@ interface Props {
 const CVSectionModify = ({
   data,
   settings,
-  index,
   heading,
   onSave,
   onDelete,

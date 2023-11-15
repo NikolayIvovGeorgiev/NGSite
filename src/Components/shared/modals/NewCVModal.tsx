@@ -33,11 +33,11 @@ const NewCvModal = ({ showModal, onConfirm, onDecline, onExit }: Props) => {
         }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>New CV</Modal.Title>
+          <Modal.Title>CV Name</Modal.Title>
         </Modal.Header>
         <Modal.Body className="flex-wrap">
           <Form.Group>
-            <Form.Text className="text-accent">CV Note</Form.Text>
+            <Form.Text className="text-accent">CV Name</Form.Text>
             <Form.Control
               value={noteText}
               type="text"
