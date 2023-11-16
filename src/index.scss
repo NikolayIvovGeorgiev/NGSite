@@ -128,6 +128,16 @@ hr {
 
 }
 
+.toast-style{
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 101;
+
+}
+
+
 .fs-h1-top-normalize {
   line-height: calc(1.375rem + 0.5vw);
 }

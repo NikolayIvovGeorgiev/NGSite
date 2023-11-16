@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 
 const axiosInstance =  axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: `${import.meta.env.VITE_API_URL}`,
     headers: {'Content-Type': 'application/json'}
 })
 
@@ -26,6 +26,8 @@ export const loginUser = (payload: loginData) => {
     return new Promise<AxiosResponse<any>>((resolve, reject) => {
         axiosInstance.post('/Identity', JSON.stringify(payload))
             .then((response) => {
+                console.log(axiosInstance);
+                
                 setAuthToken(response.data);
                 resolve(response);
             }).catch((error) => {

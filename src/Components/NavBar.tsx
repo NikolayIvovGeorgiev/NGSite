@@ -7,8 +7,17 @@ import {
   loginUser,
 } from "../services/fetch.service";
 
+import { Toast } from "react-bootstrap";
+import { error } from "console";
+
 const NavBar = () => {
   const [isLogIn, setIsLogIn] = useState(getAuthToken() ? true : false);
+  const [loginToast, setLoginToast] = useState({
+    show: false,
+    color: "primary",
+    headerMessage: "",
+    message: "",
+  });
 
   useEffect(() => {
     window.addEventListener("storageUpdate", () => {
@@ -28,90 +37,126 @@ const NavBar = () => {
         username,
         password,
       };
-      loginUser(payload);
+      loginUser(payload)
+        .then((response) => {
+          setLoginToast({
+            show: true,
+            color: "primary",
+            headerMessage: "Success",
+            message: "Successfully Log in",
+          });
+
+          setTimeout(() => {
+            setLoginToast({ ...loginToast, show: false });
+          }, 1500);
+        })
+        .catch((error) => {
+          setLoginToast({
+            show: true,
+            color: "danger",
+            headerMessage: "Error",
+            message: `${error.response.data}`,
+          });
+
+          setTimeout(() => {
+            setLoginToast({ ...loginToast, show: false });
+          }, 1500);
+        });
     }
   };
 
   return (
-    <Navbar
-      bg="background"
-      expand="xl"
-      className="fixed-bar top-0 bg-white shadow"
-    >
-      <Container className="p-0">
-        <Navbar.Brand as={Link} to="/" className="">
-          Nikolay Georgiev
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto w-100 align-items-center justify-content-between">
-            <div className="d-flex">
-              <Nav.Item>
-                <Nav.Link as={Link} to="/cv" className="nav-link ">
-                  CV
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link as={Link} to="/test-page" className="nav-link ">
-                  Test Page
-                </Nav.Link>
-              </Nav.Item>
-            </div>
-            <div className="d-flex align-items-center">
-              {!isLogIn && (
-                <>
-                  <Form
-                    className="d-flex align-items-center"
-                    onSubmit={handleLogIn}
+    <>
+      <Toast
+        className="toast-style"
+        show={loginToast.show}
+        bg={loginToast.color}
+      >
+        <Toast.Header closeButton={false}>
+          {loginToast.headerMessage}
+        </Toast.Header>
+        <Toast.Body>{loginToast.message}</Toast.Body>
+      </Toast>
+      <Navbar
+        bg="background"
+        expand="xl"
+        className="fixed-bar top-0 bg-white shadow"
+      >
+        <Container className="p-0">
+          <Navbar.Brand as={Link} to="/" className="">
+            CV Builder
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto w-100 align-items-center justify-content-between">
+              <div className="d-flex">
+                <Nav.Item>
+                  <Nav.Link as={Link} to="/cv" className="nav-link ">
+                    CV
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link as={Link} to="/test-page" className="nav-link ">
+                    Create CV
+                  </Nav.Link>
+                </Nav.Item>
+              </div>
+              <div className="d-flex align-items-center">
+                {!isLogIn && (
+                  <>
+                    <Form
+                      className="d-flex align-items-center"
+                      onSubmit={handleLogIn}
+                    >
+                      <Form.Control
+                        type="text"
+                        name="username"
+                        placeholder="username"
+                        className="me-2"
+                        aria-label="Search"
+                      />
+                      <Form.Control
+                        type="password"
+                        name="password"
+                        placeholder="password"
+                        className="me-2"
+                        aria-label="Search"
+                      />
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        className=" me-3 w-50 "
+                      >
+                        Log in
+                      </Button>
+                    </Form>
+                    <Nav.Item>
+                      <Nav.Link
+                        as={Link}
+                        to="/register-page"
+                        className="nav-link "
+                      >
+                        Register
+                      </Nav.Link>
+                    </Nav.Item>
+                  </>
+                )}
+                {isLogIn && (
+                  <Button
+                    variant="primary"
+                    className="me-3"
+                    onClick={deleteAuthToken}
                   >
-                    <Form.Control
-                      type="text"
-                      name="username"
-                      placeholder="username"
-                      className="me-2"
-                      aria-label="Search"
-                    />
-                    <Form.Control
-                      type="password"
-                      name="password"
-                      placeholder="password"
-                      className="me-2"
-                      aria-label="Search"
-                    />
-                    <Button
-                      type="submit"
-                      variant="primary"
-                      className=" me-3 w-50 "
-                    >
-                      Log in
-                    </Button>
-                  </Form>
-                  <Nav.Item>
-                    <Nav.Link
-                      as={Link}
-                      to="/register-page"
-                      className="nav-link "
-                    >
-                      Register
-                    </Nav.Link>
-                  </Nav.Item>
-                </>
-              )}
-              {isLogIn && (
-                <Button
-                  variant="primary"
-                  className="me-3"
-                  onClick={deleteAuthToken}
-                >
-                  {" "}
-                  Log Out
-                </Button>
-              )}
-            </div>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+                    {" "}
+                    Log Out
+                  </Button>
+                )}
+              </div>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </>
   );
 };
 

@@ -76,6 +76,7 @@ const HomePage = () => {
       })
     );
   };
+
   return (
     <>
       <div className="p-4 mb-4">Plain Text</div>
