@@ -13,7 +13,7 @@ const CVPreviewCard = ({ cv }: Props) => {
         <Card.Body>
           <Card.Text>{cv.note}</Card.Text>
           <Card.Text>
-            {new Date(cv.lastEdited).toISOString().split("T")[0]}
+            {new Date(cv.createdOn).toISOString().split("T")[0]}
           </Card.Text>
           <Nav.Link as={Link} to={`${cv.id}`}>
             <Button variant="primary">View&Edit</Button>

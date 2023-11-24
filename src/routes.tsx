@@ -1,16 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "./Pages/Layout";
 import ErrorPage from "./Pages/ErrorPage";
 import HomePage from "./Pages/HomePage";
 import CVPage from "./Pages/CVPage";
 import CVView from "./Components/CV/CVEdit/CVView";
 import RegisterPage from "./Pages/RegisterPage";
+import App from "./App";
 // import TestPage from "./Components/TestPage/TestPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <App />,
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },

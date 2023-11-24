@@ -8,50 +8,55 @@ import { CVInterface } from "../entities/cvInterfaces";
 import { produce } from "immer";
 import { cloneDeep } from "lodash";
 import { CvColorThemes } from "../Components/shared/constants/color-themes";
+import { createCV, getCVs } from "../services/fetch.service";
+import { useAuth } from "../AuthContext";
 
 const CVPage = () => {
-  const [cvList, setCvList] = useState(CVList);
+  const { authToken } = useAuth();
+  useEffect(() => {
+    console.log(authToken);
+
+    getCVs().then((response) => {
+      setCvList(response.data);
+    });
+  }, [authToken]);
+  const [cvList, setCvList] = useState<any>([]);
   const [showModal, setShowModal] = useState(false);
-  const newCvObjest: CVInterface = {
-    id: CVList.length + 1,
-    note: "",
-    lastEdited: new Date(),
-    settings: {
-      colorTheme: CvColorThemes[0],
-    },
-    data: {
-      personalInfo: {
-        photo: null,
-        name: "",
-        birthDate: "",
-        fields: [],
-        summary: null,
-      },
-      sections: {
-        leftCol: [],
-        rightCol: [],
-      },
-    },
-  };
+  // const newCvObjest: CVInterface = {
+  //   id: CVList.length + 1,
+  //   note: "",
+  //   lastEdited: new Date(),
+  //   settings: {
+  //     colorTheme: CvColorThemes[0],
+  //   },
+  //   data: {
+  //     personalInfo: {
+  //       photo: null,
+  //       name: "",
+  //       birthDate: "",
+  //       fields: [],
+  //       summary: null,
+  //     },
+  //     sections: {
+  //       leftCol: [],
+  //       rightCol: [],
+  //     },
+  //   },
+  // };
 
-  const createNewCV = (note: string) => {
-    let copy = cloneDeep(newCvObjest);
-    copy.note = note;
-    setCvList(
-      produce(cvList, (draftCvlist) => {
-        draftCvlist.push(copy);
-        CVList.push(copy);
-      })
-    );
-    // createCV(payload).then(()=> {
-
-    // })
+  const createNewCV = (name: string) => {
+    // let copy = cloneDeep(newCvObjest);
+    // copy.note = note;
+    // setCvList(
+    //   produce(cvList, (draftCvlist) => {
+    //     draftCvlist.push(copy);
+    //     CVList.push(copy);
+    //   })
+    // );
+    createCV(name).then(() => {});
     setShowModal(false);
   };
 
-  useEffect(() => {
-    console.log(cvList.length);
-  }, [cvList]);
   return (
     <>
       <NewCvModal
@@ -65,7 +70,7 @@ const CVPage = () => {
         }}
       />
       <Row className="p-4">
-        {cvList.map((cv, index) => {
+        {cvList.map((cv: any, index: number) => {
           return <CVPreviewCard cv={cv} key={index} />;
         })}
         <div className="d-flex justify-content-around"></div>

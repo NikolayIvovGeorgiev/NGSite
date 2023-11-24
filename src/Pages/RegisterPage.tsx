@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { loginUser, registerUser } from "../services/fetch.service";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 const RegisterPage = () => {
+  const { setAuthToken } = useAuth();
   const [password, setPassword] = useState("");
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -40,8 +42,9 @@ const RegisterPage = () => {
           username,
           password,
         };
-        loginUser(loginPayload).then(() => {
+        loginUser(loginPayload).then((response) => {
           navigate("/cv");
+          setAuthToken(response.data);
         });
       });
     }

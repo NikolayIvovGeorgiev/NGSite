@@ -12,9 +12,6 @@ const HomePage = () => {
     ToDoList.completedTasks.forEach(() =>
       togglesList.completedTasks.push(false)
     );
-
-    // console.log(togglesList);
-
     return togglesList;
   };
 

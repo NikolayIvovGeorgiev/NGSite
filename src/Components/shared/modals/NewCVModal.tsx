@@ -45,7 +45,6 @@ const NewCvModal = ({ showModal, onConfirm, onDecline, onExit }: Props) => {
               onChange={(e) => {
                 inputNoteOnChange(e.target.value);
               }}
-              placeholder="Cv Note"
             />
           </Form.Group>
         </Modal.Body>

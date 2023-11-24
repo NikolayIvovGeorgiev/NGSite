@@ -1,8 +1,9 @@
-import NavBar from "./Components/NavBar";
+import Layout from "./Pages/Layout";
+
 function App() {
   return (
     <>
-      <NavBar />
+      <Layout></Layout>
     </>
   );
 }

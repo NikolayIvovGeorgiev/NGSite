@@ -1,29 +1,20 @@
 import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-  deleteAuthToken,
-  getAuthToken,
-  loginUser,
-} from "../services/fetch.service";
-
+import { Link, redirect, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { deleteAuthToken, loginUser } from "../services/fetch.service";
 import { Toast } from "react-bootstrap";
-import { error } from "console";
+import { useAuth } from "../AuthContext";
 
 const NavBar = () => {
-  const [isLogIn, setIsLogIn] = useState(getAuthToken() ? true : false);
+  const { authToken, setAuthToken } = useAuth();
+  // const [isLogIn, setIsLogIn] = useState(getAuthToken() ? true : false);
   const [loginToast, setLoginToast] = useState({
     show: false,
     color: "primary",
     headerMessage: "",
     message: "",
   });
-
-  useEffect(() => {
-    window.addEventListener("storageUpdate", () => {
-      setIsLogIn(getAuthToken() ? true : false);
-    });
-  });
+  const navigate = useNavigate();
 
   const handleLogIn = (event: any) => {
     event.preventDefault();
@@ -49,6 +40,8 @@ const NavBar = () => {
           setTimeout(() => {
             setLoginToast({ ...loginToast, show: false });
           }, 1500);
+
+          setAuthToken(response.data);
         })
         .catch((error) => {
           setLoginToast({
@@ -61,6 +54,8 @@ const NavBar = () => {
           setTimeout(() => {
             setLoginToast({ ...loginToast, show: false });
           }, 1500);
+
+          setAuthToken(null);
         });
     }
   };
@@ -91,18 +86,13 @@ const NavBar = () => {
             <Nav className="me-auto w-100 align-items-center justify-content-between">
               <div className="d-flex">
                 <Nav.Item>
-                  <Nav.Link as={Link} to="/cv" className="nav-link ">
-                    CV
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
                   <Nav.Link as={Link} to="/test-page" className="nav-link ">
-                    Create CV
+                    CV Example
                   </Nav.Link>
                 </Nav.Item>
               </div>
               <div className="d-flex align-items-center">
-                {!isLogIn && (
+                {!authToken && (
                   <>
                     <Form
                       className="d-flex align-items-center"
@@ -141,15 +131,26 @@ const NavBar = () => {
                     </Nav.Item>
                   </>
                 )}
-                {isLogIn && (
-                  <Button
-                    variant="primary"
-                    className="me-3"
-                    onClick={deleteAuthToken}
-                  >
-                    {" "}
-                    Log Out
-                  </Button>
+                {authToken && (
+                  <>
+                    <Nav.Item>
+                      <Nav.Link as={Link} to="/cv" className="nav-link ">
+                        CV Creator
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Button
+                      variant="primary"
+                      className="me-3"
+                      onClick={() => {
+                        deleteAuthToken();
+                        setAuthToken(null);
+                        navigate("/");
+                      }}
+                    >
+                      {" "}
+                      Log Out
+                    </Button>
+                  </>
                 )}
               </div>
             </Nav>

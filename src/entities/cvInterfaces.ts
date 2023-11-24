@@ -1,8 +1,8 @@
 export interface PersonalDataInfo {
-  photo: string | null;
-  name: string;
+  image: string | null;
+  cvName: string;
   birthDate: string;
-  fields: iPersonalInfoData[]
+  personalInfoFields: iPersonalInfoData[]
   summary: string | null
 }
 export interface iPersonalInfoData{
@@ -63,7 +63,7 @@ export interface ColorTheme {
 export interface CVInterface {
   id: number,
   note: string,
-  lastEdited: Date;
+  createdOn: Date;
   settings: Settings ,
   data: {
     personalInfo: PersonalDataInfo,
