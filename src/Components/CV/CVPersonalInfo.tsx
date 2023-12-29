@@ -1,41 +1,36 @@
 import { Col, Row, Image, Button } from "react-bootstrap";
 import * as AntIcon from "react-icons/ai";
-import { CVInterface, Settings } from "../../entities/cvInterfaces";
+import { CVInterface, Settings } from "../../entities/cvInterfaces_old";
 import { createElement } from "react";
 
 interface Props {
   data: CVInterface;
-  isEditing: boolean;
-  onEditButton: () => void;
   settings: Settings;
 }
 
-const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
-  const personalInfoFields = data.data.personalInfo.fields || [];
+const CVPersonalInfo = ({ data }: Props) => {
+  const personalInfoFields = data.personalInfoFields || [];
   return (
     <div>
       <Row className="mb-5">
-        {data.data.personalInfo.photo !== null && (
+        {data.image !== null && (
           <Col
             md={3}
             xs={12}
             className="d-flex justify-content-center d-block-md justify-content-normal-md"
           >
-            <Image
-              className="shadow cv-photo"
-              src={data.data.personalInfo.photo}
-            ></Image>
+            <Image className="shadow cv-photo" src={data.image}></Image>
           </Col>
         )}
         <Col md={9} xs={12} className="d-flex flex-column">
           <Row>
             <h1
               className="mb-5 fs-h1-top-normalize"
-              style={{
-                color: `${settings.colorTheme?.heading}`,
-              }}
+              // style={{
+              //   color: `${settings.colorTheme?.heading}`,
+              // }}
             >
-              {data.data.personalInfo.name}
+              {data.cvName}
             </h1>
           </Row>
 
@@ -53,14 +48,16 @@ const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
                       AntIcon[field.icon as keyof typeof AntIcon],
                       {
                         size: 30,
-                        color: [data.settings.colorTheme?.accent],
+                        // color: [data.settings.colorTheme?.accent],
                       }
                     )}
                     <span
                       className="m-1"
-                      style={{
-                        color: `${settings.colorTheme?.text}`,
-                      }}
+                      style={
+                        {
+                          // color: `${settings.colorTheme?.text}`,
+                        }
+                      }
                     >
                       {field.value}
                     </span>
@@ -70,9 +67,11 @@ const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
                   <div className="m-1">
                     <span
                       className="m-1"
-                      style={{
-                        color: `${settings.colorTheme?.text}`,
-                      }}
+                      style={
+                        {
+                          // color: `${settings.colorTheme?.text}`,
+                        }
+                      }
                     >
                       {field.value}
                     </span>
@@ -83,33 +82,21 @@ const CVPersonalInfo = ({ data, isEditing, onEditButton, settings }: Props) => {
           </Row>
         </Col>
         <Row>
-          {data.data.personalInfo.summary && (
+          {data.summary && (
             <div>
               <p
                 className="m-0"
-                style={{
-                  color: `${settings.colorTheme?.heading}`,
-                }}
+                style={
+                  {
+                    // color: `${settings.colorTheme?.heading}`,
+                  }
+                }
               >
-                {data.data.personalInfo.summary}
+                {data.summary}
               </p>
             </div>
           )}
         </Row>
-      </Row>
-      <Row>
-        {isEditing === true && (
-          <div className="flex pb-3">
-            <Button
-              className="btn btn-secondary float-end flex"
-              onClick={() => {
-                onEditButton();
-              }}
-            >
-              Edit Personal Info
-            </Button>
-          </div>
-        )}
       </Row>
     </div>
   );

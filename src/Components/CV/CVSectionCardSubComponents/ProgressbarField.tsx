@@ -1,7 +1,7 @@
 import {
   Settings,
   iProgressBarComponentData,
-} from "../../../entities/cvInterfaces";
+} from "../../../entities/cvInterfaces_old";
 import { Col, Row } from "react-bootstrap";
 
 interface Props {

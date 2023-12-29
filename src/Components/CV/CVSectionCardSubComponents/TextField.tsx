@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import {
   Settings,
   iTextFieldComponentData,
-} from "../../../entities/cvInterfaces";
+} from "../../../entities/cvInterfaces_old";
 
 interface Props {
   data?: iTextFieldComponentData[];

@@ -1,9 +1,10 @@
 import { Row, Image, Button, Form, InputGroup, Col } from "react-bootstrap";
 import {
+  CVInterface,
   PersonalDataInfo,
   Settings,
-  iPersonalInfoData,
-} from "../../../entities/cvInterfaces";
+  iPersonalInfoFields,
+} from "../../../entities/cvInterfaces_old";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import IconModal from "../../shared/modals/IconModal";
@@ -11,14 +12,14 @@ import { cloneDeep } from "lodash";
 
 interface Props {
   settings: Settings;
-  data: PersonalDataInfo;
-  onSave: (data?: PersonalDataInfo) => void;
+  data: CVInterface;
+  onSave: (data?: CVInterface) => void;
 }
 
 const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
   const [personalInfoData, setPersonalInfoData] = useState(cloneDeep(data));
   let [displayPicture, setDisplayPicture] = useState(
-    data.photo ? data.photo : "/src/assets/noimage.jpg"
+    data.image ? data.image : "/src/assets/noimage.jpg"
   );
 
   const fileSelectedHandler = (event: any) => {
@@ -31,14 +32,14 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
   };
 
   const updateInputField = (index: number, key: string, value: string) => {
-    const updatedFields = [...personalInfoData.fields];
+    const updatedFields = [...personalInfoData.personalInfoFields];
 
     if (key === "icon" || key === "type" || key === "value")
       updatedFields[index][key] = value;
 
     setPersonalInfoData({
       ...personalInfoData,
-      fields: updatedFields,
+      personalInfoFields: updatedFields,
     });
   };
   const updateSummaryField = (value: string) => {
@@ -57,7 +58,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
     index: number
   ) => {
     const newType = e.target.value;
-    let updatedFields = [...personalInfoData.fields];
+    let updatedFields = [...personalInfoData.personalInfoFields];
     updatedFields[index].type = newType;
 
     if (newType === "date") {
@@ -66,7 +67,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
 
     setPersonalInfoData({
       ...personalInfoData,
-      fields: updatedFields,
+      personalInfoFields: updatedFields,
     });
   };
 
@@ -75,26 +76,26 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
 
     setPersonalInfoData({
       ...personalInfoData,
-      fields: [...personalInfoData.fields, newField],
+      personalInfoFields: [...personalInfoData.personalInfoFields, newField],
     });
   };
 
   const handleRemoveField = (index: number) => {
-    const editedContent = [...personalInfoData.fields];
+    const editedContent = [...personalInfoData.personalInfoFields];
     editedContent.splice(index, 1);
     setPersonalInfoData({
       ...personalInfoData,
-      fields: editedContent,
+      personalInfoFields: editedContent,
     });
   };
 
   const handleIconChoice = (icon: string | undefined, index: number) => {
-    const updatedFields = [...personalInfoData.fields];
+    const updatedFields = [...personalInfoData.personalInfoFields];
 
     updatedFields[index].icon = icon;
     setPersonalInfoData({
       ...personalInfoData,
-      fields: updatedFields,
+      personalInfoFields: updatedFields,
     });
   };
 
@@ -136,19 +137,20 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
               <Form.Control
                 className="shadow mb-4"
                 size="lg"
-                value={personalInfoData.name}
+                value={personalInfoData.cvName || ""}
                 onChange={(e) => {
                   setPersonalInfoData({
                     ...personalInfoData,
-                    name: e.target.value,
+                    cvName: e.target.value,
                   });
+                  console.log(personalInfoData);
                 }}
               />
             </InputGroup>
           </div>
-          {personalInfoData?.fields &&
-            personalInfoData.fields?.map(
-              (personalInfoField: iPersonalInfoData, index: number) => {
+          {personalInfoData?.personalInfoFields &&
+            personalInfoData.personalInfoFields?.map(
+              (personalInfoField: iPersonalInfoFields, index: number) => {
                 return (
                   // display: grid;
                   // grid-template-columns: auto auto 1fr auto;
@@ -161,7 +163,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                     <Form.Group
                       className=" d-grid grid align-items-center mb-2"
                       id={`${personalInfoData.name} + ${
-                        personalInfoData.fields.length
+                        personalInfoData.personalInfoFields.length
                       } + ${index + 1} `}
                     >
                       <div className=" align-self-center me-2">
@@ -232,9 +234,9 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                       {/*Remove Field*/}
                       <div className="">
                         <ImCross
-                          style={{
-                            color: `${settings.colorTheme?.accent}`,
-                          }}
+                          // style={{
+                          //   color: `${settings.colorTheme?.accent}`,
+                          // }}
                           className="v-align-unset c-pointer"
                           onClick={() => handleRemoveField(index)}
                         />
@@ -272,7 +274,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                   onClick={() => {
                     setPersonalInfoData({
                       ...personalInfoData,
-                      summary: null,
+                      summary: "",
                     });
                   }}
                 >
@@ -300,7 +302,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
           )}
         </Col>
       </Row>
-      <div className="d-flex justify-content-end mb-4">
+      {/* <div className="d-flex justify-content-end mb-4">
         <Button
           className="btn btn-accent me-2 mb-4"
           onClick={() => {
@@ -320,7 +322,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
           {" "}
           Save Section
         </Button>
-      </div>
+      </div> */}
     </>
   );
 };

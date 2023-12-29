@@ -3,14 +3,14 @@ import { Button } from "react-bootstrap";
 interface Props {
   onEditButtonClick: () => void;
   onColorPaletteClick: () => void;
-  onPrintButtonClick: () => void;
+  // onPrintButtonClick: () => void;
   onSaveButtonClick: () => void;
 }
 
-export const SideCVControlBar = ({
+export const CVControlBar = ({
   onEditButtonClick,
   onColorPaletteClick,
-  onPrintButtonClick,
+  // onPrintButtonClick,
   onSaveButtonClick,
 }: Props) => {
   return (
@@ -24,9 +24,13 @@ export const SideCVControlBar = ({
           Color Palette
         </Button>
         <Button variant="primary" className="me-3" onClick={onEditButtonClick}>
-          Edit
+          Preview
         </Button>
-        <Button variant="primary" className="me-3" onClick={onPrintButtonClick}>
+        <Button
+          variant="primary"
+          className="me-3"
+          // onClick={onPrintButtonClick}
+        >
           Print
         </Button>
         <Button variant="primary" onClick={onSaveButtonClick}>

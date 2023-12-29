@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { Settings } from "../../entities/cvInterfaces";
+import { Settings } from "../../entities/cvInterfaces_old";
 import { Button } from "react-bootstrap";
 
 interface Props {

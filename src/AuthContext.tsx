@@ -11,25 +11,35 @@ interface AuthContextProps {
 }
 
 interface AuthContextValue {
-  authToken: string | null;
-  setAuthToken: (token: string | null) => void;
+  userData: string | null;
+  setUserData: (userData: any | null) => void;
+  userChangedObservable: boolean | null;
+  updateUser: (callback?: Function) => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
-  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [userData, setUserData] = useState<any | null>({});
+  const [userChangedObservable, setUserChangedObservable] = useState<
+    any | null
+  >(false);
 
-  useEffect(() => {
-    // Check localStorage for token on component mount (page refresh)
-    const storedToken = localStorage.getItem("authorization");
-    if (storedToken) {
-      setAuthToken(storedToken);
-    }
-  }, []);
+  const updateUser = (callback: Function | undefined) => {
+    setUserChangedObservable(true);
+    if (callback) callback();
+    setUserChangedObservable(false);
+  };
 
   return (
-    <AuthContext.Provider value={{ authToken, setAuthToken }}>
+    <AuthContext.Provider
+      value={{
+        userData,
+        setUserData,
+        userChangedObservable,
+        updateUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

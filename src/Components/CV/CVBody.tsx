@@ -3,7 +3,7 @@ import {
   CVInterface,
   Section,
   iProgressBarComponentData,
-} from "../../entities/cvInterfaces";
+} from "../../entities/cvInterfaces_old";
 import CVSectionCard from "./CVSectionCard";
 import PieChartField from "./CVSectionCardSubComponents/PieChartField";
 import ProgressbarField from "./CVSectionCardSubComponents/ProgressbarField";
@@ -22,6 +22,7 @@ import { Droppable, Draggable } from "@hello-pangea/dnd";
 interface Props {
   data: CVInterface;
   isEditingMode: boolean;
+  splitSections: 
 }
 
 const CVBody = ({ data, isEditingMode }: Props) => {
@@ -57,18 +58,15 @@ const CVBody = ({ data, isEditingMode }: Props) => {
   const addSection = (col: any) => {
     setEditingIndex(0);
     setEditingCol(col);
+    console.log(cvData);
 
     setCVData({
       ...cvData,
-      data: {
-        ...cvData.data,
-        sections: {
-          ...cvData.data.sections,
-          [col]: [createNewSection(), ...cvData.data.sections[col]],
-        },
+      sections: {
+        ...cvData.sections,
+        [col]: [createNewSection(), ...cvData.sections[col]],
       },
     });
-    console.log(cvData.data.sections);
   };
 
   const saveSection = (section?: Section) => {
@@ -82,19 +80,16 @@ const CVBody = ({ data, isEditingMode }: Props) => {
       editingIndex !== undefined &&
       !isEmpty(section)
     ) {
-      let updatedCol = cvData.data.sections[editingCol];
+      let updatedCol = cvData.sections[editingCol];
 
       updatedCol[editingIndex] = section;
 
       console.log(updatedCol[editingIndex]);
       setCVData({
         ...cvData,
-        data: {
-          ...cvData.data,
-          sections: {
-            ...cvData.data.sections,
-            [editingCol]: [...updatedCol],
-          },
+        sections: {
+          ...cvData.sections,
+          [editingCol]: [...updatedCol],
         },
       });
     }
@@ -105,7 +100,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
     if (deleteData) {
       setCVData(
         produce(cvData, (draftCvData) => {
-          draftCvData.data.sections[deleteData.col].splice(deleteData.index, 1);
+          draftCvData.sections[deleteData.col].splice(deleteData.index, 1);
         })
       );
       setEditingCol(null);
@@ -126,11 +121,11 @@ const CVBody = ({ data, isEditingMode }: Props) => {
 
     setCVData(
       produce(cvData, (draftCvData) => {
-        let itemToMove = draftCvData.data.sections[source.droppableId].splice(
+        let itemToMove = draftCvData.sections[source.droppableId].splice(
           source.index,
           1
         )[0];
-        draftCvData.data.sections[destination.droppableId].splice(
+        draftCvData.sections[destination.droppableId].splice(
           destination.index,
           0,
           itemToMove
@@ -181,7 +176,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                   // }}
                   {...provided.droppableProps}
                 >
-                  {cvData.data.sections.leftCol.map(
+                  {cvData.sections.leftCol?.map(
                     (section: Section, index: number) => {
                       return (
                         <Draggable
@@ -202,7 +197,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 isEditingMode === true) ||
                               section.state === "new" ? (
                                 <CVSectionModify
-                                  settings={data.settings}
+                                  settings={data.setting}
                                   data={section}
                                   // index={data.id}
                                   heading={section.title}
@@ -218,7 +213,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 />
                               ) : (
                                 <CVSectionCard
-                                  settings={data.settings}
+                                  settings={data.setting}
                                   isEditing={isEditingMode}
                                   // data={section}
                                   index={index}
@@ -233,17 +228,17 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                         section.data
                                           .content as iProgressBarComponentData[]
                                       }
-                                      settings={data.settings}
+                                      settings={data.setting}
                                     />
                                   ) : section.type === "Text-field" ? (
                                     <TextField
                                       data={section.data.content}
-                                      settings={data.settings}
+                                      settings={data.setting}
                                     />
                                   ) : section.type === "Pie-Chart" ? (
                                     <PieChartField
                                       data={section.data.content}
-                                      settings={data.settings}
+                                      settings={data.setting}
                                     />
                                   ) : null}
                                 </CVSectionCard>
@@ -288,7 +283,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                   // }}
                   {...provided.droppableProps}
                 >
-                  {cvData.data.sections.rightCol.map(
+                  {cvData.sections.rightCol?.map(
                     (section: Section, index: number) => {
                       return (
                         <Draggable
@@ -309,7 +304,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 isEditingMode === true) ||
                               section.state === "new" ? (
                                 <CVSectionModify
-                                  settings={data.settings}
+                                  settings={data.setting}
                                   data={section}
                                   // index={data.id}
                                   heading={section.title}
@@ -325,7 +320,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 />
                               ) : (
                                 <CVSectionCard
-                                  settings={data.settings}
+                                  settings={data.setting}
                                   isEditing={isEditingMode}
                                   // data={section}
                                   index={index}
@@ -340,17 +335,17 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                         section.data
                                           .content as iProgressBarComponentData[]
                                       }
-                                      settings={data.settings}
+                                      settings={data.setting}
                                     />
                                   ) : section.type === "Text-field" ? (
                                     <TextField
                                       data={section.data.content}
-                                      settings={data.settings}
+                                      settings={data.setting}
                                     />
                                   ) : section.type === "Pie-Chart" ? (
                                     <PieChartField
                                       data={section.data.content}
-                                      settings={data.settings}
+                                      settings={data.setting}
                                     />
                                   ) : null}
                                 </CVSectionCard>

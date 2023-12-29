@@ -5,7 +5,7 @@ import {
   iPieChartComponentData,
   iProgressBarComponentData,
   iTextFieldComponentData,
-} from "../../../entities/cvInterfaces";
+} from "../../../entities/cvInterfaces_old";
 import { Button, Row, Col } from "react-bootstrap";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";

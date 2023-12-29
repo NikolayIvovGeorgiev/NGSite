@@ -1,59 +1,54 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import {
   CVInterface,
+  // CVInterface,
   ColorTheme,
-  PersonalDataInfo,
-} from "../../../entities/cvInterfaces";
+  // PersonalDataInfo,
+} from "../../../entities/cvInterfaces_old";
 import CVList from "../../../mocked-data/cv-data";
 import CVBody from "../CVBody";
 import CVPersonalInfo from "../CVPersonalInfo";
 import CVPersonalInfoModify from "./CVPersonalInfoModify";
 import { useEffect, useRef, useState } from "react";
-import { SideCVControlBar } from "../SideCVControlBar";
+import { CVControlBar } from "../CVControlBar";
 import PaletteModal from "../../shared/modals/PaletteModal";
 import { produce } from "immer";
 import { Row } from "react-bootstrap";
 import { useReactToPrint } from "react-to-print";
 import html2pdf from "html2pdf.js";
+import { getCVService } from "../../../services/fetch.service";
+import { error } from "console";
 
 const CVView = () => {
-  const [cvData, setCvData] = useState<CVInterface | undefined>();
-  const { id } = useParams();
-  // const [setBackgroundColor, setBackgroundColor] = useState<String>();
-
-  const [personalInfoEditMode, setpersonalInfoEditMode] = useState(false);
-  const handlepersonalInfoEditButton = () => {
-    setpersonalInfoEditMode(!personalInfoEditMode);
-  };
+  const [cvData, setCvData] = useState<CVInterface>();
+  const [isEditingMode, setIsEditingMode] = useState(false);
   const [showPaletteModal, setShowPaletteModal] = useState(false);
+  const [splitSections, setSplitSections] = useState({
+    leftCol: [],
+    rightCol: [],
+  });
+  const [queryParams, setQueryParams] = useSearchParams();
+  const { id } = useParams();
+  const componentRef = useRef(null);
+
   const handlePaletteButton = () => {
     setShowPaletteModal(!showPaletteModal);
   };
 
-  const componentRef = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    // bodyClass: "kur",
-    // pageStyle: `.print-container { background-color: ${
-    //   cvData?.settings.colorTheme?.background ?? "red"
-    // };
-    // }`,
+  // const handlePrint = useReactToPrint({
+  //   content: () => componentRef.current,
 
-    // html {
-    //   background-color: ${cvData?.settings.colorTheme?.background ?? "red"};
-    // }
+  //   // pageStyle: `
+  //   // html {
+  //   //   background-color: ${cvData?.settings.colorTheme?.background ?? "red"};
+  //   // }
 
-    pageStyle: `
-    html { 
-      background-color: ${cvData?.settings.colorTheme?.background ?? "red"};
-    }
-    
-    @page {  margin: 25px 0 25px 0;}`,
-  });
+  //   // @page {  margin: 25px 0 25px 0;}`,
+  // });
 
   const handleDownload = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: `${cvData?.note}.pdf`,
+    documentTitle: `${cvData?.name}.pdf`,
     copyStyles: true,
     print: async (printIframe: HTMLIFrameElement) => {
       const document = printIframe.contentDocument;
@@ -73,68 +68,63 @@ const CVView = () => {
   });
 
   const changeCvTheme = (selectedTheme: ColorTheme) => {
-    if (cvData) {
-      setCvData(
-        produce(cvData, (draftCvData) => {
-          draftCvData.settings.colorTheme = selectedTheme;
-        })
-      );
-    }
+    // if (cvData) {
+    //   setCvData(
+    //     produce(cvData, (draftCvData) => {
+    //       draftCvData.settings.colorTheme = selectedTheme;
+    //     })
+    //   );
+    // }
   };
-
-  const [isEditingMode, setIsEditingMode] = useState(false);
 
   const handleEditButtonClick = () => {
     setIsEditingMode(!isEditingMode);
   };
 
   useEffect(() => {
-    if (!cvData) {
-      const currentCv = CVList.find((currentCv) => Number(id) === currentCv.id);
-      if (currentCv) {
-        setCvData({ ...currentCv });
-        if (currentCv.data.personalInfo.name === "") {
-          setIsEditingMode(true);
-          setpersonalInfoEditMode(true);
-        }
-        if (
-          !currentCv.data.sections.leftCol.length &&
-          !currentCv.data.sections.rightCol.length
-        ) {
-          setIsEditingMode(true);
-        }
-      }
+    getCVService(id)
+      .then((response) => {
+        setCvData(response.data);
+        setIsEditingMode(!!queryParams.get("edit"));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // if (cvData) {
+    //   if (cvData.name === "") {
+    //     setIsEditingMode(true);
+    //   }
+    //   if (!cvData.sections.leftCol.length && !cvData.sections.rightCol.length) {
+    //     setIsEditingMode(true);
+    //   }
+    // }
+    // if (!cvData?.cvName) {
+    //   setpersonalInfoEditMode(true);
+    // }
+  }, []);
 
-      // http.get(`localhost:4000/cv/${id}`)
-      //   .then((response) => {
-      //     if (response) setCvData({ ...response });
-      //   })
-    }
-  });
-  const savePersonalInfoData = (data: PersonalDataInfo) => {
-    const updatedPersonalInfo = data;
+  const savePersonalInfoData = (data: CVInterface) => {
+    const updatedPersonalInfo = data.personalInfoFields;
 
     if (cvData) {
       setCvData({
         ...cvData,
-        data: {
-          ...cvData.data,
-          personalInfo: updatedPersonalInfo,
-        },
+        personalInfoFields: updatedPersonalInfo,
       });
     } else {
       console.error("Error: could not update data");
     }
   };
 
-  const handleSave = (data?: PersonalDataInfo) => {
+  const handleSave = (data?: CVInterface) => {
     if (data) savePersonalInfoData(data);
-    handlepersonalInfoEditButton();
   };
 
   return cvData ? (
-    <Row style={{ backgroundColor: cvData.settings.colorTheme?.background }}>
-      <PaletteModal
+    <Row
+    // style={{ backgroundColor: cvData.settings.colorTheme?.background }}
+    >
+      {/* <PaletteModal
         showPaletteModal={showPaletteModal}
         onConfirm={(theme) => {
           changeCvTheme(theme);
@@ -143,35 +133,33 @@ const CVView = () => {
         onDecline={() => {
           setShowPaletteModal(false);
         }}
-      />
-      <SideCVControlBar
-        onPrintButtonClick={handlePrint}
+      /> */}
+      <CVControlBar
+        // onPrintButtonClick={handlePrint}
         onColorPaletteClick={handlePaletteButton}
         onEditButtonClick={handleEditButtonClick}
         onSaveButtonClick={handleDownload}
       />
-      {personalInfoEditMode && (
+      {isEditingMode && (
         <CVPersonalInfoModify
-          settings={cvData.settings}
-          data={cvData.data.personalInfo}
+          settings={cvData.setting}
+          data={cvData}
           onSave={handleSave}
         />
       )}
       <div
         ref={componentRef}
-        className="p-5 margin-bottom-bars print-area"
-        style={{ backgroundColor: cvData.settings.colorTheme?.background }}
+        className="p-5 margin-bottom-bars print-area theme-header"
+        // style={{ backgroundColor: cvData.settings.colorTheme?.background }}
       >
-        {!personalInfoEditMode && (
-          <CVPersonalInfo
-            settings={cvData.settings}
-            onEditButton={handlepersonalInfoEditButton}
-            isEditing={isEditingMode}
-            data={cvData}
-          />
+        {!isEditingMode && (
+          <CVPersonalInfo settings={cvData.setting} data={cvData} />
         )}
-
-        <CVBody isEditingMode={isEditingMode} data={cvData}></CVBody>
+        <CVBody
+          isEditingMode={isEditingMode}
+          data={cvData}
+          splitSections={splitSections}
+        ></CVBody>
       </div>
     </Row>
   ) : (

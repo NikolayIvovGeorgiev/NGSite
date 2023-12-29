@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
 const RegisterPage = () => {
-  const { setAuthToken } = useAuth();
+  const { updateUser } = useAuth();
   const [password, setPassword] = useState("");
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -44,7 +44,7 @@ const RegisterPage = () => {
         };
         loginUser(loginPayload).then((response) => {
           navigate("/cv");
-          setAuthToken(response.data);
+          updateUser();
         });
       });
     }

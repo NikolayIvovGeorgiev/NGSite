@@ -1,13 +1,16 @@
 import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { deleteAuthToken, loginUser } from "../services/fetch.service";
+import {
+  deleteAuthToken,
+  getAuthToken,
+  loginUser,
+} from "../services/fetch.service";
 import { Toast } from "react-bootstrap";
 import { useAuth } from "../AuthContext";
 
 const NavBar = () => {
-  const { authToken, setAuthToken } = useAuth();
-  // const [isLogIn, setIsLogIn] = useState(getAuthToken() ? true : false);
+  const { updateUser, setUserData } = useAuth();
   const [loginToast, setLoginToast] = useState({
     show: false,
     color: "primary",
@@ -41,21 +44,22 @@ const NavBar = () => {
             setLoginToast({ ...loginToast, show: false });
           }, 1500);
 
-          setAuthToken(response.data);
+          updateUser();
+          navigate("/");
         })
         .catch((error) => {
           setLoginToast({
             show: true,
             color: "danger",
             headerMessage: "Error",
-            message: `${error.response.data}`,
+            message: `${error}`,
           });
 
           setTimeout(() => {
             setLoginToast({ ...loginToast, show: false });
           }, 1500);
 
-          setAuthToken(null);
+          updateUser();
         });
     }
   };
@@ -92,7 +96,7 @@ const NavBar = () => {
                 </Nav.Item>
               </div>
               <div className="d-flex align-items-center">
-                {!authToken && (
+                {!getAuthToken() && (
                   <>
                     <Form
                       className="d-flex align-items-center"
@@ -131,7 +135,7 @@ const NavBar = () => {
                     </Nav.Item>
                   </>
                 )}
-                {authToken && (
+                {getAuthToken() && (
                   <>
                     <Nav.Item>
                       <Nav.Link as={Link} to="/cv" className="nav-link ">
@@ -143,7 +147,7 @@ const NavBar = () => {
                       className="me-3"
                       onClick={() => {
                         deleteAuthToken();
-                        setAuthToken(null);
+                        updateUser();
                         navigate("/");
                       }}
                     >

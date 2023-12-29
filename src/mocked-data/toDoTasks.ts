@@ -1,4 +1,4 @@
-import { TaskList } from "../entities/cvInterfaces"
+import { TaskList } from "../entities/cvInterfaces_old"
 
 const ToDoList: TaskList = {
     toDoTasks: [

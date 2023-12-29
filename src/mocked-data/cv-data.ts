@@ -1,4 +1,4 @@
-import { CVInterface } from "../entities/cvInterfaces";
+import { CVInterface } from "../entities/cvInterfaces_old";
 const CVList: CVInterface[] = [
   {
   id: 1,

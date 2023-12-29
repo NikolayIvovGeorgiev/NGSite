@@ -4,24 +4,39 @@ import CVPreviewCard from "../Components/CV/CVSectionCardSubComponents/CVPreview
 import CVList from "../mocked-data/cv-data";
 import NewCvModal from "../Components/shared/modals/NewCVModal";
 import { useEffect, useState } from "react";
-import { CVInterface } from "../entities/cvInterfaces";
+import { CVInterface } from "../entities/cvInterfaces_old";
 import { produce } from "immer";
 import { cloneDeep } from "lodash";
 import { CvColorThemes } from "../Components/shared/constants/color-themes";
-import { createCV, getCVs } from "../services/fetch.service";
+import {
+  createCV,
+  deleteCVService,
+  getCVsService,
+} from "../services/fetch.service";
 import { useAuth } from "../AuthContext";
+import { createSearchParams, redirect, useNavigate } from "react-router-dom";
 
 const CVPage = () => {
-  const { authToken } = useAuth();
-  useEffect(() => {
-    console.log(authToken);
+  const { userChangedObservable } = useAuth();
 
-    getCVs().then((response) => {
+  const [CVListObservable, setCVListObservable] = useState(0);
+
+  useEffect(() => {
+    getCVsService().then((response) => {
       setCvList(response.data);
     });
-  }, [authToken]);
+  }, [CVListObservable]);
+
+  // Gets the list and refreshes if user is logged in or out
+  useEffect(() => {
+    getCVsService().then((response) => {
+      setCvList(response.data);
+    });
+  }, [userChangedObservable]);
+
   const [cvList, setCvList] = useState<any>([]);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
   // const newCvObjest: CVInterface = {
   //   id: CVList.length + 1,
   //   note: "",
@@ -45,16 +60,21 @@ const CVPage = () => {
   // };
 
   const createNewCV = (name: string) => {
-    // let copy = cloneDeep(newCvObjest);
-    // copy.note = note;
-    // setCvList(
-    //   produce(cvList, (draftCvlist) => {
-    //     draftCvlist.push(copy);
-    //     CVList.push(copy);
-    //   })
-    // );
-    createCV(name).then(() => {});
+    createCV(name).then((res) => {
+      setCVListObservable(CVListObservable + 1);
+      navigate({
+        pathname: `${res.data.id}`,
+        search: createSearchParams({ edit: "true" }).toString(),
+      });
+    });
     setShowModal(false);
+  };
+
+  const deleteCV = (CVid: number) => {
+    deleteCVService(CVid).then(() => {
+      setCVListObservable(CVListObservable + 1);
+    });
+    //refresh CVList
   };
 
   return (
@@ -71,7 +91,16 @@ const CVPage = () => {
       />
       <Row className="p-4">
         {cvList.map((cv: any, index: number) => {
-          return <CVPreviewCard cv={cv} key={index} />;
+          return (
+            <CVPreviewCard
+              cv={cv}
+              key={index}
+              name={cv.name}
+              onDelete={() => {
+                deleteCV(cv.id);
+              }}
+            />
+          );
         })}
         <div className="d-flex justify-content-around"></div>
         <Button

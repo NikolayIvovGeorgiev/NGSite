@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Modal, Row, ToggleButtonGroup } from "react-bootstrap";
 import { CvColorThemes } from "../constants/color-themes";
-import { ColorTheme } from "../../../entities/cvInterfaces";
+import { ColorTheme } from "../../../entities/cvInterfaces_old";
 
 interface Props {
   showPaletteModal: boolean;

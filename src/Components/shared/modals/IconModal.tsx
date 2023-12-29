@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { createElement } from "react";
 import * as AntIcon from "react-icons/ai";
-import { Settings } from "../../../entities/cvInterfaces";
+import { Settings } from "../../../entities/cvInterfaces_old";
 
 interface Props {
   defaultIcon: string | undefined;
@@ -53,7 +53,7 @@ const IconModal = ({ defaultIcon, OnSave, settings }: Props) => {
         {iconChoice &&
           createElement(AntIcon[iconChoice as keyof typeof AntIcon], {
             size: 40,
-            color: `${settings.colorTheme?.accent}`,
+            // color: `${settings.colorTheme?.accent}`,
           })}
         {!iconChoice &&
           createElement(AntIcon[`${"AiOutlineCloseCircle"}`], {
@@ -88,7 +88,7 @@ const IconModal = ({ defaultIcon, OnSave, settings }: Props) => {
                   >
                     {createElement(AntIcon[icon as keyof typeof AntIcon], {
                       size: 30,
-                      color: `${settings.colorTheme?.accent}`,
+                      // color: `${settings.colorTheme?.accent}`,
                     })}
                   </Button>
                 )}

@@ -1,15 +1,61 @@
-export interface PersonalDataInfo {
-  image: string | null;
-  cvName: string;
-  birthDate: string;
-  personalInfoFields: iPersonalInfoData[]
-  summary: string | null
+
+
+export interface iCvBase {
+  id: string,
+  fileName: string,
+  createdOn: Date,
+  lastEditedOn: Date,
+  colorTheme: string,
+  personalInfo: iPersonalDataInfo
 }
-export interface iPersonalInfoData{
+
+export type colList = 'leftCol' | 'rightCol';
+
+export interface iCv extends iCvBase {
+  sections: {
+    [key in colList]: iSection[]
+  }
+}
+export interface iCvApi extends iCvBase {
+  sections: iSectionApi[]
+}
+
+export interface iPersonalDataInfo {
+  photo: string,
+  name: string, 
+  birthDate: Date
+  summary: string
+  fields: iPersonalInfoFields[]
+}
+export interface iPersonalInfoFields{
   icon?: string;
   type?: string;
   value?: string;
 }
+
+export interface iSectionBase {
+  id: string;
+  columnPosition: string;
+  order: string;
+}
+
+export interface iSection extends iSectionBase {
+  payload: iSectionPayload;
+}
+export interface iSectionApi extends iSectionBase {
+  payload: string;
+}
+
+export interface iSectionPayload {
+  type: string;
+  title: string;
+  state: string;
+  content?: iProgressBarComponentData[] | 
+    iTextFieldComponentData | 
+    iPieChartComponentData[];
+}
+
+// Sections types
 export interface iProgressBarComponentData {
   id?: number;
   title?: string;
@@ -20,58 +66,11 @@ export interface iTextFieldComponentData {
   subtitle?: string;
   description?: string;
   list?: string[];
-  startDate?: string;
-  endDate?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
-
 export interface iPieChartComponentData {
   title?: string;
   percent?: string;
   color?: string;
-}
-export interface Section {
-  id: string,
-  type: string;
-  title: string;
-  state: string
-  data: {
-    config: {[key: string]: string | boolean | number},
-    content?: 
-    | iProgressBarComponentData[] 
-    | iTextFieldComponentData[] 
-    | iPieChartComponentData[];
-  } 
-}
-// export interface Color{
-//   dark: string,
-//   light: string,
-//   lightSecondary: string,
-//   accent: string,
-// }
-export interface Settings{
-      colorTheme?: ColorTheme
-}
-
-export interface ColorTheme {
-  heading: string,
-  background: string,
-  text: string,
-  accent: string,
-}
-
-
-export interface CVInterface {
-  id: number,
-  note: string,
-  createdOn: Date;
-  settings: Settings ,
-  data: {
-    personalInfo: PersonalDataInfo,
-    sections: {
-      [key: string]: Section[]
-    }
-    }
-}
-export interface TaskList {
-  [key: string]: string[];
 }

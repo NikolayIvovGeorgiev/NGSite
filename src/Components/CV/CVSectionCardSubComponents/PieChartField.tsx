@@ -2,7 +2,7 @@ import { isEmpty } from "lodash";
 import {
   Settings,
   iPieChartComponentData,
-} from "../../../entities/cvInterfaces";
+} from "../../../entities/cvInterfaces_old";
 import { Chart } from "primereact/chart";
 import { useState, useEffect } from "react";
 
