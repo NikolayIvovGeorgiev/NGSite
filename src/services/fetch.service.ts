@@ -1,5 +1,6 @@
 import axios, { AxiosResponse, AxiosInstance } from "axios";
-import { CVInterface, PersonalDataInfo, iPersonalInfoFields } from "../entities/cvInterfaces_old";
+import { colList, iCv, iCvApi, iPersonalDataInfo, iPersonalInfoFields, iSection, iSectionPayload } from "../entities/cvInterfaces";
+import { cloneDeep } from "lodash";
 
  export const getAuthToken = () => {
     return localStorage.getItem("authorization") || null;   
@@ -113,10 +114,10 @@ export const registerUser = (payload: registerData) => {
  }
 
  export const getCVService = (id: any) => {
-    return new Promise<AxiosResponse<CVInterface>>((resolve,reject) => {
+    return new Promise<AxiosResponse<iCv>>((resolve,reject) => {
         axiosInstance.get(`/CVs/${id}`)
-        .then((response) => {
-            resolve(response)
+        .then((response: AxiosResponse<iCvApi>) => {
+            resolve(transformCvData(response))
         }).catch((error) => {
             console.log(error);
             reject(error)
@@ -148,7 +149,7 @@ export const registerUser = (payload: registerData) => {
 //     })
 //  }
  export const postCVPersonalInfo = (payload: personalInfo) => {
-    return new Promise<AxiosResponse<PersonalDataInfo>>((resolve,reject) => {
+    return new Promise<AxiosResponse<iPersonalDataInfo>>((resolve,reject) => {
         axiosInstance.post('/CVs', JSON.stringify(payload))
         .then((response) => {
             resolve(response)
@@ -170,3 +171,32 @@ export const registerUser = (payload: registerData) => {
     })
  }
 
+
+
+
+ function transformCvData(apiData: AxiosResponse<iCvApi>): AxiosResponse<iCv> {
+    let newCvData: iCv = {
+        ...cloneDeep(apiData.data),
+        sections: {
+            leftCol: [],
+            rightCol: []
+        }
+    }
+
+    apiData.data.sections.forEach(section => {
+        newCvData.sections[section.columnPosition as colList]
+            .push( { 
+                ...section,
+                payload: JSON.parse(section.payload)
+            });
+    });
+    
+    Object.keys(newCvData.sections).forEach((col) => {
+        newCvData.sections[col as colList].sort((a: any,b: any) => a.order - b.order);
+    })
+
+    return {
+        ...apiData,
+        data: newCvData
+    };
+ }

@@ -1,9 +1,4 @@
 import { Button, Col, Row } from "react-bootstrap";
-import {
-  CVInterface,
-  Section,
-  iProgressBarComponentData,
-} from "../../entities/cvInterfaces_old";
 import CVSectionCard from "./CVSectionCard";
 import PieChartField from "./CVSectionCardSubComponents/PieChartField";
 import ProgressbarField from "./CVSectionCardSubComponents/ProgressbarField";
@@ -16,63 +11,66 @@ import { produce } from "immer";
 import ConfirmationModal from "../shared/modals/ConfirmationModal";
 import { setAutoFreeze } from "immer";
 setAutoFreeze(false);
-import { DragDropContext } from "@hello-pangea/dnd";
+import { DragDropContext, DraggableLocation } from "@hello-pangea/dnd";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
+import { colList, iCv, iPieChartComponentData, iProgressBarComponentData, iSection, iTextFieldComponentData } from "../../entities/cvInterfaces";
 
 interface Props {
-  data: CVInterface;
+  data: iCv;
   isEditingMode: boolean;
-  splitSections: 
 }
 
 const CVBody = ({ data, isEditingMode }: Props) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [editingCol, setEditingCol] = useState<string | null>(null);
-  const [cvData, setCVData] = useState<CVInterface>(data);
+  const [editingCol, setEditingCol] = useState<colList | null>(null);
+  const [cvData, setCVData] = useState<iCv>(data);
   const [showConfirmationModal, setshowConfirmationModal] = useState(false);
   const [deleteData, setDeleteData] = useState<{
     index: number;
-    col: string;
+    col: colList;
   } | null>(null);
 
-  const createNewSection = () => {
-    const newSection = {
+  const createNewSection = (col: colList) => {
+    const newSection: iSection = {
       id: `${Math.random() * 10}`,
-      type: "",
-      title: "",
-      state: "new",
-      data: {
-        config: {},
-        content: [],
+      columnPosition: col,
+      order: '0',
+      payload: {
+        type: "",
+        title: "",
+        state: "new",
+        content: []
       },
     };
-
+    console.log(cvData);
+    
     return newSection;
   };
 
-  const onEdit = (index: number, targetColumn: string) => {
-    setEditingIndex(index);
-    setEditingCol(targetColumn);
-  };
-
-  const addSection = (col: any) => {
+  const addSection = (col: colList) => {
     setEditingIndex(0);
     setEditingCol(col);
-    console.log(cvData);
-
     setCVData({
       ...cvData,
       sections: {
         ...cvData.sections,
-        [col]: [createNewSection(), ...cvData.sections[col]],
+        [col]: [createNewSection(col), ...cvData.sections[col]],
       },
     });
+    
+  };
+  
+  const onEdit = (index: number, targetColumn: colList) => {
+    setEditingIndex(index);
+    setEditingCol(targetColumn);
   };
 
-  const saveSection = (section?: Section) => {
-    console.log(editingCol);
-    console.log(editingIndex);
-    console.log(isEmpty(section));
+  const saveSection = (section?: iSection) => {
+    console.log(section);
+    
+    // console.log(editingCol);
+    // console.log(editingIndex);
+    // console.log(isEmpty(section));
 
     if (
       editingCol !== null &&
@@ -96,6 +94,7 @@ const CVBody = ({ data, isEditingMode }: Props) => {
     setEditingIndex(null);
     setEditingCol(null);
   };
+
   const deleteSection = () => {
     if (deleteData) {
       setCVData(
@@ -108,7 +107,8 @@ const CVBody = ({ data, isEditingMode }: Props) => {
       setshowConfirmationModal(false);
     }
   };
-  const onDragEnd = (result: { destination: any; source: any }) => {
+
+  const onDragEnd = ( result: {  destination: any; source: any }) => {
     const { destination, source } = result;
 
     if (
@@ -121,11 +121,11 @@ const CVBody = ({ data, isEditingMode }: Props) => {
 
     setCVData(
       produce(cvData, (draftCvData) => {
-        let itemToMove = draftCvData.sections[source.droppableId].splice(
+        let itemToMove = draftCvData.sections[source.droppableId as colList].splice(
           source.index,
           1
         )[0];
-        draftCvData.sections[destination.droppableId].splice(
+        draftCvData.sections[destination.droppableId as colList].splice(
           destination.index,
           0,
           itemToMove
@@ -177,11 +177,11 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                   {...provided.droppableProps}
                 >
                   {cvData.sections.leftCol?.map(
-                    (section: Section, index: number) => {
+                    (section: iSection, index: number) => {
                       return (
                         <Draggable
                           key={section.id}
-                          draggableId={`${section.id}+${section.title}+${index}`}
+                          draggableId={`${section.id}+${section.payload.title}+${index}`}
                           index={index}
                         >
                           {(provided: any) => (
@@ -195,12 +195,11 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                               {(editingIndex === index &&
                                 editingCol === "leftCol" &&
                                 isEditingMode === true) ||
-                              section.state === "new" ? (
+                              section.payload.state === "new" ? (
                                 <CVSectionModify
-                                  settings={data.setting}
                                   data={section}
                                   // index={data.id}
-                                  heading={section.title}
+                                  heading={section.payload.title}
                                   key={index}
                                   onSave={saveSection}
                                   onDelete={() => {
@@ -213,32 +212,27 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 />
                               ) : (
                                 <CVSectionCard
-                                  settings={data.setting}
                                   isEditing={isEditingMode}
                                   // data={section}
                                   index={index}
-                                  heading={section.title}
+                                  heading={section.payload.title}
                                   onClick={() => {
                                     onEdit(index, "leftCol");
                                   }}
                                 >
-                                  {section.type === "Progress-bar" ? (
+                                  {section.payload.type === "Progress-bar" ? (
                                     <ProgressbarField
                                       data={
-                                        section.data
-                                          .content as iProgressBarComponentData[]
+                                        section.payload.content as iProgressBarComponentData[]
                                       }
-                                      settings={data.setting}
                                     />
-                                  ) : section.type === "Text-field" ? (
+                                  ) : section.payload.type === "Text-field" ? (
                                     <TextField
-                                      data={section.data.content}
-                                      settings={data.setting}
+                                      data={section.payload.content as iTextFieldComponentData[]}
                                     />
-                                  ) : section.type === "Pie-Chart" ? (
+                                  ) : section.payload.type === "Pie-Chart" ? (
                                     <PieChartField
-                                      data={section.data.content}
-                                      settings={data.setting}
+                                      data={section.payload.content as iPieChartComponentData[]}
                                     />
                                   ) : null}
                                 </CVSectionCard>
@@ -284,11 +278,11 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                   {...provided.droppableProps}
                 >
                   {cvData.sections.rightCol?.map(
-                    (section: Section, index: number) => {
+                    (section: iSection, index: number) => {
                       return (
                         <Draggable
                           key={section.id}
-                          draggableId={`${section.id}+${section.title}+${index}`}
+                          draggableId={`${section.id}+${section.payload.title}+${index}`}
                           index={index}
                         >
                           {(provided) => (
@@ -302,12 +296,11 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                               {(editingIndex === index &&
                                 editingCol === "rightCol" &&
                                 isEditingMode === true) ||
-                              section.state === "new" ? (
+                              section.payload.state === "new" ? (
                                 <CVSectionModify
-                                  settings={data.setting}
                                   data={section}
                                   // index={data.id}
-                                  heading={section.title}
+                                  heading={section.payload.title}
                                   key={index}
                                   onSave={saveSection}
                                   onDelete={() => {
@@ -320,32 +313,27 @@ const CVBody = ({ data, isEditingMode }: Props) => {
                                 />
                               ) : (
                                 <CVSectionCard
-                                  settings={data.setting}
                                   isEditing={isEditingMode}
                                   // data={section}
                                   index={index}
-                                  heading={section.title}
+                                  heading={section.payload.title}
                                   onClick={() => {
                                     onEdit(index, "rightCol");
                                   }}
                                 >
-                                  {section.type === "Progress-bar" ? (
+                                   {section.payload.type === "Progress-bar" ? (
                                     <ProgressbarField
                                       data={
-                                        section.data
-                                          .content as iProgressBarComponentData[]
+                                        section.payload.content as iProgressBarComponentData[]
                                       }
-                                      settings={data.setting}
                                     />
-                                  ) : section.type === "Text-field" ? (
+                                  ) : section.payload.type === "Text-field" ? (
                                     <TextField
-                                      data={section.data.content}
-                                      settings={data.setting}
+                                      data={section.payload.content as iTextFieldComponentData[]}
                                     />
-                                  ) : section.type === "Pie-Chart" ? (
+                                  ) : section.payload.type === "Pie-Chart" ? (
                                     <PieChartField
-                                      data={section.data.content}
-                                      settings={data.setting}
+                                      data={section.payload.content as iPieChartComponentData[]}
                                     />
                                   ) : null}
                                 </CVSectionCard>

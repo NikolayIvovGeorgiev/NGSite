@@ -2,15 +2,13 @@ import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { createElement } from "react";
 import * as AntIcon from "react-icons/ai";
-import { Settings } from "../../../entities/cvInterfaces_old";
 
 interface Props {
   defaultIcon: string | undefined;
   OnSave: (icon: string | undefined) => void;
-  settings: Settings;
 }
 
-const IconModal = ({ defaultIcon, OnSave, settings }: Props) => {
+const IconModal = ({ defaultIcon, OnSave }: Props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

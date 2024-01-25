@@ -1,17 +1,13 @@
 import { isEmpty } from "lodash";
-import {
-  Settings,
-  iPieChartComponentData,
-} from "../../../entities/cvInterfaces_old";
 import { Chart } from "primereact/chart";
 import { useState, useEffect } from "react";
+import { iPieChartComponentData } from "../../../entities/cvInterfaces";
 
 interface Props {
   data?: iPieChartComponentData[];
-  settings: Settings;
 }
 
-const PieChartField = ({ data, settings }: Props) => {
+const PieChartField = ({ data }: Props) => {
   const [loading, setLoading] = useState(true);
   const [chartOptions] = useState({
     plugins: {
@@ -24,23 +20,23 @@ const PieChartField = ({ data, settings }: Props) => {
   const [chartData, setChartData] = useState({
     labels: [] as string[],
     datasets: [
-      {
-        data: [] as number[],
-        backgroundColor: [
-          settings.colorTheme?.accent,
-          settings.colorTheme?.background,
-          settings.colorTheme?.text,
-          settings.colorTheme?.background,
-          settings.colorTheme?.text,
-        ] as string[],
-        hoverBackgroundColor: [
-          settings.colorTheme?.background,
-          settings.colorTheme?.accent,
-          settings.colorTheme?.background,
-          settings.colorTheme?.text,
-          settings.colorTheme?.background,
-        ] as string[],
-      },
+      // {
+      //   data: [] as number[],
+      //   backgroundColor: [
+      //     settings.colorTheme?.accent,
+      //     settings.colorTheme?.background,
+      //     settings.colorTheme?.text,
+      //     settings.colorTheme?.background,
+      //     settings.colorTheme?.text,
+      //   ] as string[],
+      //   hoverBackgroundColor: [
+      //     settings.colorTheme?.background,
+      //     settings.colorTheme?.accent,
+      //     settings.colorTheme?.background,
+      //     settings.colorTheme?.text,
+      //     settings.colorTheme?.background,
+      //   ] as string[],
+      // },
     ],
   });
 
@@ -59,10 +55,10 @@ const PieChartField = ({ data, settings }: Props) => {
       ...chartData,
       labels: [...chartData.labels, ...updatedLabels],
       datasets: [
-        {
-          ...chartData.datasets[0],
-          data: [...chartData.datasets[0].data, ...updatedData],
-        },
+        // {
+        //   ...chartData.datasets[0],
+        //   data: [...chartData.datasets[0].data, ...updatedData],
+        // },
       ],
     });
   };

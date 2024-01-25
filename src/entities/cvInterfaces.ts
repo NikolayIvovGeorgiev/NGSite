@@ -2,11 +2,16 @@
 
 export interface iCvBase {
   id: string,
-  fileName: string,
+  cvName: string, // This is the name of the person
   createdOn: Date,
+  createdById: string,
   lastEditedOn: Date,
   colorTheme: string,
-  personalInfo: iPersonalDataInfo
+  image: string,
+  name: string, // This is the name of the file
+  birthDate: Date
+  summary: string
+  personalInfoFields: iPersonalInfoFields[]
 }
 
 export type colList = 'leftCol' | 'rightCol';
@@ -21,13 +26,15 @@ export interface iCvApi extends iCvBase {
 }
 
 export interface iPersonalDataInfo {
-  photo: string,
+  image: string,
   name: string, 
-  birthDate: Date
-  summary: string
-  fields: iPersonalInfoFields[]
+  birthDate: Date,
+  summary: string,
+  personalInfoFields: iPersonalInfoFields[],
+  colorTheme: string
 }
-export interface iPersonalInfoFields{
+
+export interface iPersonalInfoFields {
   icon?: string;
   type?: string;
   value?: string;
@@ -35,7 +42,7 @@ export interface iPersonalInfoFields{
 
 export interface iSectionBase {
   id: string;
-  columnPosition: string;
+  columnPosition: colList;
   order: string;
 }
 
@@ -51,7 +58,7 @@ export interface iSectionPayload {
   title: string;
   state: string;
   content?: iProgressBarComponentData[] | 
-    iTextFieldComponentData | 
+    iTextFieldComponentData[] | 
     iPieChartComponentData[];
 }
 

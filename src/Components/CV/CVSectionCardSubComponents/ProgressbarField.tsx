@@ -1,15 +1,12 @@
-import {
-  Settings,
-  iProgressBarComponentData,
-} from "../../../entities/cvInterfaces_old";
+
 import { Col, Row } from "react-bootstrap";
+import { iProgressBarComponentData } from "../../../entities/cvInterfaces";
 
 interface Props {
   data?: iProgressBarComponentData[];
-  settings: Settings;
 }
 
-const ProgressbarField = ({ data, settings }: Props) => {
+const ProgressbarField = ({ data }: Props) => {
   if (!data) {
     return null;
   }
@@ -25,29 +22,29 @@ const ProgressbarField = ({ data, settings }: Props) => {
               <Col
                 md={6}
                 sm={12}
-                style={{
-                  color: `${settings.colorTheme?.text}`,
-                }}
+                // style={{
+                //   color: `${settings.colorTheme?.text}`,
+                // }}
               >
                 {content.title}
               </Col>
               <Col md={6} sm={12} className=" mediaSize align-self-md-center">
                 <div
                   className="progress "
-                  style={{
-                    backgroundColor: `${settings.colorTheme?.heading}`,
-                    margin: 10,
-                    padding: 2,
-                  }}
+                  // style={{
+                  //   backgroundColor: `${settings.colorTheme?.heading}`,
+                  //   margin: 10,
+                  //   padding: 2,
+                  // }}
                 >
                   <div
                     className="progress-bar "
                     role="progressbar"
-                    style={{
-                      backgroundColor: `${settings.colorTheme?.accent}`,
-                      width: `${content.level * 10}%`,
-                      borderRadius: "4px",
-                    }}
+                    // style={{
+                    //   backgroundColor: `${settings.colorTheme?.accent}`,
+                    //   width: `${content.level * 10}%`,
+                    //   borderRadius: "4px",
+                    // }}
                     aria-valuenow={content.level}
                     aria-valuemin={0}
                     aria-valuemax={10}

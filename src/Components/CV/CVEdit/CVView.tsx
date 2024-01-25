@@ -1,10 +1,4 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import {
-  CVInterface,
-  // CVInterface,
-  ColorTheme,
-  // PersonalDataInfo,
-} from "../../../entities/cvInterfaces_old";
 import CVList from "../../../mocked-data/cv-data";
 import CVBody from "../CVBody";
 import CVPersonalInfo from "../CVPersonalInfo";
@@ -17,17 +11,13 @@ import { Row } from "react-bootstrap";
 import { useReactToPrint } from "react-to-print";
 import html2pdf from "html2pdf.js";
 import { getCVService } from "../../../services/fetch.service";
-import { error } from "console";
+import { iCv } from "../../../entities/cvInterfaces";
 
 const CVView = () => {
-  const [cvData, setCvData] = useState<CVInterface>();
+  const [cvData, setCvData] = useState<iCv>();
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [showPaletteModal, setShowPaletteModal] = useState(false);
-  const [splitSections, setSplitSections] = useState({
-    leftCol: [],
-    rightCol: [],
-  });
-  const [queryParams, setQueryParams] = useSearchParams();
+  const [queryParams] = useSearchParams();
   const { id } = useParams();
   const componentRef = useRef(null);
 
@@ -48,7 +38,7 @@ const CVView = () => {
 
   const handleDownload = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: `${cvData?.name}.pdf`,
+    documentTitle: `${cvData?.cvName}.pdf`,
     copyStyles: true,
     print: async (printIframe: HTMLIFrameElement) => {
       const document = printIframe.contentDocument;
@@ -67,15 +57,15 @@ const CVView = () => {
     },
   });
 
-  const changeCvTheme = (selectedTheme: ColorTheme) => {
-    // if (cvData) {
-    //   setCvData(
-    //     produce(cvData, (draftCvData) => {
-    //       draftCvData.settings.colorTheme = selectedTheme;
-    //     })
-    //   );
-    // }
-  };
+  // const changeCvTheme = (selectedTheme: ColorTheme) => {
+  //   // if (cvData) {
+  //   //   setCvData(
+  //   //     produce(cvData, (draftCvData) => {
+  //   //       draftCvData.settings.colorTheme = selectedTheme;
+  //   //     })
+  //   //   );
+  //   // }
+  // };
 
   const handleEditButtonClick = () => {
     setIsEditingMode(!isEditingMode);
@@ -83,7 +73,7 @@ const CVView = () => {
 
   useEffect(() => {
     getCVService(id)
-      .then((response) => {
+      .then((response) => {        
         setCvData(response.data);
         setIsEditingMode(!!queryParams.get("edit"));
       })
@@ -103,24 +93,25 @@ const CVView = () => {
     // }
   }, []);
 
-  const savePersonalInfoData = (data: CVInterface) => {
-    const updatedPersonalInfo = data.personalInfoFields;
 
-    if (cvData) {
-      setCvData({
-        ...cvData,
-        personalInfoFields: updatedPersonalInfo,
-      });
-    } else {
-      console.error("Error: could not update data");
-    }
-  };
+  // const savePersonalInfoData = (data: iCv) => {
+  //   const updatedPersonalInfo = data.personalInfo;
 
-  const handleSave = (data?: CVInterface) => {
-    if (data) savePersonalInfoData(data);
-  };
+  //   if (cvData) {
+  //     setCvData({
+  //       ...cvData,
+  //       personalInfo: updatedPersonalInfo,
+  //     });
+  //   } else {
+  //     console.error("Error: could not update data");
+  //   }
+  // };
 
-  return cvData ? (
+  // const handleSave = (data?: iCv) => {
+  //   if (data) savePersonalInfoData(data);
+  // };
+
+  return !!cvData ? (
     <Row
     // style={{ backgroundColor: cvData.settings.colorTheme?.background }}
     >
@@ -142,9 +133,7 @@ const CVView = () => {
       />
       {isEditingMode && (
         <CVPersonalInfoModify
-          settings={cvData.setting}
           data={cvData}
-          onSave={handleSave}
         />
       )}
       <div
@@ -153,12 +142,11 @@ const CVView = () => {
         // style={{ backgroundColor: cvData.settings.colorTheme?.background }}
       >
         {!isEditingMode && (
-          <CVPersonalInfo settings={cvData.setting} data={cvData} />
+          <CVPersonalInfo data={cvData} />
         )}
         <CVBody
           isEditingMode={isEditingMode}
           data={cvData}
-          splitSections={splitSections}
         ></CVBody>
       </div>
     </Row>

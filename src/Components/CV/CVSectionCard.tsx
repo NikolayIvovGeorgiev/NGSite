@@ -1,6 +1,4 @@
 import { ReactNode } from "react";
-
-import { Settings } from "../../entities/cvInterfaces_old";
 import { Button } from "react-bootstrap";
 
 interface Props {
@@ -10,11 +8,9 @@ interface Props {
   children?: ReactNode;
   isEditing: boolean;
   onClick: (index: number) => void;
-  settings: Settings;
 }
 
 const CVSectionCard = ({
-  settings,
   index,
   heading,
   children,
@@ -25,11 +21,10 @@ const CVSectionCard = ({
     <>
       <h2
         className={`border-gradient-title m-0 p-3 px-4`}
-        style={{
-          color: `${settings.colorTheme?.heading}`,
-          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(255,255,255,0) 20%)`,
-          backgroundColor: `${settings.colorTheme?.background}`,
-        }}
+        // style={{
+        //   borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(255,255,255,0) 20%)`,
+        //   backgroundColor: `${settings.colorTheme?.background}`,
+        // }}
         id={heading}
       >
         {heading}
@@ -46,11 +41,11 @@ const CVSectionCard = ({
       </h2>
       <div
         className="border-gradient-body p-4"
-        style={{
-          color: `${settings.colorTheme?.heading}`,
-          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(255,255,255,0) 65%)`,
-          backgroundColor: `${settings.colorTheme?.background}`,
-        }}
+        // style={{
+        //   color: `${settings.colorTheme?.heading}`,
+        //   borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(255,255,255,0) 65%)`,
+        //   backgroundColor: `${settings.colorTheme?.background}`,
+        // }}
       >
         {children}
       </div>

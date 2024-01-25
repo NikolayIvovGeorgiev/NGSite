@@ -14,12 +14,12 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { ImCross } from "react-icons/im";
 import { TEXT_SECTION_OPTIONAL_FIELDS as optionalFields } from "../constants";
 import { cloneDeep, get } from "lodash";
+import { iSection } from "../../../entities/cvInterfaces";
 // import SectionDeleteButton from "./SectionDeleteModal";
 // import { color } from "chart.js/helpers";
 
 interface Props {
-  data: Section;
-  settings: Settings;
+  data: iSection;
   heading: string;
   // index: number;
   // children?: ReactNode;
@@ -27,13 +27,12 @@ interface Props {
   //   col: string | number;
   //   index: number;
   // };
-  onSave: (sectionData?: Section) => void;
+  onSave: (sectionData?: iSection) => void;
   onDelete: () => void;
 }
 
 const CVSectionModify = ({
   data,
-  settings,
   heading,
   onSave,
   onDelete,
@@ -45,22 +44,25 @@ const CVSectionModify = ({
    */
   const setInitialToggleButtons = () => {
     let defaultValues: string[] = [];
-    if (data.type === "Text-field") {
-      const hasDescription = data.data.content?.some(
-        (chapter: iTextFieldComponentData) => !!chapter.description
-      );
-      if (hasDescription) defaultValues.push(optionalFields.description);
+    if (data.payload.type === "Text-field")  {
+      // const hasDescription = data.payload.content?.some(
+      //   (chapter: iTextFieldComponentData) => !!chapter.description
+      // );
+      if (data.payload.content?.hasOwnProperty('description')) 
+        defaultValues.push(optionalFields.description);
 
-      const hasDates = data.data.content?.some(
-        (chapter: iTextFieldComponentData) =>
-          !!(chapter.startDate || chapter.endDate)
-      );
-      if (hasDates) defaultValues.push(optionalFields.date);
+      // const hasDates = data.payload.content?.some(
+      //   (chapter: iTextFieldComponentData) =>
+      //     !!(chapter.startDate || chapter.endDate)
+      // );
+      if (data.payload.content?.hasOwnProperty('startDate') || data.payload.content?.hasOwnProperty('endDate'))
+        defaultValues.push(optionalFields.date);
 
-      const hasList = data.data.content?.some(
-        (chapter: iTextFieldComponentData) => !!chapter.list
-      );
-      if (hasList) defaultValues.push(optionalFields.list);
+      // const hasList = data.payload.content?.some(
+      //   (chapter: iTextFieldComponentData) => !!chapter.list
+      // );
+      if (data.payload.content?.hasOwnProperty('hasList')) 
+        defaultValues.push(optionalFields.list);
     }
 
     return defaultValues;
@@ -71,7 +73,7 @@ const CVSectionModify = ({
   );
   const [sectionData, setSectionData] = useState<any>(cloneDeep(data));
   const [validated, setValidated] = useState(false);
-  const [chosenSectionType, setChosenSectionType] = useState(sectionData.type);
+  const [chosenSectionType, setChosenSectionType] = useState(sectionData.payload.type);
   /**
  *ADDING NEW COMPONENT TYPE TO THE SECTION IN RIGHT FORMAT
        iProgressBarComponentData OR
@@ -91,19 +93,20 @@ const CVSectionModify = ({
     }
     if (chosenSectionType === "Progress-bar")
       newData = { title: "", level: undefined };
-    if (chosenSectionType === "Pie-Chart") newData = { title: "", percent: "" };
+    if (chosenSectionType === "Pie-Chart") 
+      newData = { title: "", percent: "" };
 
     setSectionData({
       ...sectionData,
-      data: {
-        ...sectionData.data,
-        content: [...sectionData.data.content, newData],
+      payload: {
+        ...sectionData.payload,
+        content: [...sectionData.payload.content, newData],
       },
     });
   };
 
   const handleRemove = (index: number, path?: string, listIndex?: number) => {
-    const newContent = sectionData.data.content;
+    const newContent = sectionData.payload.content;
 
     if (path && listIndex !== undefined) {
       console.log("1");
@@ -115,8 +118,8 @@ const CVSectionModify = ({
     }
     setSectionData({
       ...sectionData,
-      data: {
-        ...sectionData.data,
+      payload: {
+        ...sectionData.payload,
         content: newContent,
       },
     });
@@ -127,7 +130,7 @@ const CVSectionModify = ({
     value: any,
     listIndex?: number
   ) => {
-    const updatedContent = [...sectionData.data.content];
+    const updatedContent = [...sectionData.payload.content];
 
     if (property === "list" && listIndex !== undefined) {
       updatedContent[index][property][listIndex] = value;
@@ -137,8 +140,8 @@ const CVSectionModify = ({
 
     setSectionData({
       ...sectionData,
-      data: {
-        ...sectionData.data,
+      payload: {
+        ...sectionData.payload,
         content: updatedContent,
       },
     });
@@ -155,9 +158,9 @@ const CVSectionModify = ({
     setChosenSectionType(e.target.value);
     setSectionData({
       ...sectionData,
-      type: e.target.value,
-      data: {
-        ...sectionData,
+      payload: {
+        ...sectionData.payload,
+        type: e.target.value,
         content: [],
       },
     });
@@ -174,13 +177,13 @@ const CVSectionModify = ({
   const handleAddListItem = (index: number) => {
     console.log("called");
 
-    if (!!sectionData.data.content[index].list) {
-      let content = cloneDeep(sectionData.data.content);
+    if (!!sectionData.payload.content[index].list) {
+      let content = cloneDeep(sectionData.payload.content);
       content[index].list = [...content[index].list, ""];
       setSectionData({
         ...sectionData,
-        data: {
-          ...sectionData.data,
+        payload: {
+          ...sectionData.payload,
           content: content,
         },
       });
@@ -192,9 +195,9 @@ const CVSectionModify = ({
     if (!oldToggleValues.includes("list") && newToggleValues.includes("list")) {
       setSectionData({
         ...sectionData,
-        data: {
-          ...sectionData.data,
-          content: sectionData.data.content.map(
+        payload: {
+          ...sectionData.payload,
+          content: sectionData.payload.content.map(
             (dataObject: iTextFieldComponentData) => ({
               ...dataObject,
               list: [""],
@@ -206,7 +209,7 @@ const CVSectionModify = ({
   };
   const sanitzeSection = () => {
     if (!togglesValue.includes(optionalFields.description)) {
-      let updatedContent = sectionData.data.content;
+      let updatedContent = sectionData.payload.content;
       updatedContent.map((chapter: any) => {
         if (chapter.hasOwnProperty("description"))
           delete chapter["description"];
@@ -214,14 +217,14 @@ const CVSectionModify = ({
       });
       setSectionData({
         ...sectionData,
-        data: {
-          ...sectionData.data,
+        payload: {
+          ...sectionData.payload,
           content: updatedContent,
         },
       });
     }
     if (!togglesValue.includes(optionalFields.list)) {
-      const updatedContent = sectionData.data.content.map((chapter: any) => {
+      const updatedContent = sectionData.payload.content.map((chapter: any) => {
         if (chapter.hasOwnProperty("list")) {
           delete chapter["list"];
           return chapter;
@@ -229,14 +232,14 @@ const CVSectionModify = ({
       });
       setSectionData({
         ...sectionData,
-        data: {
-          ...sectionData.data,
+        payload: {
+          ...sectionData.payload,
           content: updatedContent,
         },
       });
     }
     if (!togglesValue.includes(optionalFields.date)) {
-      const updatedContent = sectionData.data.content.map((chapter: any) => {
+      const updatedContent = sectionData.payload.content.map((chapter: any) => {
         if (chapter.hasOwnProperty("date")) {
           delete chapter["date"];
           return chapter;
@@ -244,8 +247,8 @@ const CVSectionModify = ({
       });
       setSectionData({
         ...sectionData,
-        data: {
-          ...sectionData.data,
+        payload: {
+          ...sectionData.payload,
           content: updatedContent,
         },
       });
@@ -256,29 +259,33 @@ const CVSectionModify = ({
     <div>
       <div
         className="border-gradient-title m-0 p-3 px-4"
-        style={{
-          color: `${settings.colorTheme?.heading}`,
-          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
-          backgroundColor: `${settings.colorTheme?.background}`,
-        }}
+        // style={{
+        //   color: `${settings.colorTheme?.heading}`,
+        //   borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
+        //   backgroundColor: `${settings.colorTheme?.background}`,
+        // }}
       >
         <Row>
           {/* SECTION TITLE */}
           <Col xs={12} className="">
-            <Form.Text style={{ color: `${settings.colorTheme?.heading}` }}>
-              {" "}
+            <Form.Text 
+              // // style={{ color: `${settings.colorTheme?.heading}` }}
+            >
               Section Title
             </Form.Text>
             <InputGroup>
               <Form.Control
                 size="lg"
-                value={sectionData.title}
+                value={sectionData.payload.title}
                 aria-label={heading}
                 aria-describedby="NewTitleSection"
                 onChange={(e) => {
                   setSectionData({
                     ...sectionData,
-                    title: e.target.value,
+                    payload: {
+                      ...sectionData.payload,
+                      title: e.target.value,
+                    }
                   });
                 }}
               />
@@ -289,11 +296,11 @@ const CVSectionModify = ({
       </div>
       <div
         className="border-gradient-body p-4"
-        style={{
-          color: `${settings.colorTheme?.heading}`,
-          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
-          backgroundColor: `${settings.colorTheme?.background}`,
-        }}
+        // style={{
+        //   color: `${settings.colorTheme?.heading}`,
+        //   borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
+        //   backgroundColor: `${settings.colorTheme?.background}`,
+        // }}
       >
         {/* DROPDOWN SECTION TYPE */}
         <select
@@ -324,7 +331,7 @@ const CVSectionModify = ({
                 variant="outline-accent"
                 id="tbg-btn-1"
                 value={"list"}
-                style={{ color: `${settings.colorTheme?.heading}` }}
+                // style={{ color: `${settings.colorTheme?.heading}` }}
               >
                 List
               </ToggleButton>
@@ -332,7 +339,7 @@ const CVSectionModify = ({
                 variant="outline-accent"
                 id="tbg-btn-2"
                 value={"description"}
-                style={{ color: `${settings.colorTheme?.heading}` }}
+                // style={{ color: `${settings.colorTheme?.heading}` }}
               >
                 Description
               </ToggleButton>
@@ -340,17 +347,17 @@ const CVSectionModify = ({
                 variant="outline-accent"
                 id="tbg-btn-3"
                 value={"dates"}
-                style={{ color: `${settings.colorTheme?.heading}` }}
+                // style={{ color: `${settings.colorTheme?.heading}` }}
               >
                 Date
               </ToggleButton>
             </ToggleButtonGroup>
             <hr
-              style={{ borderColor: `${settings.colorTheme?.accent}` }}
+              // style={{ borderColor: `${settings.colorTheme?.accent}` }}
               className="border-2 opacity-100"
             />
             {/* Sections Foreach */}
-            {sectionData.data.content?.map(
+            {sectionData.payload.content?.map(
               (textField: iTextFieldComponentData, index: number) => {
                 return (
                   <InputGroup key={`${index}`}>
@@ -360,7 +367,7 @@ const CVSectionModify = ({
                         id={`${sectionData.id} + ${textField.title} + ${index} `}
                       >
                         <Form.Text
-                          style={{ color: `${settings.colorTheme?.heading}` }}
+                          // style={{ color: `${settings.colorTheme?.heading}` }}
                         >
                           Text Title
                         </Form.Text>
@@ -382,7 +389,7 @@ const CVSectionModify = ({
                         id={`${sectionData.id} + ${textField.subtitle} + ${index} `}
                       >
                         <Form.Text
-                          style={{ color: `${settings.colorTheme?.heading}` }}
+                          // style={{ color: `${settings.colorTheme?.heading}` }}
                         >
                           Subtitle
                         </Form.Text>
@@ -410,7 +417,7 @@ const CVSectionModify = ({
                           id={`${sectionData.id} + ${textField.subtitle} + ${index} `}
                         >
                           <Form.Text
-                            style={{ color: `${settings.colorTheme?.heading}` }}
+                            // style={{ color: `${settings.colorTheme?.heading}` }}
                           >
                             Description
                           </Form.Text>
@@ -437,9 +444,9 @@ const CVSectionModify = ({
                     {togglesValue.includes("list") && (
                       <>
                         <Form.Text
-                          style={{
-                            color: `${settings.colorTheme?.heading}`,
-                          }}
+                          // style={{
+                          //   color: `${settings.colorTheme?.heading}`,
+                          // }}
                         >
                           List
                         </Form.Text>
@@ -499,10 +506,10 @@ const CVSectionModify = ({
                           <Button
                             className="justify rounded-5"
                             variant="primary"
-                            style={{
-                              backgroundColor: settings.colorTheme?.accent,
-                              color: settings.colorTheme?.background,
-                            }}
+                            // style={{
+                            //   backgroundColor: settings.colorTheme?.accent,
+                            //   color: settings.colorTheme?.background,
+                            // }}
                             onClick={() => handleAddListItem(index)}
                           >
                             +
@@ -519,7 +526,7 @@ const CVSectionModify = ({
                             id={`${sectionData.id} + ${textField.startDate} + ${index} `}
                           >
                             <Form.Text
-                              style={{ color: settings.colorTheme?.heading }}
+                              // style={{ color: settings.colorTheme?.heading }}
                             >
                               Start Date
                             </Form.Text>
@@ -529,7 +536,7 @@ const CVSectionModify = ({
                               type="month"
                               name="startDate"
                               required
-                              style={{ color: settings.colorTheme?.accent }}
+                              // style={{ color: settings.colorTheme?.accent }}
                               onChange={(e) => {
                                 inputFieldOnChange(
                                   index,
@@ -546,7 +553,7 @@ const CVSectionModify = ({
                             id={`${sectionData.id} + ${textField.endDate} + ${index} `}
                           >
                             <Form.Text
-                              style={{ color: settings.colorTheme?.heading }}
+                              // style={{ color: settings.colorTheme?.heading }}
                             >
                               End Date
                             </Form.Text>
@@ -556,7 +563,7 @@ const CVSectionModify = ({
                               type="month"
                               name="endDate"
                               required
-                              style={{ color: settings.colorTheme?.accent }}
+                              // style={{ color: settings.colorTheme?.accent }}
                               onChange={(e) => {
                                 inputFieldOnChange(
                                   index,
@@ -579,7 +586,7 @@ const CVSectionModify = ({
                       </Button>
                     </div>
                     <hr
-                      style={{ borderColor: `${settings.colorTheme?.accent}` }}
+                      // style={{ borderColor: `${settings.colorTheme?.accent}` }}
                       className=" w-100 border-2 opacity-100 mb-4"
                     />
                   </InputGroup>
@@ -598,7 +605,7 @@ const CVSectionModify = ({
         {/* IF PROGRESS-BAR TYPE */}
         {chosenSectionType === "Progress-bar" && (
           <Form noValidate validated={validated} onChange={handleSubmit}>
-            {sectionData.data.content?.map(
+            {sectionData.payload.content?.map(
               (
                 progressBarSection: iProgressBarComponentData,
                 index: number
@@ -683,7 +690,7 @@ const CVSectionModify = ({
         {/* IF Pie-Chart TYPE */}
         {chosenSectionType === "Pie-Chart" && (
           <Form noValidate validated={validated} onChange={handleSubmit}>
-            {sectionData.data.content?.map(
+            {sectionData.payload.content?.map(
               (pieChartSection: iPieChartComponentData, index: number) => {
                 return (
                   <InputGroup key={`${index}`}>
@@ -691,7 +698,7 @@ const CVSectionModify = ({
                       <Form.Group
                         as={Col}
                         xs={7}
-                        id={`${sectionData.id} + ${sectionData.title} + ${index} `}
+                        id={`${sectionData.id} + ${sectionData.payload.title} + ${index} `}
                       >
                         <Form.Control
                           aria-label="Skill"
@@ -749,18 +756,18 @@ const CVSectionModify = ({
       </div>
       <div
         className="d-flex justify-content-end"
-        style={{
-          color: `${settings.colorTheme?.heading}`,
-          borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
-          backgroundColor: `${settings.colorTheme?.background}`,
-        }}
+        // style={{
+        //   color: `${settings.colorTheme?.heading}`,
+        //   borderImageSource: `linear-gradient(165deg, ${settings.colorTheme?.accent}, rgba(0,0,0,0) 65%)`,
+        //   backgroundColor: `${settings.colorTheme?.background}`,
+        // }}
       >
         {/* SAVE SECTION + SANITIZE SECTION + STATE-OLD */}
         <div className="mb-4">
           <Button
             className="btn btn-accent me-1"
             onClick={() => {
-              sectionData.state = "old";
+              sectionData.payload.state = "old";
               sanitzeSection();
               onSave();
             }}
@@ -780,7 +787,7 @@ const CVSectionModify = ({
           <Button
             className="btn btn-accent me-1"
             onClick={() => {
-              sectionData.state = "old";
+              sectionData.payload.state = "old";
               sanitzeSection();
               onSave(sectionData);
             }}

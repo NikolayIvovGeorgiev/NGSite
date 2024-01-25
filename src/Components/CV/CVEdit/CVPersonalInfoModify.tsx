@@ -1,23 +1,16 @@
 import { Row, Image, Button, Form, InputGroup, Col } from "react-bootstrap";
-import {
-  CVInterface,
-  PersonalDataInfo,
-  Settings,
-  iPersonalInfoFields,
-} from "../../../entities/cvInterfaces_old";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import IconModal from "../../shared/modals/IconModal";
 import { cloneDeep } from "lodash";
+import { iCv, iPersonalInfoFields } from "../../../entities/cvInterfaces";
 
 interface Props {
-  settings: Settings;
-  data: CVInterface;
-  onSave: (data?: CVInterface) => void;
+  data: iCv;
 }
 
-const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
-  const [personalInfoData, setPersonalInfoData] = useState(cloneDeep(data));
+const CVPersonalInfoModify = ({ data }: Props) => {
+  const [cvData, setCvData] = useState(data);
   let [displayPicture, setDisplayPicture] = useState(
     data.image ? data.image : "/src/assets/noimage.jpg"
   );
@@ -32,25 +25,23 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
   };
 
   const updateInputField = (index: number, key: string, value: string) => {
-    const updatedFields = [...personalInfoData.personalInfoFields];
+    const updatedFields = [...cvData.personalInfoFields];
 
     if (key === "icon" || key === "type" || key === "value")
       updatedFields[index][key] = value;
 
-    setPersonalInfoData({
-      ...personalInfoData,
-      personalInfoFields: updatedFields,
+    setCvData({
+      ...cvData,
+      personalInfoFields: updatedFields
     });
   };
   const updateSummaryField = (value: string) => {
     const updatedSummary = value;
 
-    setPersonalInfoData({
-      ...personalInfoData,
-      summary: updatedSummary,
+    setCvData({
+      ...cvData,
+        summary: updatedSummary,
     });
-
-    console.log();
   };
 
   const handleFieldTypeChange = (
@@ -58,44 +49,44 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
     index: number
   ) => {
     const newType = e.target.value;
-    let updatedFields = [...personalInfoData.personalInfoFields];
+    let updatedFields = [...cvData.personalInfoFields];
     updatedFields[index].type = newType;
 
     if (newType === "date") {
       updatedFields[index].value = "";
     }
 
-    setPersonalInfoData({
-      ...personalInfoData,
-      personalInfoFields: updatedFields,
+    setCvData({
+      ...cvData,
+      personalInfoFields: updatedFields
     });
   };
 
   const handleAddNewField = () => {
     const newField = { icon: "", type: "", value: "" };
 
-    setPersonalInfoData({
-      ...personalInfoData,
-      personalInfoFields: [...personalInfoData.personalInfoFields, newField],
+    setCvData({
+      ...cvData,
+      personalInfoFields: [...cvData.personalInfoFields, newField]
     });
   };
 
   const handleRemoveField = (index: number) => {
-    const editedContent = [...personalInfoData.personalInfoFields];
+    const editedContent = [...cvData.personalInfoFields];
     editedContent.splice(index, 1);
-    setPersonalInfoData({
-      ...personalInfoData,
-      personalInfoFields: editedContent,
+    setCvData({
+      ...cvData,
+      personalInfoFields: editedContent
     });
   };
 
   const handleIconChoice = (icon: string | undefined, index: number) => {
-    const updatedFields = [...personalInfoData.personalInfoFields];
+    const updatedFields = [...cvData.personalInfoFields];
 
     updatedFields[index].icon = icon;
-    setPersonalInfoData({
-      ...personalInfoData,
-      personalInfoFields: updatedFields,
+    setCvData({
+      ...cvData,
+        personalInfoFields: updatedFields
     });
   };
 
@@ -137,19 +128,19 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
               <Form.Control
                 className="shadow mb-4"
                 size="lg"
-                value={personalInfoData.cvName || ""}
+                value={cvData.cvName || ""}
                 onChange={(e) => {
-                  setPersonalInfoData({
-                    ...personalInfoData,
-                    cvName: e.target.value,
+                  setCvData({
+                    ...cvData,
+                    cvName:  e.target.value
                   });
-                  console.log(personalInfoData);
+                  console.log(cvData);
                 }}
               />
             </InputGroup>
           </div>
-          {personalInfoData?.personalInfoFields &&
-            personalInfoData.personalInfoFields?.map(
+          {cvData?.personalInfoFields &&
+            cvData.personalInfoFields.map(
               (personalInfoField: iPersonalInfoFields, index: number) => {
                 return (
                   // display: grid;
@@ -158,12 +149,12 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
 
                   <InputGroup
                     className="d-grid"
-                    key={`${personalInfoData.name} + ${index}`}
+                    key={`${cvData.cvName} + ${index}`}
                   >
                     <Form.Group
                       className=" d-grid grid align-items-center mb-2"
-                      id={`${personalInfoData.name} + ${
-                        personalInfoData.personalInfoFields.length
+                      id={`${cvData.cvName} + ${
+                        cvData.personalInfoFields.length
                       } + ${index + 1} `}
                     >
                       <div className=" align-self-center me-2">
@@ -184,7 +175,6 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                       </div>
                       <div className=" align-self-center me-2">
                         <IconModal
-                          settings={settings}
                           defaultIcon={personalInfoField.icon}
                           OnSave={(icon) => handleIconChoice(icon, index)}
                         />
@@ -193,7 +183,7 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                       <div className=" align-self-center me-2">
                         {personalInfoField.type === "date" && (
                           <Form.Group
-                            id={`${data.name} + ${personalInfoField.type} + ${index} `}
+                            id={`${data.cvName} + ${personalInfoField.type} + ${index} `}
                           >
                             <Form.Control
                               aria-label="Description"
@@ -256,13 +246,13 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
               Add Field
             </Button>
           </div>
-          {personalInfoData.summary !== null && (
+          {cvData.summary !== null && (
             <>
               <div className="flex mb-2">
                 <textarea
                   rows={3}
                   className="w-100 rounded"
-                  value={personalInfoData.summary}
+                  value={cvData.summary}
                   onChange={(e) => {
                     updateSummaryField(e.target.value);
                   }}
@@ -272,9 +262,9 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
                 <Button
                   variant="primary"
                   onClick={() => {
-                    setPersonalInfoData({
-                      ...personalInfoData,
-                      summary: "",
+                    setCvData({
+                      ...cvData,
+                      summary: ''
                     });
                   }}
                 >
@@ -283,15 +273,15 @@ const CVPersonalInfoModify = ({ data, onSave, settings }: Props) => {
               </div>
             </>
           )}
-          {personalInfoData.summary == null && (
+          {cvData.summary == null && (
             <>
               <div className="d-flex justify-content-end mb-4">
                 <Button
                   variant="primary"
                   onClick={() => {
-                    setPersonalInfoData({
-                      ...personalInfoData,
-                      summary: "",
+                    setCvData({
+                      ...cvData,
+                      summary: ''
                     });
                   }}
                 >

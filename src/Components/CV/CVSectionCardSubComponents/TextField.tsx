@@ -1,78 +1,74 @@
 import { Col, Row } from "react-bootstrap";
+import { iTextFieldComponentData } from "../../../entities/cvInterfaces";
 
-import {
-  Settings,
-  iTextFieldComponentData,
-} from "../../../entities/cvInterfaces_old";
 
 interface Props {
   data?: iTextFieldComponentData[];
-  settings: Settings;
 }
 
-const TextField = ({ data, settings }: Props) => {
+const TextField = ({ data }: Props) => {
   if (!data) {
     return null;
   }
   return (
     <div>
-      {data.map((content: iTextFieldComponentData, index: number) => {
+      {data.map((currentTextField: iTextFieldComponentData, index: number) => {
         return (
           <div key={`textFielWraper-${index}`}>
             <Row key={`textField-${index}`}>
-              {(content.startDate || content.endDate) && (
+              {(currentTextField.startDate || currentTextField.endDate) && (
                 <Col xs={2}>
                   <p
-                    style={{
-                      color: `${settings.colorTheme?.heading}`,
-                    }}
+                    // style={{
+                    //   color: `${settings.colorTheme?.heading}`,
+                    // }}
                   >
-                    {content.startDate}
+                    {`${currentTextField.startDate}`}
                   </p>
                   <p
-                    style={{
-                      color: `${settings.colorTheme?.heading}`,
-                    }}
+                    // style={{
+                    //   color: `${settings.colorTheme?.heading}`,
+                    // }}
                   >
-                    {content.endDate}
+                    {`${currentTextField.endDate}`}
                   </p>
                 </Col>
               )}
               <Col>
-                {content.title && (
+                {currentTextField.title && (
                   <h3
-                    style={{
-                      color: `${settings.colorTheme?.heading}`,
-                    }}
+                    // style={{
+                    //   color: `${settings.colorTheme?.heading}`,
+                    // }}
                   >
-                    {content.title}
+                    {currentTextField.title}
                   </h3>
                 )}
-                {content.subtitle && (
+                {currentTextField.subtitle && (
                   <h4
-                    style={{
-                      color: `${settings.colorTheme?.heading}`,
-                    }}
+                    // style={{
+                    //   color: `${settings.colorTheme?.heading}`,
+                    // }}
                   >
-                    {content.subtitle}
+                    {currentTextField.subtitle}
                   </h4>
                 )}
-                {content.description && (
+                {currentTextField.description && (
                   <p
-                    style={{
-                      color: `${settings.colorTheme?.text}`,
-                    }}
+                    // style={{
+                    //   color: `${settings.colorTheme?.text}`,
+                    // }}
                   >
-                    {content.description}
+                    {currentTextField.description}
                   </p>
                 )}
-                {content.list && (
+                {currentTextField.list && (
                   <ul>
-                    {content.list.map((item, subIndex) => (
+                    {currentTextField.list.map((item, subIndex) => (
                       <li
-                        style={{
-                          color: `${settings.colorTheme?.text}`,
-                        }}
+                        // style={{
+                        //   color: `${settings.colorTheme?.text}`,
+                        // }}
                         key={`textField-${index}-${subIndex}`}
                       >
                         {item}

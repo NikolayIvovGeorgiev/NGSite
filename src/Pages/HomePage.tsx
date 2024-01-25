@@ -76,8 +76,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="p-4 mb-4">Plain Text</div>
-      <div className="p-4 mb-4 fs-4">
+       <div className="p-4 mb-4 fs-4">
         <DragDropContext onDragEnd={onDragEnd}>
           <Row>
             <Col xs={6} md={6}>
@@ -222,7 +221,7 @@ const HomePage = () => {
                 )}
               </Droppable>
             </Col>
-            {/* <Col xs={6} md={6} className="d-flex align-items-center">
+            <Col xs={6} md={6} className="d-flex align-items-center">
               <Droppable
                 droppableId={"completedTasks"}
                 key={"completedTasks"}
@@ -269,7 +268,7 @@ const HomePage = () => {
                   </div>
                 )}
               </Droppable>
-            </Col> */}
+            </Col>
           </Row>
         </DragDropContext>
       </div>

@@ -1,11 +1,10 @@
 import { Col, Row, Image, Button } from "react-bootstrap";
 import * as AntIcon from "react-icons/ai";
-import { CVInterface, Settings } from "../../entities/cvInterfaces_old";
 import { createElement } from "react";
+import { iCv } from "../../entities/cvInterfaces";
 
 interface Props {
-  data: CVInterface;
-  settings: Settings;
+  data: iCv;
 }
 
 const CVPersonalInfo = ({ data }: Props) => {
@@ -30,7 +29,7 @@ const CVPersonalInfo = ({ data }: Props) => {
               //   color: `${settings.colorTheme?.heading}`,
               // }}
             >
-              {data.cvName}
+              {data.name}
             </h1>
           </Row>
 
